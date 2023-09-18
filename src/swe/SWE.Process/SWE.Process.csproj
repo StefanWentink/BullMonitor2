@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Cronos" Version="0.7.1" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
+	</ItemGroup>
+
+  <ItemGroup>
+	<ProjectReference Include="..\SWE.Configuration\SWE.Configuration.csproj" />
+    <ProjectReference Include="..\SWE.Extensions\SWE.Extensions.csproj" />
+    <ProjectReference Include="..\SWE.Rabbit.Abstractions\SWE.Rabbit.Abstractions.csproj" />
+    <ProjectReference Include="..\SWE.Time\SWE.Time.csproj" />
+  </ItemGroup>
+
+</Project>

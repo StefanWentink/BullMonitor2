@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>0a909561-0ad2-4927-b9f6-b4b12ab8502f</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileContext>..\..</DockerfileContext>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\amex.csv" />
+	  <None Remove="Resources\amex.xlsx" />
+	  <None Remove="Resources\nasdaq.csv" />
+	  <None Remove="Resources\nasdaq.xlsx" />
+	  <None Remove="Resources\nyse.csv" />
+	  <None Remove="Resources\nyse.xlsx" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\swe\SWE.Extensions\SWE.Extensions.csproj" />
+	  <ProjectReference Include="..\..\swe\SWE.Process\SWE.Process.csproj" />
+	  <ProjectReference Include="..\..\swe\SWE.Rabbit.Receiver\SWE.Rabbit.Receiver.csproj" />
+	  <ProjectReference Include="..\BullMonitor.Abstractions\BullMonitor.Abstractions.csproj" />
+	  <ProjectReference Include="..\BullMonitor.Ticker.Process\BullMonitor.Ticker.Process.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="Resources\amex.csv">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="Resources\amex.xlsx">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="Resources\nasdaq.csv">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="Resources\nasdaq.xlsx">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="Resources\nyse.csv">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="Resources\nyse.xlsx">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
+</Project>

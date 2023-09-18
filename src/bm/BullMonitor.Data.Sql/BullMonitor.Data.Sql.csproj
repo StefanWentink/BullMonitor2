@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Providers\**" />
+	  <EmbeddedResource Remove="Providers\**" />
+	  <None Remove="Providers\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.11">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\swe\SWE.Infrastructure.Sql\SWE.Infrastructure.Sql.csproj" />
+		<ProjectReference Include="..\BullMonitor.Abstractions\BullMonitor.Abstractions.csproj" />
+		<ProjectReference Include="..\BullMonitor.Data.Storage\BullMonitor.Data.Storage.csproj" />
+	</ItemGroup>
+
+</Project>
