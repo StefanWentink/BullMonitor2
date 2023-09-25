@@ -11,6 +11,12 @@ namespace BullMonitor.DataMine.Tests.Stubs
 
         protected ILogger<StubZacksRankRawProvider> Logger { get; }
 
+        public StubZacksRankRawProvider(
+            ILogger<StubZacksRankRawProvider> logger)
+        {
+            Logger = logger;
+        }
+
         public async Task<string?> GetSingleOrDefault(
             ZacksRankRequest value,
             CancellationToken cancellationToken)
@@ -35,7 +41,7 @@ namespace BullMonitor.DataMine.Tests.Stubs
             }
             catch (Exception exception)
             {
-                Logger.LogError(exception, exception.Message);
+                Logger?.LogError(exception, exception.Message);
                 return null;
             }
         }

@@ -1,11 +1,8 @@
 ﻿using BullMonitor.Abstractions.Requests;
 using BullMonitor.Abstractions.Responses;
 using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
-using Polly;
-using Polly.Extensions.Http;
 using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
-using System.Data.SqlTypes;
 
 namespace BullMonitor.DataMine.Providers
 {
