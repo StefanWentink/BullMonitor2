@@ -5,7 +5,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-	
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="BullMonitor.Ticker.Process.Tests" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<ProjectReference Include="..\..\swe\SWE.Infrastructure.Abstractions\SWE.Infrastructure.Abstractions.csproj" />
 		<ProjectReference Include="..\..\swe\SWE.Infrastructure.Sql\SWE.Infrastructure.Sql.csproj" />

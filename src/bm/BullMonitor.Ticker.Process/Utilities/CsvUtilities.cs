@@ -1,6 +1,4 @@
 ﻿using BullMonitor.Ticker.Process.Models;
-using Microsoft.Extensions.Logging;
-using System.Threading;
 
 namespace BullMonitor.Ticker.Process.Utilities
 {

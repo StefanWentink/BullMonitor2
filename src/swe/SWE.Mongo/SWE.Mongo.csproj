@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Stub\StubMongoQueryProvider.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="mongocsharpdriver" Version="2.21.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.21.0" />
+    <PackageReference Include="Moq" Version="4.20.69" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\SWE.Extensions\SWE.Extensions.csproj" />
+		<ProjectReference Include="..\SWE.Configuration\SWE.Configuration.csproj" />
+		<ProjectReference Include="..\SWE.Infrastructure.Abstractions\SWE.Infrastructure.Abstractions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Stub\" />
+	</ItemGroup>
+	
+</Project>
