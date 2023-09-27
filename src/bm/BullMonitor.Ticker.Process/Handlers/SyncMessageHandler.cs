@@ -7,7 +7,7 @@ using SWE.Infrastructure.Abstractions.Models;
 using SWE.Infrastructure.Sql.Interfaces;
 using SWE.Infrastructure.Sql.Models;
 using SWE.Process.Handlers;
-using SWE.Rabbit.Abstractions.Enums;
+using SWE.Rabbit.Abstractions.Enumerations;
 using SWE.Rabbit.Abstractions.Interfaces;
 
 namespace BullMonitor.Ticker.Process.Handlers

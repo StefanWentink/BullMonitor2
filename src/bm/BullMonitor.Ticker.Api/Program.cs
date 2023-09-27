@@ -1,5 +1,4 @@
 using BullMonitor.Ticker.Api.Extensions;
-using BullMonitor.Ticker.Api.Interfaces.Providers;
 using SWE.Configuration.Factory;
 using SWE.Extensions.Extensions;
 using System.Reflection;
@@ -65,23 +64,5 @@ app
                     $"SHA: { assembly.GetGitHashFromInformationalVersion() }.",
                 };
     });
-
-app
-    .MapGet("/company/getbyid/{id}", async (Guid id, ICompanyProvider provider, CancellationToken cancellationToken) =>
-    {
-        return await provider
-            .GetSingleOrDefault(id, cancellationToken)
-            .ConfigureAwait(false);
-    })
-    .WithName("GetById");
-
-app
-    .MapGet("/company/getbycode/{code}", async (string code, ICompanyProvider provider, CancellationToken cancellationToken) =>
-    {
-        return await provider
-            .GetSingleOrDefault(code, cancellationToken)
-            .ConfigureAwait(false);
-    })
-    .WithName("GetByCode");
 
 app.Run();

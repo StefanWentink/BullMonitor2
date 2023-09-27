@@ -28,7 +28,7 @@ namespace SWE.Infrastructure.Sql.Contracts
 
         protected override async Task<IEnumerable<T>> IsValid(
             IEnumerable<T> value,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             var response = value.ToList();
 
@@ -44,7 +44,7 @@ namespace SWE.Infrastructure.Sql.Contracts
 
         protected override async Task<IEnumerable<T>> Handle(
             IEnumerable<T> value,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             await Handler
                 .Handle(value, cancellationToken)

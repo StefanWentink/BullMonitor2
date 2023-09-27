@@ -30,12 +30,7 @@ namespace NSWE.Tests.Base
                 .AddLogging(logging => logging.AddConsole())
                 .AddSingleton(logger)
                 .AddSingleton(typeof(ILogger<>), typeof(StubLogger<>))
-                //.WithInfrastructureCommunicationSdkServices(Configuration)
-                //.AddScoped<IClientRequest>(_ => new ClientRequest(DateTimeZoneUtilities.DutchDateTimeZone))
-                //.WithRabbitMqStubConfiguration<IssueMessage>()
                 ;
-
-            //.AddSingleton<IMessageSender<IssueMessage>, StubMessageSender<IssueMessage>>();
 
             ServiceCollection = AddBaseServices(serviceCollection, Configuration);
 

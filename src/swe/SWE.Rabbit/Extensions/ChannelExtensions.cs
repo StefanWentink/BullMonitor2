@@ -1,7 +1,7 @@
 ﻿using MoreLinq;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using SWE.Rabbit.Abstractions.Enums;
+using SWE.Rabbit.Abstractions.Enumerations;
 
 namespace SWE.RabbitMq.Extensions
 {

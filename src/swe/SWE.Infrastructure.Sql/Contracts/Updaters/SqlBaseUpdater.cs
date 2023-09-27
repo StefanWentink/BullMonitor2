@@ -20,7 +20,7 @@ namespace SWE.Infrastructure.Sql.Contracts
 
         public virtual async Task<T> Update(
             T value,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             var response = await Update(
                     new HashSet<T> { value },
@@ -32,7 +32,7 @@ namespace SWE.Infrastructure.Sql.Contracts
 
         public virtual async Task<IEnumerable<T>> Update(
             IEnumerable<T> value,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             var values = await IsValid(value, cancellationToken)
                 .ConfigureAwait(false);
@@ -48,7 +48,7 @@ namespace SWE.Infrastructure.Sql.Contracts
 
         public virtual async Task<IEnumerable<T>> Execute(
             IEnumerable<T> value,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             using var context = ContextFactory.Create();
 
@@ -82,10 +82,10 @@ namespace SWE.Infrastructure.Sql.Contracts
 
         protected abstract Task<IEnumerable<T>> IsValid(
             IEnumerable<T> value,
-            CancellationToken cancellationToken = default);
+            CancellationToken cancellationToken);
 
         protected abstract Task<IEnumerable<T>> Handle(
             IEnumerable<T> value,
-            CancellationToken cancellationToken = default);
+            CancellationToken cancellationToken);
     }
 }

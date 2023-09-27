@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
-using SWE.Rabbit.Abstractions.Enums;
+using SWE.Rabbit.Abstractions.Enumerations;
 using SWE.Rabbit.Abstractions.Interfaces;
 
 namespace SWE.Rabbit.Abstractions.Handlers

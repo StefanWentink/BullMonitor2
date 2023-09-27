@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\swe\SWE.Infrastructure.Abstractions\SWE.Infrastructure.Abstractions.csproj" />
+    <ProjectReference Include="..\..\swe\SWE.Infrastructure.Http\SWE.Infrastructure.Http.csproj" />
+    <ProjectReference Include="..\BullMonitor.Ticker.Api.Abstractions\BullMonitor.Ticker.Api.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

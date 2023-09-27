@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SWE.Rabbit.Abstractions.Enums
+namespace SWE.Rabbit.Abstractions.Enumerations
 {
     public enum MessageExchangeType
     {

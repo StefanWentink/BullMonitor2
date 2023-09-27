@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using SWE.Extensions.Interfaces;
 using SWE.Infrastructure.Abstractions.Models;
-using SWE.Rabbit.Abstractions.Enums;
+using SWE.Rabbit.Abstractions.Enumerations;
 using SWE.Rabbit.Abstractions.Interfaces;
 using SWE.Rabbit.Abstractions.Messages;
 

@@ -1,5 +1,5 @@
 ﻿using RabbitMQ.Client;
-using SWE.Rabbit.Abstractions.Enums;
+using SWE.Rabbit.Abstractions.Enumerations;
 
 namespace SWE.RabbitMq.Interfaces
 {

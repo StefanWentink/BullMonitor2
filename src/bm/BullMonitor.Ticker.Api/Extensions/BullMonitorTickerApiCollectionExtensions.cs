@@ -1,7 +1,7 @@
 ﻿using BullMonitor.Data.Sql.Extensions;
 using BullMonitor.Data.Storage.Models;
+using BullMonitor.Ticker.Api.Abstractions.Interfaces.Providers;
 using BullMonitor.Ticker.Api.Abstractions.Responses;
-using BullMonitor.Ticker.Api.Interfaces.Providers;
 using BullMonitor.Ticker.Api.Mappers;
 using BullMonitor.Ticker.Api.Providers;
 using SWE.Extensions.Interfaces;

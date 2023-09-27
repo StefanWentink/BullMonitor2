@@ -1,5 +1,5 @@
 ﻿using SWE.Extensions.Utilities;
-using SWE.Rabbit.Abstractions.Enums;
+using SWE.Rabbit.Abstractions.Enumerations;
 using SWE.RabbitMq.Interfaces;
 
 namespace SWE.Rabbit.Configuration

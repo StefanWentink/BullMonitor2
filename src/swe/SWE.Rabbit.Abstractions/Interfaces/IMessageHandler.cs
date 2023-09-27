@@ -1,4 +1,4 @@
-﻿using SWE.Rabbit.Abstractions.Enums;
+﻿using SWE.Rabbit.Abstractions.Enumerations;
 
 namespace SWE.Rabbit.Abstractions.Interfaces
 {

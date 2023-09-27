@@ -8,7 +8,7 @@ using System.Text.Json;
 using SWE.Extensions.Interfaces;
 using SWE.Rabbit.Abstractions.Interfaces;
 using SWE.Infrastructure.Abstractions.Models;
-using SWE.Rabbit.Abstractions.Enums;
+using SWE.Rabbit.Abstractions.Enumerations;
 using SWE.Rabbit.Abstractions.Messages;
 
 namespace SWE.RabbitMq.Contracts

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SWE.Rabbit.Abstractions.Enums
+namespace SWE.Infrastructure.Messaging.Enumerations
 {
     public enum MessageHandlingResponse
     {
