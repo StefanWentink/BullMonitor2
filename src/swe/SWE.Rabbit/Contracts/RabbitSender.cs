@@ -30,7 +30,7 @@ namespace SWE.RabbitMq.Contracts
             string route,
             CancellationToken cancellationToken)
         {
-            var message = JsonSerializer.Serialize(value);
+            var message = JsonSerializer.Serialize(value, SerializerOptions);
             var body = Encoding.UTF8.GetBytes(message);
 
             Channel.

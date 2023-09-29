@@ -1,4 +1,5 @@
-﻿using SWE.Infrastructure.Http.Interfaces;
+﻿using SWE.Infrastructure.Abstractions.Factories;
+using SWE.Infrastructure.Http.Interfaces;
 using SWE.Infrastructure.Web.Exceptions;
 using System.Net;
 using System.Text;
@@ -11,9 +12,11 @@ namespace SWE.Infrastructure.Web.Handlers
         where TConfiguration : IHttpClientConfiguration
     {
         protected IHttpClientFactory ClientFactory { get; }
+
         protected TConfiguration ClientConfiguration { get; }
 
-        protected abstract JsonSerializerOptions SerializerOptions { get; }
+        protected virtual JsonSerializerOptions SerializerOptions => JsonSerializerOptionsFactory.Options;
+
         protected abstract string HttpClientName { get; }
 
         protected virtual ICollection<HttpStatusCode> GetAcceptedStatusCodes { get; }
@@ -75,7 +78,7 @@ namespace SWE.Infrastructure.Web.Handlers
                 .GetAsync(uri, cancellationToken)
                 .ConfigureAwait(false);
 
-            return await BaseHttpClientHandler<TConfiguration>.HandleResponse<TResponse>(
+            return await HandleResponse<TResponse>(
                     response,
                     GetAcceptedStatusCodes,
                     url,
@@ -119,7 +122,7 @@ namespace SWE.Infrastructure.Web.Handlers
                 .PostAsync(uri, stringContent, cancellationToken)
                 .ConfigureAwait(false);
 
-            return await BaseHttpClientHandler<TConfiguration>.HandleResponse<TResponse>(
+            return await HandleResponse<TResponse>(
                     response,
                     PostAcceptedStatusCodes,
                     url,
@@ -162,7 +165,7 @@ namespace SWE.Infrastructure.Web.Handlers
                 : ClientConfiguration.Uri + uri;
         }
 
-        private static async Task<TResponse?> HandleResponse<TResponse>(
+        private async Task<TResponse?> HandleResponse<TResponse>(
             HttpResponseMessage response,
             IEnumerable<HttpStatusCode> acceptedStatusCodes,
             string url,
@@ -176,7 +179,7 @@ namespace SWE.Infrastructure.Web.Handlers
                     .ReadAsStringAsync(cancellationToken)
                     .ConfigureAwait(false);
 
-                return JsonSerializer.Deserialize<TResponse>(stringContent);
+                return JsonSerializer.Deserialize<TResponse>(stringContent, SerializerOptions);
             }
 
             throw new HttpException(

@@ -59,13 +59,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BullMonitor.Abstractions.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BullMonitor.DataMine", "src\bm\BullMonitor.DataMine\BullMonitor.DataMine.csproj", "{38FFBFE1-0B46-47A4-90D5-B306F3DFAE2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SWE.Infrastructure.Http", "src\swe\SWE.Infrastructure.Http\SWE.Infrastructure.Http.csproj", "{2ED74D64-902A-404E-A0D6-D4E44594271C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SWE.Infrastructure.Http", "src\swe\SWE.Infrastructure.Http\SWE.Infrastructure.Http.csproj", "{2ED74D64-902A-404E-A0D6-D4E44594271C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SWE.Issue.Abstraction", "src\swe\SWE.Issue.Abstraction\SWE.Issue.Abstraction.csproj", "{143BEC2A-9144-45CA-936E-23C4C34625D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BullMonitor.Ticker.Api.SDK", "src\bm\BullMonitor.Ticker.Api.SDK\BullMonitor.Ticker.Api.SDK.csproj", "{FECFB5DC-2661-4070-B96F-0959CBBCC3B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BullMonitor.Ticker.Api.SDK", "src\bm\BullMonitor.Ticker.Api.SDK\BullMonitor.Ticker.Api.SDK.csproj", "{FECFB5DC-2661-4070-B96F-0959CBBCC3B3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BullMonitor.Ticker.Api.SDK.Tests", "tests\bm\BullMonitor.Ticker.Api.SDK.Tests\BullMonitor.Ticker.Api.SDK.Tests.csproj", "{6903162A-090A-47C2-BC65-4F9E4CAC5012}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SWE.Infrastructure.DI", "src\swe\SWE.Infrastructure.DI\SWE.Infrastructure.DI.csproj", "{DCE6F10D-7FFE-4693-8ECC-9F78C40EB0F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BullMonitor.Ticker.Api.Abstractions.Tests", "tests\bm\BullMonitor.Ticker.Api.Abstractions.Tests\BullMonitor.Ticker.Api.Abstractions.Tests.csproj", "{13C21189-7B6C-4C85-AE38-B78A230EB5FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -177,6 +181,14 @@ Global
 		{6903162A-090A-47C2-BC65-4F9E4CAC5012}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6903162A-090A-47C2-BC65-4F9E4CAC5012}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6903162A-090A-47C2-BC65-4F9E4CAC5012}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCE6F10D-7FFE-4693-8ECC-9F78C40EB0F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCE6F10D-7FFE-4693-8ECC-9F78C40EB0F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCE6F10D-7FFE-4693-8ECC-9F78C40EB0F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCE6F10D-7FFE-4693-8ECC-9F78C40EB0F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13C21189-7B6C-4C85-AE38-B78A230EB5FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13C21189-7B6C-4C85-AE38-B78A230EB5FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13C21189-7B6C-4C85-AE38-B78A230EB5FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13C21189-7B6C-4C85-AE38-B78A230EB5FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -212,6 +224,8 @@ Global
 		{143BEC2A-9144-45CA-936E-23C4C34625D5} = {56C11EE1-F863-4223-8364-4F5FCA6DEB00}
 		{FECFB5DC-2661-4070-B96F-0959CBBCC3B3} = {E5DB508F-7205-4B99-948E-F5CBDE6AFDAE}
 		{6903162A-090A-47C2-BC65-4F9E4CAC5012} = {89AD49E3-A23B-4A6D-82DF-84AA8618570E}
+		{DCE6F10D-7FFE-4693-8ECC-9F78C40EB0F2} = {56C11EE1-F863-4223-8364-4F5FCA6DEB00}
+		{13C21189-7B6C-4C85-AE38-B78A230EB5FF} = {89AD49E3-A23B-4A6D-82DF-84AA8618570E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA9C8144-C4B5-4AF6-A069-964ED2759607}

@@ -1,4 +1,5 @@
-﻿using SWE.Infrastructure.Http.Interfaces;
+﻿using SWE.Infrastructure.Abstractions.Factories;
+using SWE.Infrastructure.Http.Interfaces;
 using SWE.Infrastructure.Web.Extensions;
 using System.Text;
 using System.Text.Json;
@@ -16,8 +17,6 @@ namespace SWE.Infrastructure.Web.Handlers
                   clientConfiguration)
         { }
 
-        protected override JsonSerializerOptions SerializerOptions => new();
-
         protected override string HttpClientName => string.Empty;
     }
 
@@ -30,8 +29,6 @@ namespace SWE.Infrastructure.Web.Handlers
         private string? authorizationHeader = null;
 
         protected string AuthorizationHeader => authorizationHeader ??= LoadAuthorization();
-
-        protected override JsonSerializerOptions SerializerOptions => new();
 
         protected override string HttpClientName =>string.Empty;
 

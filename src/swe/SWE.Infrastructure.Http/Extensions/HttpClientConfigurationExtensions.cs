@@ -13,6 +13,7 @@ namespace SWE.Infrastructure.Web.Extensions
             this IServiceCollection services,
             IConfiguration configuration,
             string name,
+            string? policySectionName = null,
             bool configurePollyPolicy = true)
         {
             return services
@@ -20,6 +21,7 @@ namespace SWE.Infrastructure.Web.Extensions
                     configuration,
                     new StubLogger(),
                     name,
+                    policySectionName,
                     configurePollyPolicy);
         }
 
@@ -28,6 +30,7 @@ namespace SWE.Infrastructure.Web.Extensions
                 IConfiguration configuration,
                 ILogger logger,
                 string name,
+                string? policySectionName = null,
                 bool configurePollyPolicy = true)
         {
             var exceptionMessageSender = services
@@ -41,7 +44,7 @@ namespace SWE.Infrastructure.Web.Extensions
             {
                 httpClientBuilder
                     .AddPolicyHandlers(
-                        name,
+                        policySectionName,
                         exceptionMessageSender,
                         logger,
                         configuration);

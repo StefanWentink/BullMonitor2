@@ -1,18 +1,14 @@
 ﻿using BullMonitor.Ticker.Api.SDK.Interfaces;
-using BullMonitor.Ticker.Api.SDK.Providers;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NSWE.Tests.Base;
 using BullMonitor.Ticker.Api.SDK.Extensions;
-using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
 using Xunit;
-using Newtonsoft.Json.Linq;
 using Moq;
-using Moq.Protected;
-using System.Net;
-using System.Text.Json.Serialization;
-using System.Text.Json;
+using SWE.Rabbit.Abstractions.Interfaces;
+using SWE.Issue.Abstraction.Messages;
+using SWE.Rabbit.Abstractions.Messages;
 
 namespace BullMonitor.Ticker.Api.SDK.Tests
 {
@@ -31,6 +27,25 @@ namespace BullMonitor.Ticker.Api.SDK.Tests
         //    }
         //};
 
+        private static Mock<IMessageSender<ExceptionMessage>> _exceptionSenderMock = CreateExceptionSenderMock();
+
+        private static Mock<IMessageSender<ExceptionMessage>> CreateExceptionSenderMock()
+        {
+            var mock = new Mock<IMessageSender<ExceptionMessage>>();
+
+            mock
+                .Setup(x => x.Send(It.IsAny<ExceptionMessage>(), It.IsAny<CancellationToken>()))
+                .Returns(() => Task.CompletedTask)
+                .Verifiable();
+
+            mock
+                .Setup(x => x.Send(It.IsAny<RoutingMessage<ExceptionMessage>>(), It.IsAny<CancellationToken>()))
+                .Returns(() => Task.CompletedTask)
+                .Verifiable();
+
+            return mock;
+        }
+
         protected override IServiceCollection WithServices(
             IServiceCollection services,
             IConfiguration configuration)
@@ -39,10 +54,11 @@ namespace BullMonitor.Ticker.Api.SDK.Tests
             //var mockHttpClientFactory = GetMockHttpClientFactory(mockHttpMessageHandler, configuration);
 
             return services
+                .AddSingleton(_exceptionSenderMock.Object)
                 .WithBullMonitorTickerApiSdkServices(configuration)
                 .AddHttpClient()
                 //.AddSingleton(mockHttpClientFactory.Object);
-            //.AddSingleton<ISingleProvider<TipRanksRequest, string?>, StubTipRanksRawProvider>()
+                //.AddSingleton<ISingleProvider<TipRanksRequest, string?>, StubTipRanksRawProvider>()
             ;
         }
 
@@ -52,6 +68,7 @@ namespace BullMonitor.Ticker.Api.SDK.Tests
             try
             {
                 var provider = Create();
+
                 provider.Should().NotBeNull();
             }
             catch (Exception exception)
@@ -61,7 +78,7 @@ namespace BullMonitor.Ticker.Api.SDK.Tests
             }
         }
 
-        [Theory]
+        [SkippableTheory]
         [InlineData("LIZI")]
         [InlineData("MSFT")]
         public async Task GetByCode_Should_Call_Api(
@@ -72,32 +89,56 @@ namespace BullMonitor.Ticker.Api.SDK.Tests
 
             var provider = Create();
 
-            var response = await provider
-                .GetSingleOrDefault(value, cancellationToken)
-                .ConfigureAwait(false);
+            try
+            {
+                var response = await provider
+                    .GetSingleOrDefault(value, cancellationToken)
+                    .ConfigureAwait(false);
 
-            response.Should().NotBeNull();
+                response.Should().NotBeNull();
+                response?.Code.Should().Be(value);
+            }
+            catch (HttpRequestException exception)
+            {
+                Console.WriteLine(exception);
+
+                var inconclusiveMessage = "No connection could be made because the target machine actively refused it. (localhost:7232)";
+
+                Skip.If(exception.Message.Equals(inconclusiveMessage, StringComparison.OrdinalIgnoreCase));
+            }
         }
 
-        //[Theory]
-        //[InlineData("F2C5FC0F-D5F4-4652-BBFE-08DBB84D9919")]
-        //[InlineData("D1213670-AF23-461E-BCF4-08DBB84D9919")]
-        //public Task GetById_Should_Call_Api(
-        //    string guidId)
-        //{
-        //    var id = Guid.Parse(guidId);
-        //    var cancellationTokenSource = new CancellationTokenSource();
-        //    var cancellationToken = cancellationTokenSource.Token;
+        [SkippableTheory]
+        [InlineData("F2C5FC0F-D5F4-4652-BBFE-08DBB84D9919")]
+        [InlineData("D1213670-AF23-461E-BCF4-08DBB84D9919")]
+        public async Task GetById_Should_Call_Api(
+            string guidId)
+        {
+            var id = Guid.Parse(guidId);
+            var cancellationTokenSource = new CancellationTokenSource();
+            var cancellationToken = cancellationTokenSource.Token;
 
-        //    var provider = Create();
+            var provider = Create();
 
-        //    var response = provider
-        //        .GetSingleOrDefault(id, cancellationToken);
+            try
+            {
+                var response = await provider
+                    .GetSingleOrDefault(id, cancellationToken)
+                    .ConfigureAwait(false);
 
-        //    response.Should().NotBeNull();
+                response.Should().NotBeNull();
 
-        //    return Task.CompletedTask;
-        //}
+                response?.Id.Should().Be(id);
+            }
+            catch (HttpRequestException exception)
+            {
+                Console.WriteLine(exception);
+
+                var inconclusiveMessage = "No connection could be made because the target machine actively refused it. (localhost:7232)";
+
+                Skip.If(exception.Message.Equals(inconclusiveMessage, StringComparison.OrdinalIgnoreCase));
+            }
+        }
 
         //protected Mock<IHttpClientFactory> GetMockHttpClientFactory(
         //    Mock<HttpMessageHandler> mockHttpMessageHandler,

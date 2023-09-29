@@ -13,19 +13,20 @@ namespace SWE.Infrastructure.Web.Extensions
     {
         public static IHttpClientBuilder AddPolicyHandlers(
             this IHttpClientBuilder httpClientBuilder,
-            string policySectionName,
+            string? policySectionName,
             IMessageSender<ExceptionMessage> exceptionMessageSender,
             ILogger logger,
             IConfiguration configuration)
         {
             var cancellationToken = new CancellationToken();
-            var policyConfig = new PolicyConfiguration();
+            var policyConfiguration = new PolicyConfiguration();
 
-            configuration.Bind(policySectionName, policyConfig);
+            configuration.Bind(policySectionName ?? nameof(PolicyConfiguration), policyConfiguration);
 
-            var policyWrap = Policy.WrapAsync(
-                HttpCircuitBreakerPolicies.GetHttpCircuitBreakerPolicy(exceptionMessageSender, logger, policyConfig, cancellationToken),
-                HttpRetryPolicies.GetHttpRetryPolicy(exceptionMessageSender, logger, policyConfig, cancellationToken));
+            var policyWrap = Policy
+                .WrapAsync(
+                    HttpCircuitBreakerPolicies.GetHttpCircuitBreakerPolicy(exceptionMessageSender, logger, policyConfiguration, cancellationToken),
+                    HttpRetryPolicies.GetHttpRetryPolicy(exceptionMessageSender, logger, policyConfiguration, cancellationToken));
 
             return httpClientBuilder.AddPolicyHandler(policyWrap);
         }

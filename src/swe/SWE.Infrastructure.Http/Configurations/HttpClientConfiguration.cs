@@ -5,6 +5,14 @@ namespace SWE.Infrastructure.Http.Configurations
     public class HttpClientConfiguration
         : IHttpClientConfiguration
     {
+        [Obsolete("Only for serialization.")]
+        public HttpClientConfiguration()
+            : this(
+                  string.Empty,
+                  string.Empty,
+                  string.Empty)
+        { }
+
         public HttpClientConfiguration(
             string uri,
             string username,

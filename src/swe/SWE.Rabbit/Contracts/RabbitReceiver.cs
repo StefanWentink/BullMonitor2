@@ -10,6 +10,7 @@ using SWE.Rabbit.Abstractions.Interfaces;
 using SWE.Infrastructure.Abstractions.Models;
 using SWE.Rabbit.Abstractions.Enumerations;
 using SWE.Rabbit.Abstractions.Messages;
+using SWE.Infrastructure.Abstractions.Factories;
 
 namespace SWE.RabbitMq.Contracts
 {
@@ -46,7 +47,7 @@ namespace SWE.RabbitMq.Contracts
                 try
                 {
                     Console.WriteLine($"[{typeof(T).Name}] Received {message}");
-                    var response = JsonSerializer.Deserialize<T>(message);
+                    var response = JsonSerializer.Deserialize<T>(message, SerializerOptions);
 
                     try
                     {

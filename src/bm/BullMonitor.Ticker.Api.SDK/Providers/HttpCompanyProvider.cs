@@ -1,25 +1,19 @@
 ﻿using BullMonitor.Ticker.Api.Abstractions.Responses;
 using BullMonitor.Ticker.Api.SDK.Interfaces;
-using SWE.Infrastructure.Http.Configurations;
+using SWE.Infrastructure.Http.Interfaces;
 using SWE.Infrastructure.Web.Handlers;
-using System.Text.Json;
 
 namespace BullMonitor.Ticker.Api.SDK.Providers
 {
     public class HttpCompanyProvider
-        : BaseHttpClientHandler<HttpClientConfiguration>
+        : BaseHttpClientHandler<IHttpClientConfiguration>
         , IHttpCompanyProvider
     {
-        protected override JsonSerializerOptions SerializerOptions => new()
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        };
-
         protected override string HttpClientName => "Company";
 
         public HttpCompanyProvider(
             IHttpClientFactory clientFactory,
-            HttpClientConfiguration clientConfiguration)
+            IHttpClientConfiguration clientConfiguration)
             : base(
                   clientFactory,
                   clientConfiguration)

@@ -2,6 +2,8 @@
 using SWE.RabbitMq.Interfaces;
 using RabbitMQ.Client;
 using SWE.Extensions.Extensions;
+using SWE.Infrastructure.Abstractions.Factories;
+using System.Text.Json;
 
 namespace SWE.RabbitMq.Contracts
 {
@@ -45,6 +47,8 @@ namespace SWE.RabbitMq.Contracts
         protected bool ExchangeAutoDelete => _exchangeAutoDelete ??= false;//!ExchangeConfiguration.Queues.Any(x => !x.AutoDelete); // SWE: not sure yet
 
         protected ILogger<RabbitExchange<T>> Logger { get; }
+
+        protected virtual JsonSerializerOptions SerializerOptions => JsonSerializerOptionsFactory.Options;
 
         public RabbitExchange(
             IRabbitConfiguration configuration,

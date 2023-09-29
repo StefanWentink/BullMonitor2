@@ -10,30 +10,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="appsettings.json" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Content Include="appsettings.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="FluentAssertions" Version="6.12.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
-		<PackageReference Include="Moq" Version="4.20.69" />
 		<PackageReference Include="xunit" Version="2.5.1" />
 		<PackageReference Include="xunit.extensibility.core" Version="2.5.1" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.5.1" />
-		<PackageReference Include="Xunit.SkippableFact" Version="1.4.13" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\src\bm\BullMonitor.Ticker.Api.SDK\BullMonitor.Ticker.Api.SDK.csproj" />
-		<ProjectReference Include="..\..\swe\SWE.Tests\SWE.Tests.csproj" />
+	  <ProjectReference Include="..\..\..\src\bm\BullMonitor.Ticker.Api.Abstractions\BullMonitor.Ticker.Api.Abstractions.csproj" />
 	</ItemGroup>
-
 </Project>
