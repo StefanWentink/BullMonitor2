@@ -1,6 +1,6 @@
 ﻿namespace BullMonitor.Abstractions.Commands
 {
-    public  record TipRanksTickerSyncMessage(
+    public record TipRanksTickerSyncMessage(
         Guid TickerId,
         DateTimeOffset ConsensusReferenceDate,
         DateTimeOffset PriceReferenceDate,

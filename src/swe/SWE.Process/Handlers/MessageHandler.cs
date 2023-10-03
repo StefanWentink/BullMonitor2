@@ -23,8 +23,10 @@ namespace SWE.Process.Handlers
         private static readonly int _lockSize = 12;
 #endif
 
-        protected int LockMilliSecondsTimeOut => _lockMilliSecondsTimeOut;
-        protected int LockSize => _lockSize;
+        protected virtual int LockMilliSecondsTimeOut => _lockMilliSecondsTimeOut;
+        protected virtual int LockSize => _lockSize;
+
+        protected readonly SemaphoreSlim _lock = new(_lockSize);
 
         protected CancellationToken MainProcessCancellationToken { get; private set; }
         protected IMessageSender<IssueModel> IssueModelSender { get; }

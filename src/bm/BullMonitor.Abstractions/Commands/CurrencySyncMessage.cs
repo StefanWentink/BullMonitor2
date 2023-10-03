@@ -1,5 +1,5 @@
 ﻿namespace BullMonitor.Abstractions.Commands
 {
-    public  class CurrencySyncMessage
+    public class CurrencySyncMessage
     { }
 }

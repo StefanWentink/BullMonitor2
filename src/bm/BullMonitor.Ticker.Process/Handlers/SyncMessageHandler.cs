@@ -16,11 +16,8 @@ namespace BullMonitor.Ticker.Process.Handlers
         : BaseMessageHandler<TMessage>
         where T : class, IIdCode
     {
-        protected virtual int LockWaitTimeMilliSeconds => 20_000;
         protected ISqlProvider<T> Provider { get; }
         protected ICollectionAndSingleCreator<T> Creator { get; }
-
-        private readonly SemaphoreSlim _lock = new(1);
         protected abstract Dictionary<string, T> Collection { get; }
 
         protected SyncMessageHandler(
@@ -45,7 +42,7 @@ namespace BullMonitor.Ticker.Process.Handlers
             try
             {
                 await _lock
-                    .WaitAsync(LockWaitTimeMilliSeconds, cancellationToken)
+                    .WaitAsync(LockMilliSecondsTimeOut, cancellationToken)
                     .ConfigureAwait(false);
 
                 var conditionContainer = new SqlConditionContainer<T>(

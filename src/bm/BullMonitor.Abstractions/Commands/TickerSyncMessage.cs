@@ -1,5 +1,5 @@
 ﻿namespace BullMonitor.Abstractions.Commands
 {
-    public  record TickerSyncMessage
+    public record TickerSyncMessage
     { }
 }
