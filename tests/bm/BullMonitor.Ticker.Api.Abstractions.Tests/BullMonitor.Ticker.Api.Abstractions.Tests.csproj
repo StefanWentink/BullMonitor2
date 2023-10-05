@@ -18,6 +18,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\src\bm\BullMonitor.Ticker.Api.Abstractions\BullMonitor.Ticker.Api.Abstractions.csproj" />
+	  <ProjectReference Include="..\..\..\src\bm\api\BullMonitor.Ticker.Api.Abstractions\BullMonitor.Ticker.Api.Abstractions.csproj" />
 	</ItemGroup>
 </Project>

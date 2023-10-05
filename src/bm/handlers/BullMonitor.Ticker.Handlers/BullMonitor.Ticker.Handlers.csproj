@@ -19,11 +19,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\swe\SWE.Extensions\SWE.Extensions.csproj" />
-	  <ProjectReference Include="..\..\swe\SWE.Process\SWE.Process.csproj" />
-	  <ProjectReference Include="..\..\swe\SWE.Rabbit.Receiver\SWE.Rabbit.Receiver.csproj" />
-	  <ProjectReference Include="..\BullMonitor.Abstractions\BullMonitor.Abstractions.csproj" />
-	  <ProjectReference Include="..\BullMonitor.Ticker.Process\BullMonitor.Ticker.Process.csproj" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\swe\SWE.Extensions\SWE.Extensions.csproj" />
+	  <ProjectReference Include="..\..\..\swe\SWE.Process\SWE.Process.csproj" />
+	  <ProjectReference Include="..\..\..\swe\SWE.Rabbit.Receiver\SWE.Rabbit.Receiver.csproj" />
+	  <ProjectReference Include="..\..\BullMonitor.Abstractions\BullMonitor.Abstractions.csproj" />
+	  <ProjectReference Include="..\..\BullMonitor.Ticker.Process\BullMonitor.Ticker.Process.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

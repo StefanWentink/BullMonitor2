@@ -7,7 +7,7 @@ using SWE.Infrastructure.Abstractions.Models;
 using SWE.Infrastructure.Sql.Interfaces;
 using SWE.Rabbit.Abstractions.Interfaces;
 
-namespace BullMonitor.Ticker.Process.Handlers
+namespace BullMonitor.TickerValue.Process.Handlers
 {
     public class ZacksSyncMessageHandler
         : TickerValueSyncMessageHandler<ZacksSyncMessage, ZacksTickerSyncMessage>
@@ -30,7 +30,7 @@ namespace BullMonitor.Ticker.Process.Handlers
             Guid id,
             string code)
         {
-            return new ZacksTickerSyncMessage(id, DateTimeOffset.Now);
+            return new ZacksTickerSyncMessage(id, code, DateTimeOffset.Now);
         }
     }
 }

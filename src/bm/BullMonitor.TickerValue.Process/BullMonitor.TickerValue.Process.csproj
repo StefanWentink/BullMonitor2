@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="BullMonitor.TickerValue.Process.Tests" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\swe\SWE.Infrastructure.Abstractions\SWE.Infrastructure.Abstractions.csproj" />
+		<ProjectReference Include="..\..\swe\SWE.Infrastructure.Sql\SWE.Infrastructure.Sql.csproj" />
+		<ProjectReference Include="..\..\swe\SWE.Process\SWE.Process.csproj" />
+		<ProjectReference Include="..\..\swe\SWE.Rabbit.Abstractions\SWE.Rabbit.Abstractions.csproj" />
+		<ProjectReference Include="..\..\swe\SWE.Rabbit\SWE.Rabbit.csproj" />
+		<ProjectReference Include="..\BullMonitor.Abstractions\BullMonitor.Abstractions.csproj" />
+		<ProjectReference Include="..\BullMonitor.Data.Sql\BullMonitor.Data.Sql.csproj" />
+	</ItemGroup>
+
+</Project>

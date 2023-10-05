@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\swe\SWE.Infrastructure.Abstractions\SWE.Infrastructure.Abstractions.csproj" />
-    <ProjectReference Include="..\..\swe\SWE.Infrastructure.Http\SWE.Infrastructure.Http.csproj" />
+    <ProjectReference Include="..\..\..\swe\SWE.Infrastructure.Abstractions\SWE.Infrastructure.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\swe\SWE.Infrastructure.Http\SWE.Infrastructure.Http.csproj" />
     <ProjectReference Include="..\BullMonitor.Ticker.Api.Abstractions\BullMonitor.Ticker.Api.Abstractions.csproj" />
   </ItemGroup>
 

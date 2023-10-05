@@ -23,8 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\swe\SWE.Extensions\SWE.Extensions.csproj" />
-    <ProjectReference Include="..\BullMonitor.Data.Sql\BullMonitor.Data.Sql.csproj" />
+    <ProjectReference Include="..\..\..\swe\SWE.Extensions\SWE.Extensions.csproj" />
+    <ProjectReference Include="..\..\BullMonitor.Data.Sql\BullMonitor.Data.Sql.csproj" />
     <ProjectReference Include="..\BullMonitor.Ticker.Api.Abstractions\BullMonitor.Ticker.Api.Abstractions.csproj" />
   </ItemGroup>
 

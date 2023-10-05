@@ -10,7 +10,7 @@ using SWE.Process.Handlers;
 using SWE.Rabbit.Abstractions.Enumerations;
 using SWE.Rabbit.Abstractions.Interfaces;
 
-namespace BullMonitor.Ticker.Process.Handlers
+namespace BullMonitor.TickerValue.Process.Handlers
 {
     public abstract class TickerValueSyncMessageHandler<TIn, TOut>
         : BaseMessageHandler<TIn>
@@ -39,7 +39,6 @@ namespace BullMonitor.Ticker.Process.Handlers
             CancellationToken cancellationToken)
         {
             ISqlConditionContainer<TickerEntity> condition = new SqlConditionContainer<TickerEntity>();
-
 
             try
             {
@@ -80,8 +79,6 @@ namespace BullMonitor.Ticker.Process.Handlers
             {
                 _lock.Release();
             }
-
-            throw new NotImplementedException();
         }
 
         protected abstract TOut ToSendTask(Guid id, string code);

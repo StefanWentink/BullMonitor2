@@ -15,7 +15,6 @@ namespace BullMonitor.Ticker.Process.Extensions
         {
             return serviceCollection
                 .WithBullMonitorTickerProcessorHandlerServices(configuration)
-                .WithBullMonitorZacksSyncHandlerServices(configuration)
                 ;
         }
 
@@ -27,18 +26,7 @@ namespace BullMonitor.Ticker.Process.Extensions
                 .AddSingleton<IMessageHandler<CurrencySyncMessage>, CurrencySyncMessageHandler>()
                 .AddSingleton<IMessageHandler<ExchangeSyncMessage>, ExchangeSyncMessageHandler>()
                 .AddSingleton<IMessageHandler<TickerSyncMessage>, TickerSyncMessageHandler>()
-
-                .AddSingleton<IMessageHandler<ZacksSyncMessage>, ZacksSyncMessageHandler>()
-                ;
-        }
-
-        internal static IServiceCollection WithBullMonitorZacksSyncHandlerServices(
-            this IServiceCollection serviceCollection,
-            IConfiguration configuration)
-        {
-            return serviceCollection
-                .WithRabbitMqSender<ZacksTickerSyncMessage>()
-                ;
+                ; 
         }
     }
 }
