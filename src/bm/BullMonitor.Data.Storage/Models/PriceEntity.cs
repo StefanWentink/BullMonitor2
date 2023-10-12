@@ -4,7 +4,7 @@ namespace BullMonitor.Data.Storage.Models
 {
     public record struct PriceEntity(
             Guid TickerId,
-            DateTimeOffset Date,
+            DateTimeOffset ReferenceDate,
             double Value)
         : ITickerValue
     { }

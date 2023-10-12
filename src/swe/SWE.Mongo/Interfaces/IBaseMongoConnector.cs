@@ -4,10 +4,6 @@ namespace SWE.Mongo.Interfaces
 {
     public interface IBaseMongoConnector<T>
         : IBaseMongoConnector<IMongoConditionContainer<T>, T>
-        //, IQueryProvider<IMongoConditionContainer<T>, T>
-        //, ICollectionAndSingleUpserter<T>
-        //, ICollectionAndSingleUpdater<T>
-        //, ICollectionAndSingleCreator<T>
     { }
 
     public interface IBaseMongoConnector<TContainer, T>

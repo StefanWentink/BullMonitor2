@@ -1,6 +1,7 @@
 ﻿using BullMonitor.Abstractions.Commands;
 using BullMonitor.Abstractions.Requests;
 using BullMonitor.Abstractions.Responses;
+using BullMonitor.Data.Storage.Models;
 using Microsoft.Extensions.Logging;
 using SWE.Extensions.Interfaces;
 using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
@@ -14,13 +15,13 @@ namespace BullMonitor.TickerValue.Process.Handlers
     public class ZacksTickerSyncMessageHandler
         : BaseMessageHandler<ZacksTickerSyncMessage>
     {
-        //protected ISqlProvider<TickerEntity> TickerProvider { get; }
         protected ISingleProvider<ZacksRankRequest, ZacksRankResponse> ZacksProvider { get; }
+        protected ICollectionAndSingleUpserter<ZacksRankEntity> ZacksUpserter { get; }
 
         public ZacksTickerSyncMessageHandler(
             IMessageSender<IssueModel> issueModelSender,
-            //ISqlProvider<TickerEntity> tickerProvider,
             ISingleProvider<ZacksRankRequest, ZacksRankResponse> zacksProvider,
+            ICollectionAndSingleUpserter<ZacksRankEntity> zacksUpserter,
             IDateTimeOffsetNow dateTimeOffsetNow,
             ILogger<ZacksTickerSyncMessageHandler> logger)
             : base(
@@ -28,7 +29,7 @@ namespace BullMonitor.TickerValue.Process.Handlers
                   dateTimeOffsetNow,
                   logger)
         {
-            //TickerProvider = tickerProvider;
+            ZacksUpserter = zacksUpserter;
             ZacksProvider = zacksProvider;
         }
 
@@ -53,14 +54,28 @@ namespace BullMonitor.TickerValue.Process.Handlers
 
                 if (response is not null)
                 {
-                    // Upsert =>
-                    //var sendTasks = tickerPairs
-                    //    .Select(tickerPair => ToSendTask(tickerPair.Id, tickerPair.Code))
-                    //    .Select(sendTask => MessageSender.Send(sendTask, cancellationToken));
+                    var record = new ZacksRankEntity(response.Ticker)
+                    {
+                        ReferenceDate = value.ReferenceDate,
+                        Values = new List<ZacksRankValue>
+                        {
+                            new()
+                            {
+                                Growth = response.Growth,
+                                Momentum = response.Momentum,
+                                Rank = response.Rank,
+                                Value = response.Value,
+                                VGM = response.VGM
+                            }
+                        }
+                    };
 
-                    //await Task.WhenAll(sendTasks).ConfigureAwait(false);
+                    //Upsert =>
+                    await ZacksUpserter
+                       .Upsert(record, cancellationToken)
+                       .ConfigureAwait(false);
 
-                    //Logger.LogInformation($"Send {tickerPairs.Count()} {typeof(TOut).Name}.");
+                    Logger.LogInformation($"Upserter {nameof(ZacksRankValue)}.");
                     return MessageHandlingResponse.Successful;
                 }
 

@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\swe\SWE.Mongo\SWE.Mongo.csproj" />
+    <ProjectReference Include="..\BullMonitor.Data.Storage\BullMonitor.Data.Storage.csproj" />
+  </ItemGroup>
+
 </Project>

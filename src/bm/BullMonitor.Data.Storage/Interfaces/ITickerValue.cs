@@ -3,6 +3,6 @@
     public interface ITickerValue
     {
         Guid TickerId { get; }
-        DateTimeOffset Date { get; }
+        DateTimeOffset ReferenceDate { get; }
     }
 }
