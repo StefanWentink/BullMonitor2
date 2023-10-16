@@ -1,5 +1,4 @@
-﻿using BullMonitor.Abstractions.Commands;
-using BullMonitor.Data.Storage.Models;
+﻿using BullMonitor.Data.Storage.Models;
 using Microsoft.Extensions.Logging;
 using SWE.Extensions.Interfaces;
 using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
