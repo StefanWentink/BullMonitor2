@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NSWE.Tests.Base;
+using SWE.Tests.Base;
 using BullMonitor.Ticker.Api.SDK.Extensions;
 using Xunit;
 using Moq;

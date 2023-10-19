@@ -1,4 +1,7 @@
-﻿namespace SWE.Extensions.Extensions
+﻿using SWE.Time.Utilities;
+using SWE.Extensions.Extensions;
+
+namespace SWE.Time.Extensions
 {
     public static class DateTimeExtensions
     {
@@ -79,37 +82,14 @@
             return TimeZoneInfo.ConvertTime(dateTimeOffset, destinationTimeZone);
         }
 
-        internal static IEnumerable<TimeZoneInfo.AdjustmentRule> GetAdjustmentRules(
-            this TimeZoneInfo timeZoneInfo,
-            DateTimeOffset referenceDate)
+        /// <summary>
+        /// Interprets and converts a <see cref="DateTime"/> as <see cref="TimeZoneInfo.Local"/>.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static DateTimeOffset ToDateTimeOffsetDutch(this DateTime value)
         {
-            var results = timeZoneInfo.GetAdjustmentRules().ToList();
-
-            return results.Where(
-                x =>
-                    x.DateStart <= referenceDate.Date
-                    && x.DateEnd > referenceDate.Date).ToList();
-        }
-
-        internal static TimeZoneInfo.AdjustmentRule? GetAdjustmentRule(
-            this TimeZoneInfo timeZoneInfo,
-            DateTimeOffset referenceDate)
-        {
-            var adjustmentRules = timeZoneInfo.GetAdjustmentRules(referenceDate).ToList();
-
-            if (adjustmentRules.Count > 0)
-            {
-                return adjustmentRules[0];
-            }
-
-            return null;
-        }
-
-        internal static TimeSpan GetAdjustmentRuleTimeSpan(
-            this TimeZoneInfo timeZoneInfo,
-            DateTimeOffset referenceDate)
-        {
-            return timeZoneInfo.GetAdjustmentRule(referenceDate)?.DaylightDelta ?? TimeSpan.Zero;
+            return value.ToDateTimeOffset(TimeZoneInfoUtilities.DutchTimeZoneInfo);
         }
 
         /// <summary>
@@ -128,19 +108,6 @@
             }
 
             return result;
-        }
-
-        public static DateTime ParseDateTimeWithoutSeconds(this string dateTime)
-        {
-            return DateTime.ParseExact(dateTime, "d-M-yyyy HH:mm", null);
-        }
-
-        public static bool MonthDifferenceAtLeast(
-            this DateTime from,
-            DateTime until,
-            int numberOfMonths)
-        {
-            return from.AddMonths(numberOfMonths) < until;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
 
-namespace NSWE.Tests.Base
+namespace SWE.Tests.Base
 {
     public abstract class BaseContextFactoryTests<TContext>
         : BaseDiTests

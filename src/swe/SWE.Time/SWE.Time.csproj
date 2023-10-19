@@ -14,4 +14,8 @@
 		<ProjectReference Include="..\SWE.Extensions\SWE.Extensions.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="SWE.Time.Tests" />
+	</ItemGroup>
+
 </Project>

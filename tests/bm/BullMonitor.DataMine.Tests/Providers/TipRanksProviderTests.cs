@@ -5,7 +5,7 @@ using BullMonitor.DataMine.Tests.Stubs;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NSWE.Tests.Base;
+using SWE.Tests.Base;
 using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
 using Xunit;
 

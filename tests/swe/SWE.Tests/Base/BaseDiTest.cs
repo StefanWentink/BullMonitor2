@@ -5,7 +5,7 @@ using SWE.Configuration.Factory;
 using SWE.Tests.Factories;
 using SWE.Tests.Stubs;
 
-namespace NSWE.Tests.Base
+namespace SWE.Tests.Base
 {
     public abstract class BaseDiTests
     {

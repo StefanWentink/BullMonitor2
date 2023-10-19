@@ -15,4 +15,8 @@
     <ProjectReference Include="..\BullMonitor.Data.Storage\BullMonitor.Data.Storage.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="BullMonitor.Data.Mongo.Tests" />
+	</ItemGroup>
+
 </Project>

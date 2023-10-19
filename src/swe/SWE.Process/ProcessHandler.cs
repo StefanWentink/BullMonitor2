@@ -7,6 +7,7 @@ using SWE.Infrastructure.Abstractions.Models;
 using SWE.Process.Interfaces;
 using SWE.Rabbit.Abstractions.Interfaces;
 using SWE.Rabbit.Abstractions.Messages;
+using SWE.Time.Extensions;
 using SWE.Time.Utilities;
 
 namespace SWE.Process
@@ -115,7 +116,7 @@ namespace SWE.Process
                 var nextRunTime = cronExpression
                         .GetNextOccurrence(
                             now,
-                            TimeZoneInfo.Local);
+                            TimeZoneInfoUtilities.DutchTimeZoneInfo);
 
                 if (nextRunTime.HasValue)
                 {

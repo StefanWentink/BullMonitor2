@@ -1,6 +1,6 @@
-﻿using SWE.Extensions.Extensions;
+﻿using SWE.Time.Extensions;
 
-namespace SWE.Extensions.Utilities
+namespace SWE.Time.Utilities
 {
     public static class SunRisetUtilities
     {

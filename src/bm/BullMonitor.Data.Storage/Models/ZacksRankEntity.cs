@@ -1,8 +1,7 @@
-﻿using BullMonitor.Data.Storage.Interfaces;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Text.Json.Serialization;
-using SWE.Extensions.Extensions;
+using SWE.Time.Extensions;
 
 namespace BullMonitor.Data.Storage.Models
 {

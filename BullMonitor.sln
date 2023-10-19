@@ -79,7 +79,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BullMonitor.Ticker.Handlers
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BullMonitor.TickerValue.Handlers", "src\bm\handlers\BullMonitor.TickerValue.Handlers\BullMonitor.TickerValue.Handlers.csproj", "{F64EA6B1-2558-46FB-8324-667E870C40A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BullMonitor.Data.Mongo", "src\bm\BullMonitor.Data.Mongo\BullMonitor.Data.Mongo.csproj", "{224A5822-642A-4830-943B-C7E5F75183E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BullMonitor.Data.Mongo", "src\bm\BullMonitor.Data.Mongo\BullMonitor.Data.Mongo.csproj", "{224A5822-642A-4830-943B-C7E5F75183E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BullMonitor.Data.Mongo.Tests", "tests\bm\BullMonitor.Data.Mongo.Tests\BullMonitor.Data.Mongo.Tests.csproj", "{C2302C2E-7AF9-4DF7-BA91-C93D4D5CD1C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SWE.Time.Tests", "tests\swe\SWE.Time.Tests\SWE.Time.Tests.csproj", "{930D5083-C7D1-4A82-A0A6-2BA0B359936A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -211,6 +215,14 @@ Global
 		{224A5822-642A-4830-943B-C7E5F75183E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{224A5822-642A-4830-943B-C7E5F75183E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{224A5822-642A-4830-943B-C7E5F75183E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2302C2E-7AF9-4DF7-BA91-C93D4D5CD1C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2302C2E-7AF9-4DF7-BA91-C93D4D5CD1C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2302C2E-7AF9-4DF7-BA91-C93D4D5CD1C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2302C2E-7AF9-4DF7-BA91-C93D4D5CD1C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{930D5083-C7D1-4A82-A0A6-2BA0B359936A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{930D5083-C7D1-4A82-A0A6-2BA0B359936A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{930D5083-C7D1-4A82-A0A6-2BA0B359936A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{930D5083-C7D1-4A82-A0A6-2BA0B359936A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -253,6 +265,8 @@ Global
 		{538D1D5A-BDAC-4131-AFB6-7D0D88273E46} = {F3553087-B338-413F-BEA8-5CCCD6EFE034}
 		{F64EA6B1-2558-46FB-8324-667E870C40A9} = {F3553087-B338-413F-BEA8-5CCCD6EFE034}
 		{224A5822-642A-4830-943B-C7E5F75183E6} = {E5DB508F-7205-4B99-948E-F5CBDE6AFDAE}
+		{C2302C2E-7AF9-4DF7-BA91-C93D4D5CD1C4} = {89AD49E3-A23B-4A6D-82DF-84AA8618570E}
+		{930D5083-C7D1-4A82-A0A6-2BA0B359936A} = {B83D9F3E-68D1-45B2-A545-433E60178E37}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA9C8144-C4B5-4AF6-A069-964ED2759607}

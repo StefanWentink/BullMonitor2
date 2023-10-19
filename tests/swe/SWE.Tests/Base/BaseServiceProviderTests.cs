@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace NSWE.Tests.Base
+namespace SWE.Tests.Base
 {
     public abstract class BaseServiceProviderTests<T>
         : BaseDiTests
