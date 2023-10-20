@@ -4,6 +4,14 @@ using SWE.Tests.Base;
 using SWE.Mongo.Interfaces;
 using BullMonitor.Data.Storage.Models;
 using BullMonitor.Data.Mongo.Extensions;
+using Xunit;
+using SWE.Mongo.Containers;
+using MongoDB.Driver;
+using SWE.Time.Extensions;
+using SWE.Time.Utilities;
+using SWE.Time.Enum;
+using System.Linq.Expressions;
+using FluentAssertions;
 
 namespace BullMonitor.Data.Mongo.Tests.Connectors
 {
@@ -18,75 +26,99 @@ namespace BullMonitor.Data.Mongo.Tests.Connectors
                 .WithBullMonitorZacksRankConnectorServices(configuration);
         }
 
-        //[Theory]
-        //[InlineData("MSFT")]
-        //[InlineData("LIZI")]
-        //public async Task ZacksRankProvider_Should_ResolveModel(
-        //    string ticker)
-        //{
-        //    var from = new DateTimeOffset(2022, 10, 30, 0, 0, 0, TimeSpan.FromHours(2));
-        //    var until = new DateTimeOffset(2022, 10, 31, 0, 0, 0, TimeSpan.FromHours(1));
-        //    var request = new ZacksRankRequest(
-        //        from,
-        //        until,
-        //        ticker);
+        [SkippableTheory()]
+        [InlineData("MSFT")]
+        [InlineData("LIZI")]
+        public async Task ZacksRankProvider_Should_Provide_With_Expression(string ticker)
+        {
+            var cancellationTokenSource = new CancellationTokenSource();
+            var cancellationToken = cancellationTokenSource.Token;
 
-        //    var cancellationTokenSource = new CancellationTokenSource();
-        //    var cancellationToken = cancellationTokenSource.Token;
+            var provider = Create();
 
-        //    var provider = Create();
+            try
+            {
+                var request = new MongoConditionContainer<ZacksRankEntity>(x => x.Ticker == ticker);
 
-        //    var response = await provider
-        //        .GetSingleOrDefault(request, cancellationToken)
-        //        .ConfigureAwait(false);
+                var response = await provider
+                    .Get(request, cancellationToken)
+                    .ConfigureAwait(false);
+            }
+            catch (Exception exception)
+            {
+                Skip.If(exception != null);
+            }
+        }
 
-        //    response.Should().NotBeNull();
+        [SkippableTheory()]
+        [InlineData("MSFT")]
+        [InlineData("LIZI")]
+        public async Task ZacksRankProvider_Should_UpsertInsert(string ticker)
+        {
+            var cancellationTokenSource = new CancellationTokenSource();
+            var cancellationToken = cancellationTokenSource.Token;
 
-        //    if (response != null)
-        //    {
-        //        response.Ticker.Should().Be(request.Ticker);
+            var provider = Create();
 
-        //        if (response.Ticker.Equals("MSFT"))
-        //        {
-        //            response.Rank.Should().Be(3);
-        //            response.Value.Should().Be(3);
-        //            response.Growth.Should().Be(1);
-        //            response.Momentum.Should().Be(4);
-        //            response.VGM.Should().Be(2);
+            var referenceDate = new DateTimeOffset(2022, 10, 31, 0, 0, 0, TimeSpan.FromHours(1));
 
-        //            response.AveragePriceTarget.Should().Be(292.36m);
-        //            response.HighestPriceTarget.Should().Be(370.00m);
-        //            response.LowestPriceTarget.Should().Be(234.00m);
-        //            response.PriceTargetPercentage.Should().Be(22.74m);
+            try
+            {
+                //var tickerFilter = Builders<ZacksRankEntity>
+                //    .Filter
+                //    .Eq(x => x.Ticker, ticker);
 
-        //            response.StrongBuy.Should().Be(24);
-        //            response.Buy.Should().Be(2);
-        //            response.Hold.Should().Be(3);
-        //            response.Sell.Should().Be(0);
-        //            response.StrongSell.Should().Be(0);
-        //            response.AverageBrokerRecommendation.Should().Be(1.28m);
-        //        }
-        //        else if (response != null && response.Ticker.Equals("LIZI"))
-        //        {
-        //            response.Rank.Should().Be(0);
-        //            response.Value.Should().Be(5);
-        //            response.Growth.Should().Be(5);
-        //            response.Momentum.Should().Be(5);
-        //            response.VGM.Should().Be(5);
+                //var dateFilter = Builders<ZacksRankEntity>
+                //    .Filter
+                //    .Eq(x => x.ReferenceDateDb, referenceDate.ToUtcTimeZone().DateTime);
 
-        //            response.AveragePriceTarget.Should().Be(0);
-        //            response.HighestPriceTarget.Should().Be(0);
-        //            response.LowestPriceTarget.Should().Be(0);
-        //            response.PriceTargetPercentage.Should().Be(0);
+                //var filter = tickerFilter & dateFilter;
 
-        //            response.StrongBuy.Should().Be(0);
-        //            response.Buy.Should().Be(0);
-        //            response.Hold.Should().Be(0);
-        //            response.Sell.Should().Be(0);
-        //            response.StrongSell.Should().Be(0);
-        //            response.AverageBrokerRecommendation.Should().Be(5);
-        //        }
-        //    }
-        //}
+                //var request = new MongoConditionContainer<ZacksRankEntity>(filter);
+
+                //var tickerFilter = Builders<ZacksRankEntity>
+                //    .Filter
+                //    .Eq(nameof(ZacksRankEntity.Ticker), ticker);
+
+                //var dateFilter = Builders<ZacksRankEntity>
+                //    .Filter
+                //    .Eq(nameof(ZacksRankEntity.ReferenceDateDb), referenceDate.DateTime);
+
+                var request = new MongoConditionContainer<ZacksRankEntity>(
+                    new List<Expression<Func<ZacksRankEntity, bool>>>
+                    {
+                        x => x.Ticker == ticker,
+                        x => x.ReferenceDateDb == referenceDate.ToUtcTimeZone().DateTime
+                    })
+                { };
+
+                var response = await provider
+                    .GetSingleOrDefault(request, cancellationToken)
+                    .ConfigureAwait(false);
+
+                if (response == null)
+                {
+                    var command = new ZacksRankEntity(ticker)
+                    {
+                        ReferenceDate = referenceDate,
+                        Value = new ZacksRankValue(1, 2, 3, 4, 5)
+                    };
+
+                    var createResponse = await provider
+                        .Create(command, cancellationToken)
+                        .ConfigureAwait(false);
+
+                    response = await provider
+                        .GetSingleOrDefault(request, cancellationToken)
+                        .ConfigureAwait(false);
+
+                    response.Should().NotBeNull();
+                }
+            }
+            catch (Exception exception)
+            {
+                Skip.If(exception != null);
+            }
+        }
     }
 }

@@ -57,17 +57,13 @@ namespace BullMonitor.TickerValue.Process.Handlers
                     var record = new ZacksRankEntity(response.Ticker)
                     {
                         ReferenceDate = value.ReferenceDate,
-                        Values = new List<ZacksRankValue>
-                        {
-                            new()
-                            {
-                                Growth = response.Growth,
-                                Momentum = response.Momentum,
-                                Rank = response.Rank,
-                                Value = response.Value,
-                                VGM = response.VGM
-                            }
-                        }
+                            Value = new ZacksRankValue(
+                                response.Rank,
+                                response.Value,
+                                response.Growth,
+                                response.Momentum,
+                                response.VGM
+                            )
                     };
 
                     //Upsert =>

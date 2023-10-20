@@ -29,7 +29,7 @@ namespace BullMonitor.Data.Storage.Models
             Ticker = ticker;
         }
 
-        public ICollection<ZacksRankValue> Values { get; set; } = new HashSet<ZacksRankValue>();
+        public ZacksRankValue Value { get; set; } = new ZacksRankValue(3, 3, 3, 3, 3);
 
         /// <summary>
         /// Is the Presentation field... use <see cref="ReferenceDateDb"/> for db filtering.
@@ -55,6 +55,20 @@ namespace BullMonitor.Data.Storage.Models
 
     public class ZacksRankValue
     {
+        public ZacksRankValue(
+            int rank,
+            int value,
+            int growth,
+            int momentum,
+            int vGM)
+        {
+            Rank = rank;
+            Value = value;
+            Growth = growth;
+            Momentum = momentum;
+            VGM = vGM;
+        }
+
         //[BsonIgnoreIfNull]
         public int Rank { get; set; }
         //[BsonIgnoreIfNull]

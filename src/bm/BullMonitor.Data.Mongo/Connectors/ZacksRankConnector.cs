@@ -93,7 +93,7 @@ namespace BullMonitor.Data.Mongo.Connectors
         {
             return Builders<ZacksRankEntity>
                 .Update
-                .AddToSetEach($"{nameof(ZacksRankEntity.Values)}", value.Values);
+                .Set($"{nameof(ZacksRankEntity.Value)}", value.Value);
         }
 
         protected override FilterDefinition<ZacksRankEntity> GenerateUpdateFilter(
