@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
-using SWE.Issue.Abstraction.Extensions;
+using SWE.Issue.Abstractions.Extensions;
 using Polly;
-using SWE.Issue.Abstraction.Enumerations;
-using SWE.Issue.Abstraction.Messages;
+using SWE.Issue.Abstractions.Enumerations;
+using SWE.Issue.Abstractions.Messages;
 using SWE.Infrastructure.Http.Interfaces;
 using System.Net;
 using SWE.Rabbit.Abstractions.Interfaces;
@@ -21,7 +21,7 @@ namespace SWE.Infrastructure.Web.Policies
         };
 
         public static IAsyncPolicy<HttpResponseMessage> GetHttpRetryPolicy(
-            IMessageSender<ExceptionMessage> exceptionMessageSender,
+            IMessageSender<IssueMessage> issueMessageSender,
             ILogger logger,
             IRetryPolicyConfiguration retryPolicyConfiguration,
             CancellationToken cancellationToken)
@@ -40,15 +40,15 @@ namespace SWE.Infrastructure.Web.Policies
                     {
                         var (requestContent, responseContent) = httpResponseMessage.GetContent();
 
-                        var message = $"{typeof(HttpResponseMessage).Name} => {httpResponseMessage.StatusCode}: {httpResponseMessage.ReasonPhrase}: {httpResponseMessage.RequestMessage.Method}: {httpResponseMessage.RequestMessage.RequestUri}"
+                        var message = $"{typeof(HttpResponseMessage).Name} => {httpResponseMessage.StatusCode}: {httpResponseMessage.ReasonPhrase}: {httpResponseMessage.RequestMessage?.Method}: {httpResponseMessage.RequestMessage?.RequestUri}"
                             + $"{nameof(requestContent)} => {requestContent}"
                             + $"{nameof(responseContent)} => {responseContent}";
 
                         SendIssue(
                             LogLevel.Error,
                             message,
-                            ExceptionClassification.UnDeliverable,
-                            exceptionMessageSender,
+                            IssueClassification.UnDeliverable,
+                            issueMessageSender,
                             cancellationToken);
 
                         logger.LogError(message);
@@ -61,8 +61,8 @@ namespace SWE.Infrastructure.Web.Policies
                         SendIssue(
                             LogLevel.Warning,
                             message,
-                            ExceptionClassification.UnDeliverable,
-                            exceptionMessageSender,
+                            IssueClassification.UnDeliverable,
+                            issueMessageSender,
                             cancellationToken);
 
                         logger.LogWarning(message);
@@ -77,7 +77,7 @@ namespace SWE.Infrastructure.Web.Policies
                 })
                 .Or<HttpRequestException>(exception =>
                 {
-                    SendExceptionIssue(exception, exceptionMessageSender, logger, cancellationToken);
+                    SendExceptionIssue(exception, issueMessageSender, logger, cancellationToken);
 
                     return false;
                 })
@@ -92,8 +92,8 @@ namespace SWE.Infrastructure.Web.Policies
                         SendIssue(
                             LogLevel.Error,
                             message,
-                            ExceptionClassification.UnDeliverable,
-                            exceptionMessageSender,
+                            IssueClassification.UnDeliverable,
+                            issueMessageSender,
                             cancellationToken);
 
                         logger.LogError(message);
@@ -123,12 +123,12 @@ namespace SWE.Infrastructure.Web.Policies
                 // the last request after latest retry could also time out and should also not pass maximumduration, which means it should be counted as part of the potential wait time without calculated delays
                 var maximumPotentialWaitTimeByClient = policyConfig.ClientRequestTimeoutInSeconds * (policyConfig.RetryCount + 1);
                 // calculate possible remaining seconds to distribute between retries
-                var remainderAfterSubstractFromMaxiumTotalWaitTime = policyConfig.MaxTotalRetryDurationInSeconds.Value - maximumPotentialWaitTimeByClient;
-                var maximumWaitTimeBetweenRequests = remainderAfterSubstractFromMaxiumTotalWaitTime / policyConfig.RetryCount;
+                var remainderAfterSubstractFromMaximumTotalWaitTime = policyConfig.MaxTotalRetryDurationInSeconds.Value - maximumPotentialWaitTimeByClient;
+                var maximumWaitTimeBetweenRequests = (remainderAfterSubstractFromMaximumTotalWaitTime ?? 60) / policyConfig.RetryCount;
 
-                if (calculatedPotentialDelay.TotalSeconds > maximumWaitTimeBetweenRequests.Value)
+                if (calculatedPotentialDelay.TotalSeconds > maximumWaitTimeBetweenRequests)
                 {
-                    return TimeSpan.FromSeconds(Convert.ToDouble(maximumWaitTimeBetweenRequests.Value));
+                    return TimeSpan.FromSeconds(Convert.ToDouble(maximumWaitTimeBetweenRequests));
                 }
             }
 
@@ -136,11 +136,11 @@ namespace SWE.Infrastructure.Web.Policies
         }
 
         private static void SendIssue(
-            ExceptionMessage message,
-            IMessageSender<ExceptionMessage> ExceptionMessageSender,
+            IssueMessage message,
+            IMessageSender<IssueMessage> IssueMessageSender,
             CancellationToken cancellationToken)
         {
-            ExceptionMessageSender
+            IssueMessageSender
                 .Send(message.ToRoutingMessage(), cancellationToken)
                 .GetAwaiter()
                 .GetResult();
@@ -149,36 +149,36 @@ namespace SWE.Infrastructure.Web.Policies
         private static void SendIssue(
             LogLevel logLevel,
             string description,
-            ExceptionClassification classification,
-            IMessageSender<ExceptionMessage> ExceptionMessageSender,
+            IssueClassification classification,
+            IMessageSender<IssueMessage> IssueMessageSender,
             CancellationToken cancellationToken)
         {
-            var message = new ExceptionMessage(
+            var message = new IssueMessage(
                 nameof(GetHttpRetryPolicy),
                 logLevel,
                 description,
                 classification,
                 DateTimeOffset.Now);
 
-            SendIssue(message, ExceptionMessageSender, cancellationToken);
+            SendIssue(message, IssueMessageSender, cancellationToken);
         }
 
         private static void SendExceptionIssue(
             System.Exception exception,
-            IMessageSender<ExceptionMessage> ExceptionMessageSender,
+            IMessageSender<IssueMessage> IssueMessageSender,
             ILogger logger,
             CancellationToken cancellationToken)
         {
             logger.LogError(exception, exception.Message);
 
-            var message = new ExceptionMessage(
+            var message = new IssueMessage(
                 nameof(GetHttpRetryPolicy),
                 LogLevel.Error,
                 exception.Message,
-                ExceptionClassification.Exception,
+                IssueClassification.Exception,
                 DateTimeOffset.Now);
 
-            SendIssue(message, ExceptionMessageSender, cancellationToken);
+            SendIssue(message, IssueMessageSender, cancellationToken);
         }
     }
 }

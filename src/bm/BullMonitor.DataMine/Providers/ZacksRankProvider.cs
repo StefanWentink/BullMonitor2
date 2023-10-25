@@ -20,7 +20,7 @@ namespace BullMonitor.DataMine.Providers
             Logger = logger;
         }
 
-        public async Task<ZacksRankResponse> GetSingleOrDefault(
+        public async Task<ZacksRankResponse?> GetSingleOrDefault(
             ZacksRankRequest value,
             CancellationToken cancellationToken)
         {

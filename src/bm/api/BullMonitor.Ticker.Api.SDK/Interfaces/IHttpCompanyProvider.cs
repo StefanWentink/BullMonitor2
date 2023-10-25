@@ -1,11 +1,8 @@
-﻿using BullMonitor.Ticker.Api.Abstractions.Responses;
-using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
+﻿using BullMonitor.Ticker.Api.Abstractions.Interfaces.Providers;
 
 namespace BullMonitor.Ticker.Api.SDK.Interfaces
 {
     public interface IHttpCompanyProvider
-        : ISingleProvider<Guid, CompanyListResponse>
-        , ISingleProvider<string, CompanyListResponse>
-        , ICollectionProvider<CompanyListResponse>
+        : ICompanyProvider
     { }
 }

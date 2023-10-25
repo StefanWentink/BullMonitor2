@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using SWE.RabbitMq.Interfaces;
 using SWE.RabbitMq.Contracts;
-using SWE.Infrastructure.Abstractions.Models;
+using SWE.Issue.Abstractions.Messages;
 using Microsoft.Extensions.Logging;
 using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
 using SWE.Configuration.Extensions;
@@ -37,17 +37,17 @@ namespace SWE.Rabbit.Extensions
 
             if (rabbitConfiguration != null)
             {
-                var IssueModelQueues = Enum
+                var IssueMessageQueues = Enum
                     .GetValues<LogLevel>()
                     .Select(logLevel => new RabbitQueueConfiguration(
-                        $"{nameof(IssueModel)}_{logLevel}",
+                        $"{nameof(IssueMessage)}_{logLevel}",
                         logLevel.ToString()));
 
-                var IssueModelExchangeConfiguration = new RabbitExchangeConfiguration(
-                    nameof(IssueModel),
-                    IssueModelQueues);
+                var IssueMessageExchangeConfiguration = new RabbitExchangeConfiguration(
+                    nameof(IssueMessage),
+                    IssueMessageQueues);
 
-                rabbitConfiguration.AddExchange(IssueModelExchangeConfiguration);
+                rabbitConfiguration.AddExchange(IssueMessageExchangeConfiguration);
 
                 serviceCollection = serviceCollection
                     .AddSingleton(rabbitConfiguration)
@@ -55,6 +55,11 @@ namespace SWE.Rabbit.Extensions
             }
 
             return serviceCollection;
+        }
+
+        private static object IssueMessage()
+        {
+            throw new NotImplementedException();
         }
 
         public static IServiceCollection WithRabbitMqSender<T>(

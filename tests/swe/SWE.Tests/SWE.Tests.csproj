@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<PlatformTarget>x64</PlatformTarget>
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
@@ -13,7 +13,6 @@
 	  <None Remove="appsettings.Development.json" />
 	  <None Remove="appsettings.json" />
 	  <None Remove="appsettings.local.json" />
-	  <None Remove="appsettings.mine.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -28,11 +27,6 @@
 	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 	  </Content>
 	  <Content Include="appsettings.local.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Include="appsettings.mine.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

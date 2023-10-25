@@ -14,7 +14,7 @@ namespace BullMonitor.Data.Sql.Factories
         /// Constructor for Migrations
         /// </summary>
         public TickerContextFactory()
-            : base(ConfigurationFactory.Create())
+            : base(ConfigurationFactory.Create().Build())
         { }
 
         public TickerContextFactory(IConfiguration configuration)

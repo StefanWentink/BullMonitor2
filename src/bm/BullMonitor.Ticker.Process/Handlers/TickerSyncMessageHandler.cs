@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using SWE.Extensions.Extensions;
 using SWE.Extensions.Interfaces;
 using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
-using SWE.Infrastructure.Abstractions.Models;
+using SWE.Issue.Abstractions.Messages;
 using SWE.Infrastructure.Sql.Interfaces;
 using SWE.Infrastructure.Sql.Models;
 using SWE.Process.Handlers;
@@ -20,7 +20,6 @@ namespace BullMonitor.Ticker.Process.Handlers
     public class TickerSyncMessageHandler
         : BaseMessageHandler<TickerSyncMessage>
     {
-        private SemaphoreSlim _lock => new(LockSize);
         protected ISqlProvider<ExchangeEntity> ExchangeProvider { get; }
         protected ISqlProvider<CurrencyEntity> CurrencyProvider { get; }
         protected ISqlProvider<SectorEntity> SectorProvider { get; }
@@ -40,11 +39,11 @@ namespace BullMonitor.Ticker.Process.Handlers
             ICollectionAndSingleCreator<SectorEntity> sectorCreator,
             ICollectionAndSingleCreator<IndustryEntity> industryCreator,
             ICollectionAndSingleCreator<TickerEntity> tickerCreator,
-            IMessageSender<IssueModel> issueModelSender,
+            IMessageSender<IssueMessage> issueMessageSender,
             IDateTimeOffsetNow dateTimeOffsetNow,
             ILogger<BaseMessageHandler<TickerSyncMessage>> logger)
         :base(
-             issueModelSender,
+             issueMessageSender,
              dateTimeOffsetNow,
              logger)
         {

@@ -1,5 +1,6 @@
 ﻿using BullMonitor.Ticker.Api.Abstractions.Responses;
 using BullMonitor.Ticker.Api.SDK.Interfaces;
+using Newtonsoft.Json.Linq;
 using SWE.Infrastructure.Http.Interfaces;
 using SWE.Infrastructure.Web.Handlers;
 
@@ -19,6 +20,33 @@ namespace BullMonitor.Ticker.Api.SDK.Providers
                   clientConfiguration)
         { }
 
+        public async Task<IEnumerable<CompanyListResponse>> Get(
+            CancellationToken cancellationToken)
+        {
+            var url = $"/company/get";
+
+            return await GetAsync<IEnumerable<CompanyListResponse>>(url, cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<CompanyListResponse>> GetKnownByZacks(
+            CancellationToken cancellationToken)
+        {
+            var url = $"/company/getknownbyzacks";
+
+            return await GetAsync<IEnumerable<CompanyListResponse>>(url, cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<CompanyListResponse>> GetKnownByTipranks(
+            CancellationToken cancellationToken)
+        {
+            var url = $"/company/getknownbytipranks";
+
+            return await GetAsync<IEnumerable<CompanyListResponse>>(url, cancellationToken)
+                .ConfigureAwait(false);
+        }
+
         public async Task<CompanyListResponse?> GetSingleOrDefault(
             Guid value,
             CancellationToken cancellationToken)
@@ -37,12 +65,6 @@ namespace BullMonitor.Ticker.Api.SDK.Providers
 
             return await GetAsync<CompanyListResponse>(url, cancellationToken)
                 .ConfigureAwait(false);
-        }
-
-        public async Task<IEnumerable<CompanyListResponse>> Get(
-            CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
         }
     }
 }

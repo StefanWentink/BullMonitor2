@@ -3,7 +3,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SWE.Extensions.Extensions;
 using SWE.Extensions.Interfaces;
-using SWE.Infrastructure.Abstractions.Models;
+using SWE.Issue.Abstractions.Enumerations;
+using SWE.Issue.Abstractions.Messages;
 using SWE.Process.Interfaces;
 using SWE.Rabbit.Abstractions.Interfaces;
 using SWE.Rabbit.Abstractions.Messages;
@@ -17,18 +18,18 @@ namespace SWE.Process
     {
         protected ICronProcessConfiguration CronProcessConfiguration { get; }
         protected CancellationToken MainProcessCancellationToken { get; private set; }
-        protected IMessageSender<IssueModel> IssueModelSender { get; }
+        protected IMessageSender<IssueMessage> IssueMessageSender { get; }
         protected IDateTimeOffsetNow DateTimeOffsetNow { get; }
         protected ILogger<ProcessHandler> Logger { get; }
 
         protected ProcessHandler(
             ICronProcessConfiguration cronProcessConfiguration,
-            IMessageSender<IssueModel> issueModelSender,
+            IMessageSender<IssueMessage> issueMessageSender,
             IDateTimeOffsetNow dateTimeOffsetNow,
             ILogger<ProcessHandler> logger)
         {
             CronProcessConfiguration = cronProcessConfiguration;
-            IssueModelSender = issueModelSender;
+            IssueMessageSender = issueMessageSender;
             DateTimeOffsetNow = dateTimeOffsetNow;
             Logger = logger;
         }
@@ -278,23 +279,25 @@ namespace SWE.Process
         }
 
         protected async Task SendIssue(
-            IssueModel message,
+            IssueMessage message,
             CancellationToken cancellationToken)
         {
-            await IssueModelSender
-                .Send(new RoutingMessage<IssueModel>(message.LogLevel.ToString(), message), cancellationToken)
+            await IssueMessageSender
+                .Send(new RoutingMessage<IssueMessage>(message.LogLevel.ToString(), message), cancellationToken)
                 .ConfigureAwait(false);
         }
 
         protected async Task SendIssue(
             LogLevel logLevel,
             string description,
+            IssueClassification classification,
             CancellationToken cancellationToken)
         {
-            var message = new IssueModel(
+            var message = new IssueMessage(
                 GetType().Name,
                 logLevel,
                 description,
+                classification,
                 DateTimeOffsetNow.Now);
 
             await SendIssue(message, cancellationToken)
@@ -307,10 +310,11 @@ namespace SWE.Process
         {
             Logger.LogError(exception, exception.Message);
 
-            var message = new IssueModel(
+            var message = new IssueMessage(
                 GetType().Name,
                 LogLevel.Error,
                 exception.Message,
+                IssueClassification.Exception,
                 DateTimeOffsetNow.Now);
 
             await SendIssue(message, cancellationToken)

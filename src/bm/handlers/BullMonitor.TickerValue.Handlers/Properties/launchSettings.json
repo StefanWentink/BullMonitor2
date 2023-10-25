@@ -1,5 +1,6 @@
 {
   "profiles": {
+
     "BullMonitor.TickerValue.Handlers": {
       "commandName": "Project",
       "launchBrowser": true,
@@ -8,6 +9,7 @@
       },
       "applicationUrl": "https://localhost:57827;http://localhost:57828"
     },
+
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
@@ -16,6 +18,7 @@
       },
       "applicationUrl": "https://localhost:57827;http://localhost:57828"
     },
+
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,

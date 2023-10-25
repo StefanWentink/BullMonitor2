@@ -1,5 +1,9 @@
+using BullMonitor.Ticker.Api;
 using BullMonitor.Ticker.Api.Abstractions.Interfaces.Providers;
+using BullMonitor.Ticker.Api.Abstractions.Interfaces.Updaters;
+using BullMonitor.Ticker.Api.Abstractions.Responses;
 using BullMonitor.Ticker.Api.Extensions;
+using Microsoft.AspNetCore.Builder;
 using SWE.Configuration.Factory;
 using SWE.Extensions.Extensions;
 using System.Reflection;
@@ -9,13 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder
     .Host
-    .ConfigureHostConfiguration(x => {
+    .ConfigureHostConfiguration(configurationBuilder => {
         var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-        x.AddJsonFiles(environmentOptional: false);
-        x.AddJsonFiles(environmentName, true);
-        x.AddJsonFiles("local", true);
-        x.AddJsonFiles("mine", true);
-        x.AddEnvironmentVariables();
+        configurationBuilder.SetFiles(environmentName);
+        //configurationBuilder.AddJsonFiles(environmentOptional: false);
+        //configurationBuilder.AddJsonFiles(environmentName, true);
+        //configurationBuilder.AddJsonFiles("local", true);
+        //configurationBuilder.AddJsonFiles("mine", true);
+        //configurationBuilder.AddEnvironmentVariables();
     });
 
 // Add services to the container.
@@ -35,53 +40,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app
-    .MapGet("/", (HttpContext context, IHostEnvironment environment, IConfiguration configuration) =>
-    {
-        var name = context
-            .User?
-            .Claims
-            .FirstOrDefault(x => x.Type.Equals("Username"))
-            ?.Value
-            ?? "anonymous";
+var companyGroup = app.MapGroup("/company");
 
-        var apiName = "BullMonitor.Ticker.Api";
-
-        var assembly = builder
-            .GetType()
-            .Assembly;
-
-
-        assembly.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute));
-
-        return new[]
-        {
-                    $"Hello '{name}' from '{ apiName }'.",
-                    context?.User?.Identity?.IsAuthenticated == true
-                        ? "You are authenticated."
-                        : "You are not authenticated.",
-                    $"Your {nameof(IHostEnvironment.ApplicationName)} is {environment.ApplicationName}.",
-                    $"Your {nameof(IHostEnvironment.EnvironmentName)} is {environment.EnvironmentName}.",
-                    $"SHA: { assembly.GetGitHashFromInformationalVersion() }.",
-                };
-    });
-
-app
-    .MapGet("/company/getbyid/{id}", async (Guid id, ICompanyProvider provider, CancellationToken cancellationToken) =>
-    {
-        return await provider
-            .GetSingleOrDefault(id, cancellationToken)
-            .ConfigureAwait(false);
-    })
-    .WithName("GetById");
-
-app
-    .MapGet("/company/getbycode/{code}", async (string code, ICompanyProvider provider, CancellationToken cancellationToken) =>
-    {
-        return await provider
-            .GetSingleOrDefault(code, cancellationToken)
-            .ConfigureAwait(false);
-    })
-    .WithName("GetByCode");
+companyGroup.MapGet("/"                     , StaticProgram.Hello);
+companyGroup.MapGet("/get"                  , StaticProgram.Get);
+companyGroup.MapGet("/getknownbyzacks"      , StaticProgram.GetKnownByZacks);
+companyGroup.MapGet("/getknownbytipranks"   , StaticProgram.GetKnownByTipranks);
+companyGroup.MapGet("/getbyid/{id}"         , StaticProgram.GetById);
+companyGroup.MapGet("/getbycode/{code}"     , StaticProgram.GetByCode);
+companyGroup.MapPut("/setknownbyzacks"      , StaticProgram.SetKnownByZacks);
+companyGroup.MapPut("/setknownbytipranks"   , StaticProgram.SetKnownByTipranks);
 
 app.Run();

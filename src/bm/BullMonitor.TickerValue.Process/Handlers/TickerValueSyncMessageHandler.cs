@@ -1,8 +1,10 @@
 ﻿using BullMonitor.Data.Storage.Models;
+using BullMonitor.Ticker.Api.Abstractions.Interfaces.Providers;
+using BullMonitor.Ticker.Api.Abstractions.Responses;
 using Microsoft.Extensions.Logging;
 using SWE.Extensions.Interfaces;
 using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
-using SWE.Infrastructure.Abstractions.Models;
+using SWE.Issue.Abstractions.Messages;
 using SWE.Infrastructure.Sql.Interfaces;
 using SWE.Infrastructure.Sql.Models;
 using SWE.Process.Handlers;
@@ -16,48 +18,45 @@ namespace BullMonitor.TickerValue.Process.Handlers
         where TOut : class
     {
         protected ISender<TOut> MessageSender { get; }
-        protected ISqlProvider<TickerEntity> TickerProvider { get; }
+        protected ICompanyProvider CompanyProvider { get; }
 
         public TickerValueSyncMessageHandler(
-            IMessageSender<IssueModel> issueModelSender,
+            IMessageSender<IssueMessage> issueMessageSender,
             ISender<TOut> messageSender,
-            ISqlProvider<TickerEntity> tickerProvider,
+            ICompanyProvider companyProvider,
             IDateTimeOffsetNow dateTimeOffsetNow,
             ILogger<TickerValueSyncMessageHandler<TIn, TOut>> logger)
             : base(
-                  issueModelSender,
+                  issueMessageSender,
                   dateTimeOffsetNow,
                   logger)
         {
             MessageSender = messageSender;
-            TickerProvider = tickerProvider;
+            CompanyProvider = companyProvider;
         }
         
         public async override Task<MessageHandlingResponse> Handle(
             TIn value,
             CancellationToken cancellationToken)
         {
-            ISqlConditionContainer<TickerEntity> condition = new SqlConditionContainer<TickerEntity>();
-
             try
             {
                 await _lock
                     .WaitAsync(LockMilliSecondsTimeOut, cancellationToken)
                     .ConfigureAwait(false);
 
-                var tickers = await TickerProvider
-                    .Get(condition, cancellationToken)
+                var tickers = await GetCompanies(cancellationToken)
                     .ConfigureAwait(false);
 
                 var tickerPairs = tickers
                     .DistinctBy(x => x.Code)
-                    .Select(x => (x.Id, x.Code))
+                    .Select(x => (x.Id, x.Code, Known: GetKnown(x)))
                     .ToList();
 
-                if (tickerPairs.Count > 0)
+                if (tickerPairs.Any())
                 {
                     var sendTasks = tickerPairs
-                        .Select(tickerPair => ToSendTask(tickerPair.Id, tickerPair.Code))
+                        .Select(tickerPair => ToSendTask(tickerPair.Id, tickerPair.Code, tickerPair.Known))
                         .Select(sendTask => MessageSender.Send(sendTask, cancellationToken));
 
                     await Task.WhenAll(sendTasks).ConfigureAwait(false);
@@ -80,6 +79,11 @@ namespace BullMonitor.TickerValue.Process.Handlers
             }
         }
 
-        protected abstract TOut ToSendTask(Guid id, string code);
+        protected abstract Task<IEnumerable<CompanyListResponse>> GetCompanies(CancellationToken cancellationToken);
+
+        protected abstract TOut ToSendTask(Guid id, string code, bool? known);
+
+
+        protected abstract bool? GetKnown(CompanyListResponse value);
     }
 }

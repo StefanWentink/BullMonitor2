@@ -7,5 +7,11 @@ namespace BullMonitor.Ticker.Api.Abstractions.Interfaces.Providers
         : ISingleProvider<Guid, CompanyListResponse>
         , ISingleProvider<string, CompanyListResponse>
         , ICollectionProvider<CompanyListResponse>
-    { }
+    {
+        Task<IEnumerable<CompanyListResponse>> GetKnownByZacks(
+                CancellationToken cancellationToken);
+
+        Task<IEnumerable<CompanyListResponse>> GetKnownByTipranks(
+            CancellationToken cancellationToken);
+    }
 }

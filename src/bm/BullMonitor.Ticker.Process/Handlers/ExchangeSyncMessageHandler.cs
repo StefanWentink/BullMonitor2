@@ -3,7 +3,7 @@ using BullMonitor.Data.Storage.Models;
 using Microsoft.Extensions.Logging;
 using SWE.Extensions.Interfaces;
 using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
-using SWE.Infrastructure.Abstractions.Models;
+using SWE.Issue.Abstractions.Messages;
 using SWE.Infrastructure.Sql.Interfaces;
 using SWE.Rabbit.Abstractions.Interfaces;
 
@@ -22,13 +22,13 @@ namespace BullMonitor.Ticker.Process.Handlers
         public ExchangeSyncMessageHandler(
             ISqlProvider<ExchangeEntity> provider,
             ICollectionAndSingleCreator<ExchangeEntity> creator,
-            IMessageSender<IssueModel> issueModelSender,
+            IMessageSender<IssueMessage> issueMessageSender,
             IDateTimeOffsetNow dateTimeOffsetNow,
             ILogger<ExchangeSyncMessageHandler> logger)
             : base(
                  provider,
                  creator,
-                 issueModelSender,
+                 issueMessageSender,
                  dateTimeOffsetNow,
                  logger)
         { }

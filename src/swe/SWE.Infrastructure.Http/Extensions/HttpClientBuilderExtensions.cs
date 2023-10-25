@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
-using SWE.Issue.Abstraction.Messages;
+using SWE.Issue.Abstractions.Messages;
 using SWE.Infrastructure.Http.Configurations;
 using SWE.Infrastructure.Web.Policies;
 using SWE.Rabbit.Abstractions.Interfaces;
@@ -14,7 +14,7 @@ namespace SWE.Infrastructure.Web.Extensions
         public static IHttpClientBuilder AddPolicyHandlers(
             this IHttpClientBuilder httpClientBuilder,
             string? policySectionName,
-            IMessageSender<ExceptionMessage> exceptionMessageSender,
+            IMessageSender<IssueMessage> issueMessageSender,
             ILogger logger,
             IConfiguration configuration)
         {
@@ -25,8 +25,8 @@ namespace SWE.Infrastructure.Web.Extensions
 
             var policyWrap = Policy
                 .WrapAsync(
-                    HttpCircuitBreakerPolicies.GetHttpCircuitBreakerPolicy(exceptionMessageSender, logger, policyConfiguration, cancellationToken),
-                    HttpRetryPolicies.GetHttpRetryPolicy(exceptionMessageSender, logger, policyConfiguration, cancellationToken));
+                    HttpCircuitBreakerPolicies.GetHttpCircuitBreakerPolicy(issueMessageSender, logger, policyConfiguration, cancellationToken),
+                    HttpRetryPolicies.GetHttpRetryPolicy(issueMessageSender, logger, policyConfiguration, cancellationToken));
 
             return httpClientBuilder.AddPolicyHandler(policyWrap);
         }

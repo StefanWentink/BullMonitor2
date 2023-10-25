@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SWE.Issue.Abstraction.Messages;
+using SWE.Issue.Abstractions.Messages;
 using SWE.Rabbit.Abstractions.Interfaces;
 using SWE.Tests.Stubs;
 
@@ -33,9 +33,9 @@ namespace SWE.Infrastructure.Web.Extensions
                 string? policySectionName = null,
                 bool configurePollyPolicy = true)
         {
-            var exceptionMessageSender = services
+            var issueMessageSender = services
                 .BuildServiceProvider()
-                .GetRequiredService<IMessageSender<ExceptionMessage>>();
+                .GetRequiredService<IMessageSender<IssueMessage>>();
 
             var httpClientBuilder = services
                 .AddHttpClient(name);
@@ -45,7 +45,7 @@ namespace SWE.Infrastructure.Web.Extensions
                 httpClientBuilder
                     .AddPolicyHandlers(
                         policySectionName,
-                        exceptionMessageSender,
+                        issueMessageSender,
                         logger,
                         configuration);
             }

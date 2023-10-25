@@ -5,12 +5,12 @@ using SWE.Configuration.Factory;
 
 var builder = Host.CreateDefaultBuilder(args);
 
+
 builder
-    .ConfigureHostConfiguration(x => {
+    .ConfigureAppConfiguration(configurationBuilder =>
+    {
         var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-        x.AddJsonFiles(environmentOptional: false);
-        x.AddJsonFiles(environmentName, true);
-        x.AddEnvironmentVariables();
+        configurationBuilder.SetFiles(environmentName);
     });
 
 builder

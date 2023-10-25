@@ -2,10 +2,12 @@
 using BullMonitor.Abstractions.Requests;
 using BullMonitor.Abstractions.Responses;
 using BullMonitor.Data.Storage.Models;
+using BullMonitor.Ticker.Api.Abstractions.Interfaces.Updaters;
 using Microsoft.Extensions.Logging;
 using SWE.Extensions.Interfaces;
 using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
-using SWE.Infrastructure.Abstractions.Models;
+using SWE.Issue.Abstractions.Messages;
+using SWE.Issue.Abstractions.Messages;
 using SWE.Process.Handlers;
 using SWE.Rabbit.Abstractions.Enumerations;
 using SWE.Rabbit.Abstractions.Interfaces;
@@ -16,21 +18,24 @@ namespace BullMonitor.TickerValue.Process.Handlers
         : BaseMessageHandler<ZacksTickerSyncMessage>
     {
         protected ISingleProvider<ZacksRankRequest, ZacksRankResponse> ZacksProvider { get; }
-        protected ICollectionAndSingleUpserter<ZacksRankEntity> ZacksUpserter { get; }
+        protected ICreator<ZacksRankEntity> ZacksRankCreator { get; }
+        protected ICompanyUpdater CompanyUpdater { get; }
 
         public ZacksTickerSyncMessageHandler(
-            IMessageSender<IssueModel> issueModelSender,
+            IMessageSender<IssueMessage> issueMessageSender,
             ISingleProvider<ZacksRankRequest, ZacksRankResponse> zacksProvider,
-            ICollectionAndSingleUpserter<ZacksRankEntity> zacksUpserter,
+            ICompanyUpdater companyUpdater,
+            ICreator<ZacksRankEntity> zacksRankCreator,
             IDateTimeOffsetNow dateTimeOffsetNow,
             ILogger<ZacksTickerSyncMessageHandler> logger)
             : base(
-                  issueModelSender,
+                  issueMessageSender,
                   dateTimeOffsetNow,
                   logger)
         {
-            ZacksUpserter = zacksUpserter;
+            ZacksRankCreator = zacksRankCreator;
             ZacksProvider = zacksProvider;
+            CompanyUpdater = companyUpdater;
         }
 
         public async override Task<MessageHandlingResponse> Handle(
@@ -62,16 +67,44 @@ namespace BullMonitor.TickerValue.Process.Handlers
                                 response.Value,
                                 response.Growth,
                                 response.Momentum,
-                                response.VGM
+                                response.VGM,
+
+                                response.AveragePriceTarget,
+                                response.LowestPriceTarget,
+                                response.HighestPriceTarget,
+                                response.PriceTargetPercentage,
+
+                                response.StrongBuy,
+                                response.Buy,
+                                response.Hold,
+                                response.Sell,
+                                response.StrongSell,
+
+                                response.AverageBrokerRecommendation
                             )
                     };
 
-                    //Upsert =>
-                    await ZacksUpserter
-                       .Upsert(record, cancellationToken)
+                    var created = await ZacksRankCreator
+                       .Create(record, cancellationToken)
                        .ConfigureAwait(false);
 
-                    Logger.LogInformation($"Upserter {nameof(ZacksRankValue)}.");
+                    if (value.UpdateKnown)
+                    {
+                        var known = true;
+                        await CompanyUpdater
+                            .SetKnownByZacks(value.Code, known, cancellationToken)
+                            .ConfigureAwait(false);
+                    }
+
+                    var entityMessage = $"{nameof(ZacksRankValue)} for {nameof(ZacksRankEntity.Ticker)} '{record.Ticker}' and {nameof(ZacksRankEntity.ReferenceDate)} '{record.ReferenceDate}'";
+
+                    var createMessage = string.IsNullOrWhiteSpace(created.Ticker)
+                        ? $"{entityMessage}' already existed."
+                        : $"Created {entityMessage}'.";
+
+                    Logger
+                        .LogInformation(createMessage);
+
                     return MessageHandlingResponse.Successful;
                 }
 

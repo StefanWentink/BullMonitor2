@@ -16,7 +16,7 @@ namespace SWE.Tests.Base
         protected IConfiguration Configuration { get; }
 
         protected BaseDiTests()
-            : this(ConfigurationFactory.Create())
+            : this(ConfigurationFactory.Create().Build())
         { }
 
         protected BaseDiTests(IConfiguration configuration)

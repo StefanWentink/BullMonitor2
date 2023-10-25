@@ -41,8 +41,8 @@ namespace SWE.Rabbit.Abstractions.Handlers
             }
             catch (Exception exception)
             {
-                var exceptionMessage = $"{nameof(Handler)} threw an exception resulting in '{MessageHandlingResponse.Rejected}': {exception.Message}";
-                Logger.LogError(exception, exceptionMessage);
+                var issueMessage = $"{nameof(Handler)} threw an exception resulting in '{MessageHandlingResponse.Rejected}': {exception.Message}";
+                Logger.LogError(exception, issueMessage);
                 return MessageHandlingResponse.Rejected;
             }
         }

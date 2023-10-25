@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<PlatformTarget>x64</PlatformTarget>
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
@@ -11,10 +11,16 @@
 
 	<ItemGroup>
 	  <None Remove="appsettings.json" />
+	  <None Remove="appsettings.production.json" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Content Include="appsettings.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	  <Content Include="appsettings.production.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -33,7 +39,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\src\bm\api\BullMonitor.Ticker.Api.SDK\BullMonitor.Ticker.Api.SDK.csproj" />
-		<ProjectReference Include="..\..\..\src\swe\SWE.Issue.Abstraction\SWE.Issue.Abstraction.csproj" />
 		<ProjectReference Include="..\..\swe\SWE.Tests\SWE.Tests.csproj" />
 	</ItemGroup>
 

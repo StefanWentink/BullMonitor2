@@ -1,4 +1,4 @@
-﻿using SWE.Process.Models;
+﻿using SWE.Process.Configurations;
 
 namespace SWE.Process.Interfaces
 {

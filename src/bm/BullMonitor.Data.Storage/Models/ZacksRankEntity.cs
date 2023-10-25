@@ -5,23 +5,10 @@ using SWE.Time.Extensions;
 
 namespace BullMonitor.Data.Storage.Models
 {
-    //public record struct ZacksRankEntity(
-    //        Guid TickerId,
-    //        DateTimeOffset ReferenceDate,
-    //        int Rank,
-    //        int Value,
-    //        int Growth,
-    //        int Momentum,
-    //        int VGM)
-    //    : ITickerValue
-    //{ }
-
     public class ZacksRankEntity
     {
         private DateTimeOffset? _referenceDate = null;
 
-        //[BsonGuidRepresentation(GuidRepresentation.Standard)]
-        //public Guid Id { get; set; }
         public string Ticker { get; set; }
 
         public ZacksRankEntity(string ticker)
@@ -29,7 +16,10 @@ namespace BullMonitor.Data.Storage.Models
             Ticker = ticker;
         }
 
-        public ZacksRankValue Value { get; set; } = new ZacksRankValue(3, 3, 3, 3, 3);
+        public ZacksRankValue Value { get; set; } = new ZacksRankValue(
+            3, 3, 3, 3, 3,
+            0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0);
 
         /// <summary>
         /// Is the Presentation field... use <see cref="ReferenceDateDb"/> for db filtering.
@@ -60,31 +50,65 @@ namespace BullMonitor.Data.Storage.Models
             int value,
             int growth,
             int momentum,
-            int vGM)
+            int vGM,
+
+            decimal averagePriceTarget,
+            decimal lowestPriceTarget,
+            decimal highestPriceTarget,
+            decimal percentagePriceTarget,
+
+            int strongBuy,
+            int buy,
+            int hold,
+            int sell,
+            int strongSell,
+
+            decimal averageBrokerRecommendation)
         {
             Rank = rank;
             Value = value;
             Growth = growth;
             Momentum = momentum;
             VGM = vGM;
+
+            AveragePriceTarget = averagePriceTarget;
+            LowestPriceTarget = lowestPriceTarget;
+            HighestPriceTarget = highestPriceTarget;
+            PercentagePriceTarget = percentagePriceTarget;
+
+            StrongBuy = strongBuy;
+            Buy = buy;
+            Hold = hold;
+            Sell = sell;
+            StrongSell = strongSell;
+
+            AverageBrokerRecommendation = averageBrokerRecommendation;
         }
 
-        //[BsonIgnoreIfNull]
         public int Rank { get; set; }
-        //[BsonIgnoreIfNull]
         public int Value { get; set; }
-        //[BsonIgnoreIfNull]
         public int Growth { get; set; }
-        //[BsonIgnoreIfNull]
         public int Momentum { get; set; }
-        //[BsonIgnoreIfNull]
         public int VGM { get; set; }
+
+        public decimal AveragePriceTarget { get; set; }
+        public decimal LowestPriceTarget { get; set; }
+        public decimal HighestPriceTarget { get; set; }
+        public decimal PercentagePriceTarget { get; set; }
+
+
+        public int StrongBuy { get; set; }
+        public int Buy { get; set; }
+        public int Hold { get; set; }
+        public int Sell { get; set; }
+        public int StrongSell { get; set; }
+
+        public decimal AverageBrokerRecommendation { get; set; }
     }
 
     public class ZacksRankMeta
     {
         public Guid Id { get; set; }
-        //[BsonIgnoreIfNull]
-        public string Ticker { get; set; }
+        public string Ticker { get; set; } = string.Empty;
     }
 }

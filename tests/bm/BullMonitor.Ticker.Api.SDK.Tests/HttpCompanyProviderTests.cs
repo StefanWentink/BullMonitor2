@@ -7,7 +7,7 @@ using BullMonitor.Ticker.Api.SDK.Extensions;
 using Xunit;
 using Moq;
 using SWE.Rabbit.Abstractions.Interfaces;
-using SWE.Issue.Abstraction.Messages;
+using SWE.Issue.Abstractions.Messages;
 using SWE.Rabbit.Abstractions.Messages;
 
 namespace BullMonitor.Ticker.Api.SDK.Tests
@@ -27,19 +27,19 @@ namespace BullMonitor.Ticker.Api.SDK.Tests
         //    }
         //};
 
-        private static Mock<IMessageSender<ExceptionMessage>> _exceptionSenderMock = CreateExceptionSenderMock();
+        private static Mock<IMessageSender<IssueMessage>> _exceptionSenderMock = CreateExceptionSenderMock();
 
-        private static Mock<IMessageSender<ExceptionMessage>> CreateExceptionSenderMock()
+        private static Mock<IMessageSender<IssueMessage>> CreateExceptionSenderMock()
         {
-            var mock = new Mock<IMessageSender<ExceptionMessage>>();
+            var mock = new Mock<IMessageSender<IssueMessage>>();
 
             mock
-                .Setup(x => x.Send(It.IsAny<ExceptionMessage>(), It.IsAny<CancellationToken>()))
+                .Setup(x => x.Send(It.IsAny<IssueMessage>(), It.IsAny<CancellationToken>()))
                 .Returns(() => Task.CompletedTask)
                 .Verifiable();
 
             mock
-                .Setup(x => x.Send(It.IsAny<RoutingMessage<ExceptionMessage>>(), It.IsAny<CancellationToken>()))
+                .Setup(x => x.Send(It.IsAny<RoutingMessage<IssueMessage>>(), It.IsAny<CancellationToken>()))
                 .Returns(() => Task.CompletedTask)
                 .Verifiable();
 

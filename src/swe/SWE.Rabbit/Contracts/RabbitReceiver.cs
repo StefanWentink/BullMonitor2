@@ -7,10 +7,11 @@ using System.Text;
 using System.Text.Json;
 using SWE.Extensions.Interfaces;
 using SWE.Rabbit.Abstractions.Interfaces;
-using SWE.Infrastructure.Abstractions.Models;
+using SWE.Issue.Abstractions.Messages;
 using SWE.Rabbit.Abstractions.Enumerations;
 using SWE.Rabbit.Abstractions.Messages;
 using SWE.Infrastructure.Abstractions.Factories;
+using SWE.Issue.Abstractions.Enumerations;
 
 namespace SWE.RabbitMq.Contracts
 {
@@ -19,12 +20,12 @@ namespace SWE.RabbitMq.Contracts
         , IMessageReceiver<T>
     {
         protected IMessageHandler<T> Handler { get; }
-        protected IMessageSender<IssueModel> IssueSender { get; }
+        protected IMessageSender<IssueMessage> IssueSender { get; }
         protected IDateTimeOffsetNow DateTimeOffsetNow { get; }
 
         public RabbitReceiver(
             IMessageHandler<T> handler,
-            IMessageSender<IssueModel> issueSender,
+            IMessageSender<IssueMessage> issueSender,
             IDateTimeOffsetNow dateTimeOffsetNow,
             IRabbitConfiguration configuration,
             ILogger<RabbitReceiver<T>> logger)
@@ -111,6 +112,7 @@ namespace SWE.RabbitMq.Contracts
                     $"{typeof(T)} was undeliverable.",
                     message,
                     LogLevel.Critical,
+                    IssueClassification.UnDeliverable,
                     cancellationToken)
                 .ConfigureAwait(false);
         }
@@ -121,6 +123,7 @@ namespace SWE.RabbitMq.Contracts
                     $"{typeof(T)} was redelivered but not acknowledged.",
                     message,
                     LogLevel.Warning,
+                    IssueClassification.UnDeliverable,
                     cancellationToken)
                 .ConfigureAwait(false);
         }
@@ -129,18 +132,20 @@ namespace SWE.RabbitMq.Contracts
             string description,
             string message,
             LogLevel logLevel,
+            IssueClassification classification,
             CancellationToken cancellationToken)
         {
-            var issueModel = new IssueModel(
+            var issueMessage = new IssueMessage(
                 GetType().Name,
                 logLevel,
                 description,
+                classification,
                 DateTimeOffsetNow.Now,
                 message);
 
-            var routingMessage = new RoutingMessage<IssueModel>(
+            var routingMessage = new RoutingMessage<IssueMessage>(
                 logLevel.ToString(),
-                issueModel);
+                issueMessage);
 
             await IssueSender
                 .Send(

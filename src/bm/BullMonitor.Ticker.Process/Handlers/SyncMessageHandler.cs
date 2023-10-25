@@ -3,7 +3,7 @@ using BullMonitor.Data.Storage.Models;
 using Microsoft.Extensions.Logging;
 using SWE.Extensions.Interfaces;
 using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
-using SWE.Infrastructure.Abstractions.Models;
+using SWE.Issue.Abstractions.Messages;
 using SWE.Infrastructure.Sql.Interfaces;
 using SWE.Infrastructure.Sql.Models;
 using SWE.Process.Handlers;
@@ -23,11 +23,11 @@ namespace BullMonitor.Ticker.Process.Handlers
         protected SyncMessageHandler(
             ISqlProvider<T> provider,
             ICollectionAndSingleCreator<T> creator,
-            IMessageSender<IssueModel> issueModelSender,
+            IMessageSender<IssueMessage> issueMessageSender,
             IDateTimeOffsetNow dateTimeOffsetNow,
             ILogger<SyncMessageHandler<TMessage, T, TKey>> logger)
             : base(
-                  issueModelSender,
+                  issueMessageSender,
                   dateTimeOffsetNow,
                   logger)
         {

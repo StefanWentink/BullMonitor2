@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using SWE.Issue.Abstraction.Extensions;
+using SWE.Issue.Abstractions.Extensions;
 using Polly;
 using Polly.CircuitBreaker;
-using SWE.Issue.Abstraction.Enumerations;
-using SWE.Issue.Abstraction.Messages;
+using SWE.Issue.Abstractions.Enumerations;
+using SWE.Issue.Abstractions.Messages;
 using SWE.Infrastructure.Http.Interfaces;
 using System.Net;
 using SWE.Rabbit.Abstractions.Interfaces;
@@ -22,7 +22,7 @@ namespace SWE.Infrastructure.Web.Policies
         };
 
         public static IAsyncPolicy<HttpResponseMessage> GetHttpCircuitBreakerPolicy(
-            IMessageSender<ExceptionMessage> exceptionMessageSender,
+            IMessageSender<IssueMessage> issueMessageSender,
             ILogger logger,
             ICircuitBreakerPolicyConfiguration circuitBreakerPolicyConfiguration,
             CancellationToken cancellationToken)
@@ -32,8 +32,8 @@ namespace SWE.Infrastructure.Web.Policies
                 SendIssue(
                     LogLevel.Warning,
                     $".CircuitBreaker; Breaking the circuit for {retryCount.TotalMilliseconds} ms; {response.Result?.ReasonPhrase}; Exception: {response.Exception?.Message}",
-                    ExceptionClassification.UnDeliverable,
-                    exceptionMessageSender,
+                    IssueClassification.UnDeliverable,
+                    issueMessageSender,
                     cancellationToken);
             };
 
@@ -42,8 +42,8 @@ namespace SWE.Infrastructure.Web.Policies
                 SendIssue(
                     LogLevel.Warning,
                     $".CircuitBreaker; Call ok! Closed the circuit again!",
-                    ExceptionClassification.UnDeliverable,
-                    exceptionMessageSender,
+                    IssueClassification.UnDeliverable,
+                    issueMessageSender,
                     cancellationToken);
             };
 
@@ -52,15 +52,15 @@ namespace SWE.Infrastructure.Web.Policies
                 SendIssue(
                     LogLevel.Warning,
                     $".CircuitBreaker; Half-open: Next call is a trial!",
-                    ExceptionClassification.UnDeliverable,
-                    exceptionMessageSender,
+                    IssueClassification.UnDeliverable,
+                    issueMessageSender,
                     cancellationToken);
             };
 
             return Policy
                 .Handle<System.Exception>(exception =>
                 {
-                    SendExceptionIssue(exception, exceptionMessageSender, logger, cancellationToken);
+                    SendExceptionIssue(exception, issueMessageSender, logger, cancellationToken);
 
                     return exception is not BrokenCircuitException;
                 })
@@ -79,8 +79,8 @@ namespace SWE.Infrastructure.Web.Policies
                         SendIssue(
                             LogLevel.Warning,
                             message,
-                            ExceptionClassification.UnDeliverable,
-                            exceptionMessageSender,
+                            IssueClassification.UnDeliverable,
+                            issueMessageSender,
                             cancellationToken);
 
                         logger.LogError($"{typeof(HttpResponseMessage).Name} => {httpResponseMessage.StatusCode}: {httpResponseMessage.ReasonPhrase}: {httpResponseMessage.RequestMessage.Method}: {httpResponseMessage.RequestMessage.RequestUri}");
@@ -92,8 +92,8 @@ namespace SWE.Infrastructure.Web.Policies
                         SendIssue(
                             LogLevel.Warning,
                             $"{typeof(HttpResponseMessage).Name} => {httpResponseMessage.StatusCode}: {httpResponseMessage.ReasonPhrase}.{Environment.NewLine}{httpResponseMessage.Content}",
-                            ExceptionClassification.UnDeliverable,
-                            exceptionMessageSender,
+                            IssueClassification.UnDeliverable,
+                            issueMessageSender,
                             cancellationToken);
 
 #if DEBUG
@@ -102,8 +102,8 @@ namespace SWE.Infrastructure.Web.Policies
                         SendIssue(
                             LogLevel.Warning,
                             $"{nameof(requestContent)} => {requestContent} {Environment.NewLine} {nameof(responseContent)} => {responseContent}",
-                            ExceptionClassification.UnDeliverable,
-                            exceptionMessageSender,
+                            IssueClassification.UnDeliverable,
+                            issueMessageSender,
                             cancellationToken);
 
                         logger.LogError($"{nameof(requestContent)} => {requestContent}");
@@ -122,11 +122,11 @@ namespace SWE.Infrastructure.Web.Policies
         }
 
         protected static void SendIssue(
-            ExceptionMessage message,
-            IMessageSender<ExceptionMessage> ExceptionMessageSender,
+            IssueMessage message,
+            IMessageSender<IssueMessage> IssueMessageSender,
             CancellationToken cancellationToken)
         {
-            ExceptionMessageSender
+            IssueMessageSender
                 .Send(message.ToRoutingMessage(), cancellationToken)
                 .GetAwaiter()
                 .GetResult();
@@ -135,36 +135,36 @@ namespace SWE.Infrastructure.Web.Policies
         protected static void SendIssue(
             LogLevel logLevel,
             string description,
-            ExceptionClassification classification,
-            IMessageSender<ExceptionMessage> ExceptionMessageSender,
+            IssueClassification classification,
+            IMessageSender<IssueMessage> IssueMessageSender,
             CancellationToken cancellationToken)
         {
-            var message = new ExceptionMessage(
+            var message = new IssueMessage(
                 nameof(GetHttpCircuitBreakerPolicy),
                 logLevel,
                 description,
                 classification,
                 DateTimeOffset.Now);
 
-            SendIssue(message, ExceptionMessageSender, cancellationToken);
+            SendIssue(message, IssueMessageSender, cancellationToken);
         }
 
         protected static void SendExceptionIssue(
             System.Exception exception,
-            IMessageSender<ExceptionMessage> ExceptionMessageSender,
+            IMessageSender<IssueMessage> IssueMessageSender,
             ILogger logger,
             CancellationToken cancellationToken)
         {
             logger.LogError(exception, exception.Message);
 
-            var message = new ExceptionMessage(
+            var message = new IssueMessage(
                 nameof(GetHttpCircuitBreakerPolicy),
                 LogLevel.Error,
                 exception.Message,
-                ExceptionClassification.Exception,
+                IssueClassification.Exception,
                 DateTimeOffset.Now);
 
-            SendIssue(message, ExceptionMessageSender, cancellationToken);
+            SendIssue(message, IssueMessageSender, cancellationToken);
         }
     }
 }

@@ -1,18 +1,21 @@
-﻿using BullMonitor.Data.Sql.Extensions;
+﻿using BullMonitor.Data.Mongo.Extensions;
+using BullMonitor.Data.Sql.Extensions;
+using BullMonitor.DataMine.Extensions;
 using BullMonitor.TickerValue.Handlers.Extensions;
 using BullMonitor.TickerValue.Process.Extensions;
+using BullMonitor.Ticker.Api.SDK.Extensions;
 using SWE.Configuration.Factory;
+using BullMonitor.Ticker.Api.Abstractions.Interfaces.Updaters;
+using BullMonitor.Ticker.Api.SDK.Interfaces;
+using BullMonitor.Ticker.Api.Abstractions.Interfaces.Providers;
 
-//var builder = WebApplication.CreateBuilder(args);
-//var app = builder.Build();
 var builder = Host.CreateDefaultBuilder(args);
 
 builder
-    .ConfigureHostConfiguration(x => {
+    .ConfigureAppConfiguration(configurationBuilder =>
+    {
         var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-        x.AddJsonFiles(environmentOptional: false);
-        x.AddJsonFiles(environmentName, true);
-        x.AddEnvironmentVariables();
+        configurationBuilder.SetFiles(environmentName);
     });
 
 builder
@@ -20,29 +23,17 @@ builder
     {
         services
             .WithBullMonitorTickerValueProcessServices(hostContext.Configuration)
-            .WithBullMonitorSqlServices(hostContext.Configuration)
             .WithBullMonitorTickerValueHandlerServices(hostContext.Configuration)
+            .WithBullMonitorSqlServices(hostContext.Configuration)
+            .WithBullMonitorDataMineServices(hostContext.Configuration)
+            .WithBullMonitorMongoServices(hostContext.Configuration)
+
+            .WithBullMonitorTickerApiSdkServices(hostContext.Configuration)
+            .AddSingleton<ICompanyProvider>(x => x.GetRequiredService<IHttpCompanyProvider>())
+            .AddSingleton<ICompanyUpdater>(x => x.GetRequiredService<IHttpCompanyUpdater>())
         ;
     });
 
-//builder.Services.AddControllers();
-//// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
-
-//// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
-
-//app.UseHttpsRedirection();
-
-//app.UseAuthorization();
-
-//app.MapControllers();
 
 app.Run();

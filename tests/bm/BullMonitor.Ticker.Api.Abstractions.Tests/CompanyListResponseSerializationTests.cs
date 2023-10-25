@@ -16,7 +16,9 @@ namespace BullMonitor.Ticker.Api.Abstractions.Tests
             "Microsoft Corporation Common Stock",
             Guid.Parse("1c37ae84-7878-4af0-fc9a-08dbb84c7b54"),
             Guid.Parse("6c9465a0-aa4a-4d5f-319e-08dbb84c9b94"),
-            Guid.Parse("2d1e1a73-7a18-400c-ae9e-08dbb84d98fd"));
+            Guid.Parse("2d1e1a73-7a18-400c-ae9e-08dbb84d98fd"),
+            true,
+            null);
 
         [Fact]
         public void CompanyListResponse_Should_Serialize()

@@ -3,10 +3,12 @@
     public  record ZacksTickerSyncMessage(
         Guid TickerId,
         string Code,
-        DateTimeOffset ReferenceDate)
+        DateTimeOffset ReferenceDate,
+        bool UpdateKnown)
         : TickerValueSyncMessage(
             TickerId,
             Code,
-            ReferenceDate)
+            ReferenceDate,
+            UpdateKnown)
     { }
 }

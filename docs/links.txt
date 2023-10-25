@@ -1,0 +1,2 @@
+setup sql for docker
+https://amberpos.zendesk.com/hc/en-us/articles/215978723-How-to-find-your-database-IP-address-and-SQL-port

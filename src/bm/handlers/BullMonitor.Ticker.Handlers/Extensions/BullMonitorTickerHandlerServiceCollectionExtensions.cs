@@ -3,9 +3,9 @@ using BullMonitor.Ticker.Process.Handlers;
 using SWE.Configuration.Extensions;
 using SWE.Extensions.Interfaces;
 using SWE.Extensions.Models;
-using SWE.Infrastructure.Abstractions.Models;
+using SWE.Issue.Abstractions.Messages;
 using SWE.Process.Interfaces;
-using SWE.Process.Models;
+using SWE.Process.Configurations;
 using SWE.Rabbit.Extensions;
 using SWE.Rabbit.Receiver;
 
@@ -21,7 +21,7 @@ namespace BullMonitor.Ticker.Handlers.Extensions
                 .AddSingleton<IDateTimeOffsetNow, DateTimeOffsetNow>()
                 .WithInfrastructureRabbitMqServices(configuration)
                 .AddSingletonConfiguration<ICronProcessConfiguration, CronProcessConfiguration>(configuration)
-                .WithRabbitMqSender<IssueModel>()
+                .WithRabbitMqSender<IssueMessage>()
 
                 //.WithRabbitMqSender<ExchangeSyncMessage>()
                 .WithRabbitMqReceiver<ExchangeSyncMessage, ExchangeSyncMessageHandler>(configuration)

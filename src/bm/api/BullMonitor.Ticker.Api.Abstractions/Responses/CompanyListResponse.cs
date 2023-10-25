@@ -6,6 +6,8 @@
         string Name,
         Guid CurrencyId,
         Guid ExchangeId,
-        Guid IndustryId)
+        Guid IndustryId,
+        bool? KnownByZacks,
+        bool? KnownByTipranks)
     { }
 }

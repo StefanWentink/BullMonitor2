@@ -1,21 +1,15 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.VisualBasic;
 using MoreLinq.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SWE.Configuration.Factory
 {
     public static class ConfigurationFactory
     {
-        public static IConfigurationRoot Create(
-            string? environment = null,
+        public static IConfigurationBuilder Create(
+            string? environmentName = null,
             string? basePath = null,
-            bool environmentOptional = false // guarding there is an environment config by default, just in case
-        )
+            bool environmentOptional = false) // guarding there is an environment config by default, just in case
         {
             if (basePath == null)
             {
@@ -26,22 +20,33 @@ namespace SWE.Configuration.Factory
                 basePath = Directory.GetCurrentDirectory() + "/PackageRoot/Config/";
             }
 
-            if (environment?.Contains("dev", StringComparison.OrdinalIgnoreCase) == true)
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(basePath)
+                .SetFiles(environmentName, environmentOptional);
+
+
+            return builder;
+        }
+
+        public static IConfigurationBuilder SetFiles(
+            this IConfigurationBuilder configurationBuilder,
+            string? environmentName = null,
+            bool environmentOptional = false) // guarding there is an environment config by default, just in case
+        {
+            Environment.SetEnvironmentVariable("RunEnvironment", environmentName ?? "local");
+
+            if (environmentName?.Contains("dev", StringComparison.OrdinalIgnoreCase) == true)
             {
                 environmentOptional = true;
             }
 
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(basePath)
-                .AddJsonFiles(environment, environmentOptional)
-                .AddJsonFiles("local", environmentOptional)
-                .AddJsonFiles("mine", environmentOptional)
-                .AddJsonFiles(environment, environmentOptional: true, infix: "-overrides");
+            configurationBuilder
+                .AddJsonFiles(environmentName, environmentOptional);
 
-            Environment.SetEnvironmentVariable("RunEnvironment", environment ?? "local");
+            //Environment.SetEnvironmentVariable("RunEnvironment", environmentName ?? "local");
 
 #if DEBUG
-            builder
+            configurationBuilder
                 .Sources
                 .Where(source => source is FileConfigurationSource _)
                 .Select(source => source as FileConfigurationSource)
@@ -51,7 +56,7 @@ namespace SWE.Configuration.Factory
                 .ForEach(path => Console.Write($"Configuration loaded: {path}.{Environment.NewLine}"));
 #endif
 
-            return builder.Build();
+            return configurationBuilder;
         }
 
         public static IConfigurationBuilder AddJsonFiles(
