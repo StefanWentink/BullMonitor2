@@ -12,8 +12,8 @@ using BullMonitor.Abstractions.Utilities;
 
 namespace BullMonitor.DataMine.Providers
 {
-    public class ZacksRankRawProvider
-        : ISingleProvider<ZacksRankRequest, string?>
+    public class ZacksRawProvider
+        : ISingleProvider<ZacksRequest, string?>
     {        // Set the URL
         private static string _url = "https://www.zacks.com/stock/research/";
 
@@ -23,18 +23,18 @@ namespace BullMonitor.DataMine.Providers
              .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
 
         protected IHttpClientFactory ClientFactory { get; }
-        protected ILogger<ZacksRankRawProvider> Logger { get; }
+        protected ILogger<ZacksRawProvider> Logger { get; }
 
-        public ZacksRankRawProvider(
+        public ZacksRawProvider(
             IHttpClientFactory clientFactory,
-            ILogger<ZacksRankRawProvider> logger)
+            ILogger<ZacksRawProvider> logger)
         {
             ClientFactory = clientFactory;
             Logger = logger;
         }
 
         public async Task<string?> GetSingleOrDefault(
-            ZacksRankRequest value,
+            ZacksRequest value,
             CancellationToken cancellationToken)
         {
             try

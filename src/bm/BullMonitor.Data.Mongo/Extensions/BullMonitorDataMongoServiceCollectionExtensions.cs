@@ -16,26 +16,46 @@ namespace BullMonitor.Data.Mongo.Extensions
             IConfiguration configuration)
         {
             return serviceCollection
-                .WithBullMonitorZacksRankConnectorServices(configuration)
+                .WithBullMonitorZacksConnectorServices(configuration)
+                .WithBullMonitorTipRanksConnectorServices(configuration)
                 ;
         }
 
-        internal static IServiceCollection WithBullMonitorZacksRankConnectorServices(
+        internal static IServiceCollection WithBullMonitorZacksConnectorServices(
             this IServiceCollection serviceCollection,
             IConfiguration configuration)
         {
             return serviceCollection
 
-                .AddSingleton<IZacksRankConnector, ZacksRankConnector>()
-                .AddSingleton<IUpserter<ZacksRankEntity>>(x => x.GetRequiredService<IZacksRankConnector>())
-                .AddSingleton<ICreator<ZacksRankEntity>>(x => x.GetRequiredService<IZacksRankConnector>())
-                .AddSingleton<ISingleProvider<(string ticker, DateTimeOffset referenceDate), ZacksRankEntity>>(x => x.GetRequiredService<IZacksRankConnector>())
+                .AddSingleton<IZacksConnector, ZacksConnector>()
+                .AddSingleton<IUpserter<ZacksEntity>>(x => x.GetRequiredService<IZacksConnector>())
+                .AddSingleton<ICreator<ZacksEntity>>(x => x.GetRequiredService<IZacksConnector>())
+                .AddSingleton<ISingleProvider<(string ticker, DateTimeOffset referenceDate), ZacksEntity>>(x => x.GetRequiredService<IZacksConnector>())
 
-                .AddSingleton<IBaseMongoConnector<ZacksRankEntity>, ZacksRankMongoConnector>()
-                .AddSingleton<IProvider<IMongoConditionContainer<ZacksRankEntity>, ZacksRankEntity>>(x => x.GetRequiredService<IBaseMongoConnector<ZacksRankEntity>>())
-                .AddSingleton<ICollectionAndSingleUpserter<ZacksRankEntity>>(x => x.GetRequiredService<IBaseMongoConnector<ZacksRankEntity>>())
-                .AddSingleton<ICollectionAndSingleUpdater<ZacksRankEntity>>(x => x.GetRequiredService<IBaseMongoConnector<ZacksRankEntity>>())
-                .AddSingleton<ICollectionAndSingleCreator<ZacksRankEntity>>(x => x.GetRequiredService<IBaseMongoConnector<ZacksRankEntity>>())
+                .AddSingleton<IBaseMongoConnector<ZacksEntity>, ZacksMongoConnector>()
+                .AddSingleton<IProvider<IMongoConditionContainer<ZacksEntity>, ZacksEntity>>(x => x.GetRequiredService<IBaseMongoConnector<ZacksEntity>>())
+                .AddSingleton<ICollectionAndSingleUpserter<ZacksEntity>>(x => x.GetRequiredService<IBaseMongoConnector<ZacksEntity>>())
+                .AddSingleton<ICollectionAndSingleUpdater<ZacksEntity>>(x => x.GetRequiredService<IBaseMongoConnector<ZacksEntity>>())
+                .AddSingleton<ICollectionAndSingleCreator<ZacksEntity>>(x => x.GetRequiredService<IBaseMongoConnector<ZacksEntity>>())
+                ; 
+        }
+
+        internal static IServiceCollection WithBullMonitorTipRanksConnectorServices(
+            this IServiceCollection serviceCollection,
+            IConfiguration configuration)
+        {
+            return serviceCollection
+
+                .AddSingleton<ITipRanksConnector, TipRanksConnector>()
+                .AddSingleton<IUpserter<TipRanksEntity>>(x => x.GetRequiredService<ITipRanksConnector>())
+                .AddSingleton<ICreator<TipRanksEntity>>(x => x.GetRequiredService<ITipRanksConnector>())
+                .AddSingleton<ISingleProvider<(string ticker, DateTimeOffset referenceDate), TipRanksEntity>>(x => x.GetRequiredService<ITipRanksConnector>())
+
+                .AddSingleton<IBaseMongoConnector<TipRanksEntity>, TipRanksMongoConnector>()
+                .AddSingleton<IProvider<IMongoConditionContainer<TipRanksEntity>, TipRanksEntity>>(x => x.GetRequiredService<IBaseMongoConnector<TipRanksEntity>>())
+                .AddSingleton<ICollectionAndSingleUpserter<TipRanksEntity>>(x => x.GetRequiredService<IBaseMongoConnector<TipRanksEntity>>())
+                .AddSingleton<ICollectionAndSingleUpdater<TipRanksEntity>>(x => x.GetRequiredService<IBaseMongoConnector<TipRanksEntity>>())
+                .AddSingleton<ICollectionAndSingleCreator<TipRanksEntity>>(x => x.GetRequiredService<IBaseMongoConnector<TipRanksEntity>>())
                 ; 
         }
     }

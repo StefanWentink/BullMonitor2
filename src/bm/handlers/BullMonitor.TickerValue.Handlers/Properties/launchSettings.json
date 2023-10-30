@@ -28,9 +28,12 @@
       },
       "applicationUrl": "https://localhost:57827;http://localhost:57828",
       "publishAllPorts": true,
+      "httpPort": 57828,
+      "sslPort": 57827,
       "useSSL": true
     }
   },
+
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,

@@ -11,7 +11,7 @@ namespace BullMonitor.Data.Sql.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
-                name: "KnownByTipranks",
+                name: "KnownByTipRanks",
                 table: "Ticker",
                 type: "bit",
                 nullable: true);
@@ -27,7 +27,7 @@ namespace BullMonitor.Data.Sql.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "KnownByTipranks",
+                name: "KnownByTipRanks",
                 table: "Ticker");
 
             migrationBuilder.DropColumn(

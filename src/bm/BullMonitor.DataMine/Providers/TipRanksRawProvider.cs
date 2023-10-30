@@ -1,11 +1,8 @@
 ﻿using BullMonitor.Abstractions.Requests;
-using BullMonitor.Abstractions.Responses;
 using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
 using Polly;
 using Polly.Extensions.Http;
-using System.Text.Json;
 using Microsoft.Extensions.Logging;
-using System;
 using BullMonitor.Abstractions.Utilities;
 
 namespace BullMonitor.DataMine.Providers
@@ -14,7 +11,7 @@ namespace BullMonitor.DataMine.Providers
         : ISingleProvider<TipRanksRequest, string?>
     {
         // Set the URL
-        private static string _url = "https://www.tipranks.com/api/stocks/getData/";
+        private static string _url = "https://www.tipRanks.com/api/stocks/getData/";
 
         private static IAsyncPolicy<HttpResponseMessage> _retryPolicy = HttpPolicyExtensions
              .HandleTransientHttpError()

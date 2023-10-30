@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace BullMonitor.Abstractions.Requests
+﻿namespace BullMonitor.Abstractions.Requests
 {
     public record TipRanksRequest(
             DateTimeOffset From,

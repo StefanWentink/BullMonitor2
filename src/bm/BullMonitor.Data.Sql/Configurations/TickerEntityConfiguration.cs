@@ -55,7 +55,7 @@
             //    .HasForeignKey(x => x.TickerId);
 
             //builder
-            //    .HasMany(x => x.ZacksRanks)
+            //    .HasMany(x => x.Zacks)
             //    .WithOne(x => x.Ticker)
             //    .HasForeignKey(x => x.TickerId);
 

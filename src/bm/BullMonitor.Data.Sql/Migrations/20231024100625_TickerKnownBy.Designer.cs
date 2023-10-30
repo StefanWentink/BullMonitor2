@@ -146,7 +146,7 @@ namespace BullMonitor.Data.Sql.Migrations
                     b.Property<Guid>("IndustryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool?>("KnownByTipranks")
+                    b.Property<bool?>("KnownByTipRanks")
                         .HasColumnType("bit");
 
                     b.Property<bool?>("KnownByZacks")

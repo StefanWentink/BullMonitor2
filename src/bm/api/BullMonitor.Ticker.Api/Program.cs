@@ -45,10 +45,10 @@ var companyGroup = app.MapGroup("/company");
 companyGroup.MapGet("/"                     , StaticProgram.Hello);
 companyGroup.MapGet("/get"                  , StaticProgram.Get);
 companyGroup.MapGet("/getknownbyzacks"      , StaticProgram.GetKnownByZacks);
-companyGroup.MapGet("/getknownbytipranks"   , StaticProgram.GetKnownByTipranks);
+companyGroup.MapGet("/getknownbytipRanks"   , StaticProgram.GetKnownByTipRanks);
 companyGroup.MapGet("/getbyid/{id}"         , StaticProgram.GetById);
 companyGroup.MapGet("/getbycode/{code}"     , StaticProgram.GetByCode);
 companyGroup.MapPut("/setknownbyzacks"      , StaticProgram.SetKnownByZacks);
-companyGroup.MapPut("/setknownbytipranks"   , StaticProgram.SetKnownByTipranks);
+companyGroup.MapPut("/setknownbytipRanks"   , StaticProgram.SetKnownByTipRanks);
 
 app.Run();

@@ -23,16 +23,35 @@ namespace BullMonitor.TickerValue.Handlers.Extensions
                 .AddSingletonConfiguration<ICronProcessConfiguration, CronProcessConfiguration>(configuration)
                 .WithRabbitMqSender<IssueMessage>()
 
-                //.WithRabbitMqSender<ZacksSyncMessage>()
+                .WithBullMonitorTickerValueZacksHandlerServices(configuration)
+
+                .WithBullMonitorTickerValueTipRanksHandlerServices(configuration)
+                ;
+        }
+
+        internal static IServiceCollection WithBullMonitorTickerValueZacksHandlerServices(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            return services
                 .WithRabbitMqReceiver<ZacksSyncMessage, ZacksSyncMessageHandler>(configuration)
                 .AddHostedService<RabbitService<ZacksSyncMessage>>()
 
                 .WithRabbitMqReceiver<ZacksTickerSyncMessage, ZacksTickerSyncMessageHandler>(configuration)
                 .AddHostedService<RabbitService<ZacksTickerSyncMessage>>()
+                ;
+        }
 
-                //.WithRabbitMqSender<TipRanksSyncMessage>()
-                //.WithRabbitMqReceiver<TipRanksSyncMessage, TipRanksSyncMessageHandler>(configuration)
-                //.AddHostedService<RabbitService<TipRanksSyncMessage>>()
+        internal static IServiceCollection WithBullMonitorTickerValueTipRanksHandlerServices(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            return services
+                .WithRabbitMqReceiver<TipRanksSyncMessage, TipRanksSyncMessageHandler>(configuration)
+                .AddHostedService<RabbitService<TipRanksSyncMessage>>()
+
+                .WithRabbitMqReceiver<TipRanksTickerSyncMessage, TipRanksTickerSyncMessageHandler>(configuration)
+                .AddHostedService<RabbitService<TipRanksTickerSyncMessage>>()
                 ;
         }
     }

@@ -15,7 +15,7 @@ namespace BullMonitor.Abstractions.Tests
         [InlineData(1, 1, 5, 5, 5, 84)]
         [InlineData(1, 5, 5, 5, 5, 80)]
         [InlineData(5, 5, 5, 5, 5, 0)]
-        public void GetScore_Should_Calculate_Score_With_ZacksRank(
+        public void GetScore_Should_Calculate_Score_With_Zacks(
             int rank,
             int value,
             int growth,

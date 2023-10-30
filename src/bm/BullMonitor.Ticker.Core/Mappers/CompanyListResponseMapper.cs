@@ -19,7 +19,7 @@ namespace BullMonitor.Ticker.Core.Mappers
                 value.ExchangeId,
                 value.IndustryId,
                 value.KnownByZacks,
-                value.KnownByTipranks);
+                value.KnownByTipRanks);
 
             return Task.FromResult( response );
         }

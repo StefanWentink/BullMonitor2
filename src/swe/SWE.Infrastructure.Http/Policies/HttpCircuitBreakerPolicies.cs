@@ -58,7 +58,7 @@ namespace SWE.Infrastructure.Web.Policies
             };
 
             return Policy
-                .Handle<System.Exception>(exception =>
+                .Handle<Exception>(exception =>
                 {
                     SendExceptionIssue(exception, issueMessageSender, logger, cancellationToken);
 

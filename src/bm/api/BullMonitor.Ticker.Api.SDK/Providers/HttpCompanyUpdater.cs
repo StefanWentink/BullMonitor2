@@ -57,12 +57,12 @@ namespace BullMonitor.Ticker.Api.SDK.Providers
                 .ConfigureAwait(false);
         }
 
-        public async Task<Guid> SetKnownByTipranks(
+        public async Task<Guid> SetKnownByTipRanks(
             string code,
             bool value,
             CancellationToken cancellationToken)
         {
-            var url = $"/company/setknownbytipranks";
+            var url = $"/company/setknownbytipRanks";
             var request = new CompanySetKnownRequest(code, value);
 
             return await PutAsync<CompanySetKnownRequest, Guid>(url, request, cancellationToken)

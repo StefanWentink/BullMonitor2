@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using SWE.Extensions.Interfaces;
 using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
 using SWE.Issue.Abstractions.Messages;
-using SWE.Issue.Abstractions.Messages;
 using SWE.Process.Handlers;
 using SWE.Rabbit.Abstractions.Enumerations;
 using SWE.Rabbit.Abstractions.Interfaces;
@@ -17,15 +16,15 @@ namespace BullMonitor.TickerValue.Process.Handlers
     public class ZacksTickerSyncMessageHandler
         : BaseMessageHandler<ZacksTickerSyncMessage>
     {
-        protected ISingleProvider<ZacksRankRequest, ZacksRankResponse> ZacksProvider { get; }
-        protected ICreator<ZacksRankEntity> ZacksRankCreator { get; }
+        protected ISingleProvider<ZacksRequest, ZacksResponse> ZacksProvider { get; }
+        protected ICreator<ZacksEntity> ZacksCreator { get; }
         protected ICompanyUpdater CompanyUpdater { get; }
 
         public ZacksTickerSyncMessageHandler(
             IMessageSender<IssueMessage> issueMessageSender,
-            ISingleProvider<ZacksRankRequest, ZacksRankResponse> zacksProvider,
+            ISingleProvider<ZacksRequest, ZacksResponse> zacksProvider,
             ICompanyUpdater companyUpdater,
-            ICreator<ZacksRankEntity> zacksRankCreator,
+            ICreator<ZacksEntity> zacksCreator,
             IDateTimeOffsetNow dateTimeOffsetNow,
             ILogger<ZacksTickerSyncMessageHandler> logger)
             : base(
@@ -33,7 +32,7 @@ namespace BullMonitor.TickerValue.Process.Handlers
                   dateTimeOffsetNow,
                   logger)
         {
-            ZacksRankCreator = zacksRankCreator;
+            ZacksCreator = zacksCreator;
             ZacksProvider = zacksProvider;
             CompanyUpdater = companyUpdater;
         }
@@ -42,7 +41,7 @@ namespace BullMonitor.TickerValue.Process.Handlers
             ZacksTickerSyncMessage value,
             CancellationToken cancellationToken)
         {
-            var request = new ZacksRankRequest(
+            var request = new ZacksRequest(
                 value.ReferenceDate,
                 value.ReferenceDate,
                 value.Code);
@@ -57,12 +56,14 @@ namespace BullMonitor.TickerValue.Process.Handlers
                     .GetSingleOrDefault(request, cancellationToken)
                     .ConfigureAwait(false);
 
-                if (response is not null)
+                var known = response?.Found;
+
+                if (response is not null && known == true)
                 {
-                    var record = new ZacksRankEntity(response.Ticker)
+                    var record = new ZacksEntity(response.Ticker)
                     {
                         ReferenceDate = value.ReferenceDate,
-                            Value = new ZacksRankValue(
+                        Value = new ZacksValue(
                                 response.Rank,
                                 response.Value,
                                 response.Growth,
@@ -80,35 +81,43 @@ namespace BullMonitor.TickerValue.Process.Handlers
                                 response.Sell,
                                 response.StrongSell,
 
-                                response.AverageBrokerRecommendation
-                            )
+                                response.AverageBrokerRecommendation)
                     };
 
-                    var created = await ZacksRankCreator
+                    var created = await ZacksCreator
                        .Create(record, cancellationToken)
                        .ConfigureAwait(false);
 
-                    if (value.UpdateKnown)
-                    {
-                        var known = true;
-                        await CompanyUpdater
-                            .SetKnownByZacks(value.Code, known, cancellationToken)
-                            .ConfigureAwait(false);
-                    }
-
-                    var entityMessage = $"{nameof(ZacksRankValue)} for {nameof(ZacksRankEntity.Ticker)} '{record.Ticker}' and {nameof(ZacksRankEntity.ReferenceDate)} '{record.ReferenceDate}'";
+                    var entityMessage = $"{nameof(ZacksValue)} for {nameof(ZacksEntity.Ticker)} '{record.Ticker}' and {nameof(ZacksEntity.ReferenceDate)} '{record.ReferenceDate}'";
 
                     var createMessage = string.IsNullOrWhiteSpace(created.Ticker)
                         ? $"{entityMessage}' already existed."
                         : $"Created {entityMessage}'.";
 
                     Logger
-                        .LogInformation(createMessage);
-
-                    return MessageHandlingResponse.Successful;
+                        .LogInformation($"{nameof(ZacksTickerSyncMessageHandler)}: {createMessage}");
+                }
+                else
+                {
+                    Logger
+                        .LogInformation($"{nameof(ZacksTickerSyncMessageHandler)}: {value.Code}' was not known.");
                 }
 
-                Logger.LogInformation($"No {typeof(ZacksRankResponse).Name} to send.");
+                if (known is null)
+                {
+                    Logger
+                        .LogInformation($"{nameof(ZacksTickerSyncMessageHandler)}: {value.Code}' returned no unambiguous answer of it being found");
+                }
+                else if (value.UpdateKnown)
+                {
+                    Logger
+                        .LogInformation($"{nameof(ZacksTickerSyncMessageHandler)}: updating {value.Code}' to known {known.Value}.");
+
+                    await CompanyUpdater
+                        .SetKnownByZacks(value.Code, known.Value, cancellationToken)
+                        .ConfigureAwait(false);
+                }
+
                 return MessageHandlingResponse.Successful;
             }
             catch (Exception exception)

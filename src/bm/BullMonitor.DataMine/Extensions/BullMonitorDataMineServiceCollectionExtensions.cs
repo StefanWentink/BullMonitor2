@@ -16,7 +16,7 @@ namespace BullMonitor.DataMine.Extensions
             return services
                 .AddHttpClient()
                 .WithDataMineTipRanksServices(configuration)
-                .WithDataMineZacksRankServices(configuration)
+                .WithDataMineZacksServices(configuration)
                 ;
         }
 
@@ -30,13 +30,13 @@ namespace BullMonitor.DataMine.Extensions
                 ;
         }
 
-        internal static IServiceCollection WithDataMineZacksRankServices(
+        internal static IServiceCollection WithDataMineZacksServices(
             this IServiceCollection services,
             IConfiguration configuration)
         {
             return services
-                .AddSingleton<ISingleProvider<ZacksRankRequest, ZacksRankResponse>, ZacksRankProvider>()
-                .AddSingleton<ISingleProvider<ZacksRankRequest, string?>, ZacksRankRawProvider>()
+                .AddSingleton<ISingleProvider<ZacksRequest, ZacksResponse>, ZacksProvider>()
+                .AddSingleton<ISingleProvider<ZacksRequest, string?>, ZacksRawProvider>()
                 ;
         }
     }

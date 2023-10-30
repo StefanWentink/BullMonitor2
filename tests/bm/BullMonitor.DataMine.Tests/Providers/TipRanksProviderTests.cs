@@ -67,11 +67,13 @@ namespace BullMonitor.DataMine.Tests.Providers
                     response.prices.First().d.Should().NotBeNullOrWhiteSpace();
                     response.prices.First().p.Should().NotBe(0);
 
-                    response.consensuses.Should().HaveCountGreaterThanOrEqualTo(1);
-                    response.consensuses.First().nB.Should().NotBe(0);
-                    response.consensuses.First().rating.Should().NotBe(0);
-                    response.consensuses.First().nH.Should().NotBe(0);
-                    response.consensuses.First().ReferenceDate.Should().NotBe(default);
+                    response.consensusOverTime.Should().HaveCountGreaterThanOrEqualTo(1);
+                    response.consensusOverTime.First().buy.Should().NotBe(0);
+                    response.consensusOverTime.First().hold.Should().NotBe(0);
+                    response.consensusOverTime.First().hold.Should().NotBe(0);
+                    response.consensusOverTime.First().sell.Should().NotBe(0);
+                    response.consensusOverTime.First().consensus.Should().NotBe(default);
+                    response.consensusOverTime.First().priceTarget.Should().NotBe(0);
 
                     //response.experts.Should().HaveCountGreaterThanOrEqualTo(1);
                     //response.experts.First().Firm.Should().NotBeNullOrWhiteSpace();
@@ -88,7 +90,7 @@ namespace BullMonitor.DataMine.Tests.Providers
                     //response.ptConsensus.Should().HaveCountGreaterThanOrEqualTo(1);
                     //response.ptConsensus.First().priceTarget.Should().NotBe(0);
 
-                    response.tipranksStockScore.Should().NotBeNull();
+                    response.tipRanksStockScore.Should().NotBeNull();
 
                     //response.consensusOverTime.Should().HaveCountGreaterThanOrEqualTo(1);
                     //response.consensusOverTime.First().priceTarget.Should().NotBe(0);

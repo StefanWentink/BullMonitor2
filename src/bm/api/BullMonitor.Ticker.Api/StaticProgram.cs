@@ -56,7 +56,7 @@ namespace BullMonitor.Ticker.Api
                 .GetKnownByZacks(cancellationToken);
         }
 
-        public static Task<IEnumerable<CompanyListResponse>> GetKnownByTipranks(
+        public static Task<IEnumerable<CompanyListResponse>> GetKnownByTipRanks(
             ICompanyProvider provider,
             CancellationToken cancellationToken)
         {
@@ -90,13 +90,13 @@ namespace BullMonitor.Ticker.Api
                 .SetKnownByZacks(value.Code, value.Known, cancellationToken);
         }
 
-        public static Task<Guid> SetKnownByTipranks(
+        public static Task<Guid> SetKnownByTipRanks(
             CompanySetKnownRequest value,
             ICompanyUpdater updater,
             CancellationToken cancellationToken)
         {
             return updater
-                .SetKnownByTipranks(value.Code, value.Known, cancellationToken);
+                .SetKnownByTipRanks(value.Code, value.Known, cancellationToken);
         }
     }
 }

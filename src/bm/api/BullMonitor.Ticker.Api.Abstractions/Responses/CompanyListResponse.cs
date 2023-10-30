@@ -8,6 +8,6 @@
         Guid ExchangeId,
         Guid IndustryId,
         bool? KnownByZacks,
-        bool? KnownByTipranks)
+        bool? KnownByTipRanks)
     { }
 }

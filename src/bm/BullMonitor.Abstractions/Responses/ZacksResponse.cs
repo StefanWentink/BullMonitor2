@@ -3,7 +3,7 @@ using MoreLinq.Extensions;
 
 namespace BullMonitor.Abstractions.Responses
 {
-    public record ZacksRankResponse(
+    public record ZacksResponse(
         string Ticker,
         int Rank,
         string ValueString,
@@ -21,10 +21,12 @@ namespace BullMonitor.Abstractions.Responses
         string HoldString,
         string SellString,
         string StrongSellString,
-        string AverageBrokerRecommendationString)
+        string AverageBrokerRecommendationString,
+        bool? Found)
     {
-        public ZacksRankResponse(
-            string Ticker)
+        public ZacksResponse(
+            string Ticker,
+            bool? found = null)
             : this(
                  Ticker,
                  0,
@@ -41,7 +43,8 @@ namespace BullMonitor.Abstractions.Responses
                  "0",
                  "0",
                  "0",
-                 "5.00")
+                 "5.00",
+                 found)
         { }
 
         private int? _value = null;

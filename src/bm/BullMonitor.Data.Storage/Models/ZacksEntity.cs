@@ -5,18 +5,18 @@ using SWE.Time.Extensions;
 
 namespace BullMonitor.Data.Storage.Models
 {
-    public class ZacksRankEntity
+    public class ZacksEntity
     {
         private DateTimeOffset? _referenceDate = null;
 
         public string Ticker { get; set; }
 
-        public ZacksRankEntity(string ticker)
+        public ZacksEntity(string ticker)
         {
             Ticker = ticker;
         }
 
-        public ZacksRankValue Value { get; set; } = new ZacksRankValue(
+        public ZacksValue Value { get; set; } = new ZacksValue(
             3, 3, 3, 3, 3,
             0, 0, 0, 0,
             0, 0, 0, 0, 0, 0);
@@ -43,9 +43,9 @@ namespace BullMonitor.Data.Storage.Models
         public DateTime ReferenceDateDb { get; set; }
     }
 
-    public class ZacksRankValue
+    public class ZacksValue
     {
-        public ZacksRankValue(
+        public ZacksValue(
             int rank,
             int value,
             int growth,
@@ -106,7 +106,7 @@ namespace BullMonitor.Data.Storage.Models
         public decimal AverageBrokerRecommendation { get; set; }
     }
 
-    public class ZacksRankMeta
+    public class ZacksMeta
     {
         public Guid Id { get; set; }
         public string Ticker { get; set; } = string.Empty;

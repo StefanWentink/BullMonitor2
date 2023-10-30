@@ -47,10 +47,10 @@ namespace BullMonitor.Ticker.Core.Providers
             return Get(x => (x.KnownByZacks ?? true), cancellationToken);
         }
 
-        public Task<IEnumerable<CompanyListResponse>> GetKnownByTipranks(
+        public Task<IEnumerable<CompanyListResponse>> GetKnownByTipRanks(
             CancellationToken cancellationToken)
         {
-            return Get(x => x.KnownByTipranks == null || x.KnownByTipranks == true, cancellationToken);
+            return Get(x => x.KnownByTipRanks == null || x.KnownByTipRanks == true, cancellationToken);
         }
 
         private async Task<IEnumerable<CompanyListResponse>> Get(

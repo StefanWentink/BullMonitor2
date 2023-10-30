@@ -1,6 +1,7 @@
 ﻿using BullMonitor.Abstractions.Requests;
 using BullMonitor.Abstractions.Responses;
 using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
+using System;
 using System.Text.Json;
 
 namespace BullMonitor.DataMine.Providers
@@ -27,14 +28,22 @@ namespace BullMonitor.DataMine.Providers
 
             if (string.IsNullOrWhiteSpace(responseString))
             {
-                return new TipRanksResponse { Ticker = value.Ticker };
+                return new TipRanksResponse
+                {
+                    Ticker = value.Ticker,
+                    Found = false
+                };
             }
 
             // Deserialize the JSON string into an object
             var response = JsonSerializer
                 .Deserialize<TipRanksResponse>(responseString);
 
-            return response ?? new TipRanksResponse { Ticker = value.Ticker };
+            return response ?? new TipRanksResponse
+            {
+                Ticker = value.Ticker,
+                Found = false
+            };
         }
     }
 }

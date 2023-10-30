@@ -12,21 +12,21 @@ using FluentAssertions;
 
 namespace BullMonitor.Data.Mongo.Tests.Connectors
 {
-    public class ZacksRankMongoConnectorTests
-        : BaseServiceProviderTests<IBaseMongoConnector<ZacksRankEntity>>
+    public class ZacksMongoConnectorTests
+        : BaseServiceProviderTests<IBaseMongoConnector<ZacksEntity>>
     {
         protected override IServiceCollection WithServices(
             IServiceCollection services,
             IConfiguration configuration)
         {
             return services
-                .WithBullMonitorZacksRankConnectorServices(configuration);
+                .WithBullMonitorZacksConnectorServices(configuration);
         }
 
         [SkippableTheory()]
         [InlineData("MSFT")]
         [InlineData("LIZI")]
-        public async Task ZacksRankProvider_Should_Provide_With_Expression(string ticker)
+        public async Task ZacksProvider_Should_Provide_With_Expression(string ticker)
         {
             var cancellationTokenSource = new CancellationTokenSource();
             var cancellationToken = cancellationTokenSource.Token;
@@ -35,7 +35,7 @@ namespace BullMonitor.Data.Mongo.Tests.Connectors
 
             try
             {
-                var request = new MongoConditionContainer<ZacksRankEntity>(x => x.Ticker == ticker);
+                var request = new MongoConditionContainer<ZacksEntity>(x => x.Ticker == ticker);
 
                 var response = await provider
                     .Get(request, cancellationToken)
@@ -50,7 +50,7 @@ namespace BullMonitor.Data.Mongo.Tests.Connectors
         [SkippableTheory()]
         [InlineData("MSFT")]
         [InlineData("LIZI")]
-        public async Task ZacksRankProvider_Should_UpsertInsert(string ticker)
+        public async Task ZacksProvider_Should_UpsertInsert(string ticker)
         {
             var cancellationTokenSource = new CancellationTokenSource();
             var cancellationToken = cancellationTokenSource.Token;
@@ -61,28 +61,28 @@ namespace BullMonitor.Data.Mongo.Tests.Connectors
 
             try
             {
-                //var tickerFilter = Builders<ZacksRankEntity>
+                //var tickerFilter = Builders<ZacksEntity>
                 //    .Filter
                 //    .Eq(x => x.Ticker, ticker);
 
-                //var dateFilter = Builders<ZacksRankEntity>
+                //var dateFilter = Builders<ZacksEntity>
                 //    .Filter
                 //    .Eq(x => x.ReferenceDateDb, referenceDate.ToUtcTimeZone().DateTime);
 
                 //var filter = tickerFilter & dateFilter;
 
-                //var request = new MongoConditionContainer<ZacksRankEntity>(filter);
+                //var request = new MongoConditionContainer<ZacksEntity>(filter);
 
-                //var tickerFilter = Builders<ZacksRankEntity>
+                //var tickerFilter = Builders<ZacksEntity>
                 //    .Filter
-                //    .Eq(nameof(ZacksRankEntity.Ticker), ticker);
+                //    .Eq(nameof(ZacksEntity.Ticker), ticker);
 
-                //var dateFilter = Builders<ZacksRankEntity>
+                //var dateFilter = Builders<ZacksEntity>
                 //    .Filter
-                //    .Eq(nameof(ZacksRankEntity.ReferenceDateDb), referenceDate.DateTime);
+                //    .Eq(nameof(ZacksEntity.ReferenceDateDb), referenceDate.DateTime);
 
-                var request = new MongoConditionContainer<ZacksRankEntity>(
-                    new List<Expression<Func<ZacksRankEntity, bool>>>
+                var request = new MongoConditionContainer<ZacksEntity>(
+                    new List<Expression<Func<ZacksEntity, bool>>>
                     {
                         x => x.Ticker == ticker,
                         x => x.ReferenceDateDb == referenceDate.ToUtcTimeZone().DateTime
@@ -95,10 +95,10 @@ namespace BullMonitor.Data.Mongo.Tests.Connectors
 
                 if (response == null)
                 {
-                    var command = new ZacksRankEntity(ticker)
+                    var command = new ZacksEntity(ticker)
                     {
                         ReferenceDate = referenceDate,
-                        Value = new ZacksRankValue(
+                        Value = new ZacksValue(
                             1, 2, 3, 4, 5,
                             110, 100, 130, 25.3m,
                             4, 2, 3, 3, 1, 2.4m)

@@ -22,8 +22,8 @@ builder
     .ConfigureServices((hostContext, services) =>
     {
         services
-            .WithBullMonitorTickerValueProcessServices(hostContext.Configuration)
             .WithBullMonitorTickerValueHandlerServices(hostContext.Configuration)
+            .WithBullMonitorTickerValueProcessServices(hostContext.Configuration)
             .WithBullMonitorSqlServices(hostContext.Configuration)
             .WithBullMonitorDataMineServices(hostContext.Configuration)
             .WithBullMonitorMongoServices(hostContext.Configuration)

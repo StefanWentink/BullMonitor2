@@ -8,26 +8,26 @@ using System.Linq.Expressions;
 
 namespace BullMonitor.Data.Mongo.Connectors
 {
-    public class ZacksRankConnector
-        : IZacksRankConnector
+    public class TipRanksConnector
+        : ITipRanksConnector
     {
-        protected IBaseMongoConnector<ZacksRankEntity> Connector { get; }
-        protected ILogger<ZacksRankConnector> Logger { get; }
+        protected IBaseMongoConnector<TipRanksEntity> Connector { get; }
+        protected ILogger<TipRanksConnector> Logger { get; }
 
-        public ZacksRankConnector(
-            IBaseMongoConnector<ZacksRankEntity> connector,
-            ILogger<ZacksRankConnector> logger)
+        public TipRanksConnector(
+            IBaseMongoConnector<TipRanksEntity> connector,
+            ILogger<TipRanksConnector> logger)
         {
             Connector = connector;
             Logger = logger;
         }
 
-        public async Task<IEnumerable<ZacksRankEntity>> GetSince(
+        public async Task<IEnumerable<TipRanksEntity>> GetSince(
             (string ticker, DateTimeOffset referenceDate) value,
             CancellationToken cancellationToken)
         {
-            var request = new MongoConditionContainer<ZacksRankEntity>(
-                    new List<Expression<Func<ZacksRankEntity, bool>>>
+            var request = new MongoConditionContainer<TipRanksEntity>(
+                    new List<Expression<Func<TipRanksEntity, bool>>>
                     {
                         x => x.Ticker == value.ticker,
                         x => x.ReferenceDateDb >= value.referenceDate.ToUtcTimeZone().DateTime
@@ -39,8 +39,8 @@ namespace BullMonitor.Data.Mongo.Connectors
                 .ConfigureAwait(false);
         }
 
-        public async Task<ZacksRankEntity> Upsert(
-            ZacksRankEntity value,
+        public async Task<TipRanksEntity> Upsert(
+            TipRanksEntity value,
             CancellationToken cancellationToken)
         {
             var response = await GetSingleOrDefault(
@@ -57,12 +57,12 @@ namespace BullMonitor.Data.Mongo.Connectors
                     .ConfigureAwait(false);
         }
 
-        public async Task<ZacksRankEntity?> GetSingleOrDefault(
+        public async Task<TipRanksEntity?> GetSingleOrDefault(
             (string ticker, DateTimeOffset referenceDate) value,
             CancellationToken cancellationToken)
         {
-            var request = new MongoConditionContainer<ZacksRankEntity>(
-                    new List<Expression<Func<ZacksRankEntity, bool>>>
+            var request = new MongoConditionContainer<TipRanksEntity>(
+                    new List<Expression<Func<TipRanksEntity, bool>>>
                     {
                         x => x.Ticker == value.ticker,
                         x => x.ReferenceDateDb == value.referenceDate.ToUtcTimeZone().DateTime
@@ -74,15 +74,15 @@ namespace BullMonitor.Data.Mongo.Connectors
                 .ConfigureAwait(false);
         }
 
-        public Task<ZacksRankEntity> Create(
-            ZacksRankEntity value,
+        public Task<TipRanksEntity> Create(
+            TipRanksEntity value,
             CancellationToken cancellationToken)
         {
             return CreateIfNotExists(value, cancellationToken);
         }
 
-        public async Task<ZacksRankEntity> CreateIfNotExists(
-            ZacksRankEntity value,
+        public async Task<TipRanksEntity> CreateIfNotExists(
+            TipRanksEntity value,
             CancellationToken cancellationToken)
         {
             var response = await GetSingleOrDefault(
@@ -97,7 +97,7 @@ namespace BullMonitor.Data.Mongo.Connectors
                     .ConfigureAwait(false);
             }
 
-            return new ZacksRankEntity(string.Empty);
+            return new TipRanksEntity(string.Empty);
         }
     }
 }

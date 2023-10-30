@@ -2248,7 +2248,7 @@
   "numOfBloggers": 23014,
   "numOfExperts": 31346,
   "marketCap": 53021253,
-  "tipranksStockScore": {
+  "tipRanksStockScore": {
     "returnOnAssets": 0.0,
     "sixMonthsMomentum": 0.0,
     "volatilityLevel": 0.0,

@@ -11,4 +11,8 @@
     <ProjectReference Include="..\BullMonitor.Data.Sql\BullMonitor.Data.Sql.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="BullMonitor.Ticker.Core.Tests" />
+	</ItemGroup>
+	
 </Project>

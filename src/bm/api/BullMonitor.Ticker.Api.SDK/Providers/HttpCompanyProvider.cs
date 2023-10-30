@@ -38,10 +38,10 @@ namespace BullMonitor.Ticker.Api.SDK.Providers
                 .ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<CompanyListResponse>> GetKnownByTipranks(
+        public async Task<IEnumerable<CompanyListResponse>> GetKnownByTipRanks(
             CancellationToken cancellationToken)
         {
-            var url = $"/company/getknownbytipranks";
+            var url = $"/company/getknownbytipRanks";
 
             return await GetAsync<IEnumerable<CompanyListResponse>>(url, cancellationToken)
                 .ConfigureAwait(false);

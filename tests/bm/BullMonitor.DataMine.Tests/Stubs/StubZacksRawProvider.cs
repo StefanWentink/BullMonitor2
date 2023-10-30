@@ -4,21 +4,21 @@ using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
 
 namespace BullMonitor.DataMine.Tests.Stubs
 {
-    internal class StubZacksRankRawProvider
-        : ISingleProvider<ZacksRankRequest, string?>
+    internal class StubZacksRawProvider
+        : ISingleProvider<ZacksRequest, string?>
     {
         private static string _fileName = "zacksrank_{0}.json";
 
-        protected ILogger<StubZacksRankRawProvider> Logger { get; }
+        protected ILogger<StubZacksRawProvider> Logger { get; }
 
-        public StubZacksRankRawProvider(
-            ILogger<StubZacksRankRawProvider> logger)
+        public StubZacksRawProvider(
+            ILogger<StubZacksRawProvider> logger)
         {
             Logger = logger;
         }
 
         public async Task<string?> GetSingleOrDefault(
-            ZacksRankRequest value,
+            ZacksRequest value,
             CancellationToken cancellationToken)
         {
             try

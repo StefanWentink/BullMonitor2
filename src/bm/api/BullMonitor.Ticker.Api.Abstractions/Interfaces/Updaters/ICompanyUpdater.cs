@@ -7,7 +7,7 @@
                 bool value,
                 CancellationToken cancellationToken);
 
-        Task<Guid> SetKnownByTipranks(
+        Task<Guid> SetKnownByTipRanks(
             string code,
             bool value,
             CancellationToken cancellationToken);

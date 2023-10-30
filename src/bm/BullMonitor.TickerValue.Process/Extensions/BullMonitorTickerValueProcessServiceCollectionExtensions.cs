@@ -1,4 +1,5 @@
 ﻿using BullMonitor.Abstractions.Commands;
+using BullMonitor.TickerValue.Core.Extensions;
 using BullMonitor.TickerValue.Process.Handlers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,26 +15,28 @@ namespace BullMonitor.TickerValue.Process.Extensions
             IConfiguration configuration)
         {
             return serviceCollection
-                .WithBullMonitorTickerValueProcessorHandlerServices(configuration)
-                .WithBullMonitorZacksSyncHandlerServices(configuration)
+                .WithBullMonitorTickerValueCoreServices(configuration)
+                .WithBullMonitorTickerValueZacksSyncHandlerServices(configuration)
+                .WithBullMonitorTickerValueTipRanksSyncHandlerServices(configuration)
                 ;
         }
 
-        internal static IServiceCollection WithBullMonitorTickerValueProcessorHandlerServices(
+        internal static IServiceCollection WithBullMonitorTickerValueZacksSyncHandlerServices(
             this IServiceCollection serviceCollection,
             IConfiguration configuration)
         {
             return serviceCollection
                 .AddSingleton<IMessageHandler<ZacksSyncMessage>, ZacksSyncMessageHandler>()
-                ; 
+                .WithRabbitMqSender<ZacksTickerSyncMessage>()
+                ;
         }
-
-        internal static IServiceCollection WithBullMonitorZacksSyncHandlerServices(
+        internal static IServiceCollection WithBullMonitorTickerValueTipRanksSyncHandlerServices(
             this IServiceCollection serviceCollection,
             IConfiguration configuration)
         {
             return serviceCollection
-                .WithRabbitMqSender<ZacksTickerSyncMessage>()
+                .AddSingleton<IMessageHandler<TipRanksSyncMessage>, TipRanksSyncMessageHandler>()
+                .WithRabbitMqSender<TipRanksTickerSyncMessage>()
                 ;
         }
     }

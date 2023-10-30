@@ -14,7 +14,7 @@ using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
 
 namespace BullMonitor.Ticker.Core.Extensions
 {
-    public static class BullMonitorTickerApiCollectionExtensions
+    public static class BullMonitorTickerCoreCollectionExtensions
     {
         public static IServiceCollection WithBullMonitorTickerCoreServices(
             this IServiceCollection services,

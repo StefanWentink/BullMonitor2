@@ -11,8 +11,8 @@ using Xunit;
 
 namespace BullMonitor.DataMine.Tests.Providers
 {
-    public class ZacksRankProviderTests
-        : BaseServiceProviderTests<ISingleProvider<ZacksRankRequest, ZacksRankResponse>>
+    public class ZacksProviderTests
+        : BaseServiceProviderTests<ISingleProvider<ZacksRequest, ZacksResponse>>
     {
         protected override IServiceCollection WithServices(
             IServiceCollection services,
@@ -20,18 +20,18 @@ namespace BullMonitor.DataMine.Tests.Providers
         {
             return services
                 .WithBullMonitorDataMineServices(configuration)
-                .AddSingleton<ISingleProvider<ZacksRankRequest, string?>, StubZacksRankRawProvider>();
+                .AddSingleton<ISingleProvider<ZacksRequest, string?>, StubZacksRawProvider>();
         }
 
         [Theory]
         [InlineData("MSFT")]
         [InlineData("LIZI")]
-        public async Task ZacksRankProvider_Should_ResolveModel(
+        public async Task ZacksProvider_Should_ResolveModel(
             string ticker)
         {
             var from = new DateTimeOffset(2022, 10, 30, 0, 0, 0, TimeSpan.FromHours(2));
             var until = new DateTimeOffset(2022, 10, 31, 0, 0, 0, TimeSpan.FromHours(1));
-            var request = new ZacksRankRequest(
+            var request = new ZacksRequest(
                 from,
                 until,
                 ticker);

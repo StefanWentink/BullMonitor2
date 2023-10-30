@@ -6,22 +6,22 @@ using Microsoft.Extensions.Logging;
 
 namespace BullMonitor.DataMine.Providers
 {
-    public class ZacksRankProvider
-        : ISingleProvider<ZacksRankRequest, ZacksRankResponse>
+    public class ZacksProvider
+        : ISingleProvider<ZacksRequest, ZacksResponse>
     {        // Set the URL
-        protected ISingleProvider<ZacksRankRequest, string?> RawProvider { get; }
-        protected ILogger<ZacksRankProvider> Logger { get; }
+        protected ISingleProvider<ZacksRequest, string?> RawProvider { get; }
+        protected ILogger<ZacksProvider> Logger { get; }
 
-        public ZacksRankProvider(
-            ISingleProvider<ZacksRankRequest, string?> rawProvider,
-            ILogger<ZacksRankProvider> logger)
+        public ZacksProvider(
+            ISingleProvider<ZacksRequest, string?> rawProvider,
+            ILogger<ZacksProvider> logger)
         {
             RawProvider = rawProvider;
             Logger = logger;
         }
 
-        public async Task<ZacksRankResponse?> GetSingleOrDefault(
-            ZacksRankRequest value,
+        public async Task<ZacksResponse?> GetSingleOrDefault(
+            ZacksRequest value,
             CancellationToken cancellationToken)
         {
             // Read the response content
@@ -31,7 +31,7 @@ namespace BullMonitor.DataMine.Providers
 
             if (string.IsNullOrWhiteSpace(responseString))
             {
-                return new ZacksRankResponse(value.Ticker);
+                return new ZacksResponse(value.Ticker, false);
             }
 
             var rank = 0;
@@ -75,6 +75,11 @@ namespace BullMonitor.DataMine.Providers
                             || x.FirstChild.InnerText.Contains(" 4-")
                             || x.FirstChild.InnerText.Contains(" 5-")
                         )).SingleOrDefault();
+
+                if (rankNode == null)
+                {
+                    return new ZacksResponse(value.Ticker);
+                }
 
                 if (rankNode != null)
                 {
@@ -188,7 +193,7 @@ namespace BullMonitor.DataMine.Providers
                     if (!int.TryParse(rankString, out rank))
                     {
                         Logger.LogError($"Could not determine {nameof(rankString)} from '{rankString}'.");
-                        return new ZacksRankResponse(value.Ticker);
+                        return new ZacksResponse(value.Ticker);
                     }
 
                     var valueRankNode = rankNodes
@@ -209,12 +214,12 @@ namespace BullMonitor.DataMine.Providers
                         if (!letters.Any())
                         {
                             Logger.LogError($"Could not determine {nameof(letters)}.");
-                            return new ZacksRankResponse(value.Ticker);
+                            return new ZacksResponse(value.Ticker);
                         }
                         if (letters.Count != 4)
                         {
                             Logger.LogError($"Could not determine a exactly 4 {nameof(letters)} but {letters.Count}.");
-                            return new ZacksRankResponse(value.Ticker);
+                            return new ZacksResponse(value.Ticker);
                         }
 
                         valueString = letters.First();
@@ -229,7 +234,7 @@ namespace BullMonitor.DataMine.Providers
                 Logger.LogError(exception, exception.Message);
             }
 
-            return new ZacksRankResponse(
+            return new ZacksResponse(
                 value.Ticker,
                 rank,
                 valueString,
@@ -247,7 +252,8 @@ namespace BullMonitor.DataMine.Providers
                 holdString,
                 sellString,
                 strongSellString,
-                averageBrokerRecommendationString);
+                averageBrokerRecommendationString,
+                true);
         }
     }
 }

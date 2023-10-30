@@ -7,7 +7,7 @@ namespace BullMonitor.DataMine.Tests.Stubs
     internal class StubTipRanksRawProvider
         : ISingleProvider<TipRanksRequest, string?>
     {
-        private static string _fileName = "tipranks_{0}.json";
+        private static string _fileName = "tipRanks_{0}.json";
 
         protected ILogger<StubTipRanksRawProvider> Logger { get; }
 

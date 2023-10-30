@@ -43,7 +43,7 @@ namespace BullMonitor.Ticker.Core.Updaters
             }
         }
 
-        public async Task<Guid> SetKnownByTipranks(
+        public async Task<Guid> SetKnownByTipRanks(
             string code,
             bool value,
             CancellationToken cancellationToken)
@@ -57,7 +57,7 @@ namespace BullMonitor.Ticker.Core.Updaters
 
             try
             {
-                if (ticker?.SetKnownByTipranks(value) == true)
+                if (ticker?.SetKnownByTipRanks(value) == true)
                 {
                     await context
                         .SaveChangesAsync(cancellationToken)

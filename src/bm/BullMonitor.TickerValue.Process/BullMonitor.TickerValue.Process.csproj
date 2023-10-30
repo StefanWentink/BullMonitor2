@@ -21,6 +21,7 @@
 		<ProjectReference Include="..\BullMonitor.Abstractions\BullMonitor.Abstractions.csproj" />
 		<ProjectReference Include="..\BullMonitor.Data.Mongo\BullMonitor.Data.Mongo.csproj" />
 		<ProjectReference Include="..\BullMonitor.Data.Sql\BullMonitor.Data.Sql.csproj" />
+		<ProjectReference Include="..\BullMonitor.TickerValue.Core\BullMonitor.TickerValue.Core.csproj" />
 	</ItemGroup>
 
 </Project>

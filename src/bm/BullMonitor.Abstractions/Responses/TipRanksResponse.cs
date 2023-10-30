@@ -17,19 +17,22 @@ namespace BullMonitor.Abstractions.Responses
         public bool hasEarnings { get; set; }
         public bool hasDividends { get; set; }
 
-        public TipranksStockScore tipranksStockScore { get; set; }
+        [System.Text.Json.Serialization.JsonIgnore]
+        public bool Found { get; set; } = true;
+
+    public TipRanksStockScore tipRanksStockScore { get; set; }
 
         public List<Price> prices { get; set; }
-        public List<Consensus> consensuses { get; set; }
+        //public List<Consensus> consensuses { get; set; }
         //public List<PtConsensus> ptConsensus { get; set; }
-        //public List<ConsensusOverTime> consensusOverTime { get; set; }
+        public List<ConsensusOverTime> consensusOverTime { get; set; }
         //public List<ConsensusOverTime> bestConsensusOverTime { get; set; }
 
         //public List<Expert> experts { get; set; }
         //public List<CorporateInsiderTransaction> corporateInsiderTransactions { get; set; }
 
-        //[JsonPropertyName("bloggerSentiment")]
-        //public BloggerSentiment BloggerSentiment { get; set; }
+        [JsonPropertyName("bloggerSentiment")]
+        public BloggerSentiment BloggerSentiment { get; set; }
         //[JsonPropertyName("insidrConfidenceSignal")]
         //public InsiderConfidenceSignal InsiderConfidenceSignal { get; set; }
     }
@@ -95,7 +98,7 @@ namespace BullMonitor.Abstractions.Responses
         public decimal? low { get; set; }
     }
 
-    public class TipranksStockScore
+    public class TipRanksStockScore
     {
         public decimal? returnOnAssets { get; set; }
         public decimal? sixMonthsMomentum { get; set; }
@@ -287,7 +290,7 @@ namespace BullMonitor.Abstractions.Responses
         public int Score { get; set; }
 
         [JsonPropertyName("avg")]
-        public double Avg { get; set; }
+        public decimal Avg { get; set; }
 
         [JsonPropertyName("neutral")]
         public string Neutral { get; set; }

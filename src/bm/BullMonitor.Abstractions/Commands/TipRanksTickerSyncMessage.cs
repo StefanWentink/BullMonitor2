@@ -2,8 +2,13 @@
 {
     public record TipRanksTickerSyncMessage(
         Guid TickerId,
-        DateTimeOffset ConsensusReferenceDate,
-        DateTimeOffset PriceReferenceDate,
-        DateTimeOffset ScoreReferenceDate)
+        string Code,
+        DateTimeOffset ReferenceDate,
+        bool UpdateKnown)
+        : TickerValueSyncMessage(
+            TickerId,
+            Code,
+            ReferenceDate,
+            UpdateKnown)
     { }
 }

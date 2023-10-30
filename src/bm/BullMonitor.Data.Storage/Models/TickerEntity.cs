@@ -13,7 +13,7 @@ namespace BullMonitor.Data.Storage.Models
         : IIdCode
     {
         private bool? _knownByZacks = null;
-        private bool? _knownByTipranks = null;
+        private bool? _knownByTipRanks = null;
 
         public TickerEntity(
             string Code,
@@ -39,7 +39,7 @@ namespace BullMonitor.Data.Storage.Models
             Guid ExchangeId,
             Guid CurrencyId,
             bool? KnownByZacks,
-            bool? KnownByTipranks)
+            bool? KnownByTipRanks)
             : this(
                 Guid.Empty,
                 Code,
@@ -49,7 +49,7 @@ namespace BullMonitor.Data.Storage.Models
                 CurrencyId)
         {
             _knownByZacks = KnownByZacks;
-            _knownByTipranks = KnownByTipranks;
+            _knownByTipRanks = KnownByTipRanks;
         }
 
         public bool? KnownByZacks
@@ -58,10 +58,10 @@ namespace BullMonitor.Data.Storage.Models
             protected set => _knownByZacks = value;
         }
 
-        public bool? KnownByTipranks
+        public bool? KnownByTipRanks
         {
-            get => _knownByTipranks;
-            protected set => _knownByTipranks = value;
+            get => _knownByTipRanks;
+            protected set => _knownByTipRanks = value;
         }
 
         public bool SetKnownByZacks(bool value)
@@ -76,14 +76,14 @@ namespace BullMonitor.Data.Storage.Models
             return true;
         }
 
-        public bool SetKnownByTipranks(bool value)
+        public bool SetKnownByTipRanks(bool value)
         {
-            if (_knownByTipranks == value)
+            if (_knownByTipRanks == value)
             {
                 return false;
             }
 
-            _knownByTipranks = value;
+            _knownByTipRanks = value;
 
             return true;
         }

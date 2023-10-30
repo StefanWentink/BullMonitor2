@@ -11,7 +11,7 @@ namespace BullMonitor.Ticker.Api.Abstractions.Interfaces.Providers
         Task<IEnumerable<CompanyListResponse>> GetKnownByZacks(
                 CancellationToken cancellationToken);
 
-        Task<IEnumerable<CompanyListResponse>> GetKnownByTipranks(
+        Task<IEnumerable<CompanyListResponse>> GetKnownByTipRanks(
             CancellationToken cancellationToken);
     }
 }
