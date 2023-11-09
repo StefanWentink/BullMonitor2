@@ -8,6 +8,9 @@ namespace BullMonitor.Ticker.Api.Abstractions.Interfaces.Providers
         , ISingleProvider<string, CompanyListResponse>
         , ICollectionProvider<CompanyListResponse>
     {
+        Task<IEnumerable<CompanyListResponse>> GetKnownByAll(
+                CancellationToken cancellationToken);
+
         Task<IEnumerable<CompanyListResponse>> GetKnownByZacks(
                 CancellationToken cancellationToken);
 

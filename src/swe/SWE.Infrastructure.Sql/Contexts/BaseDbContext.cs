@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Client;
 using SWE.Extensions.Extensions;
+using SWE.Infrastructure.Sql.Extensions;
 
 namespace SWE.Infrastructure.Sql.Contexts
 {
@@ -55,8 +57,13 @@ namespace SWE.Infrastructure.Sql.Contexts
 
                 if (disposing) // && !this.IsDisposed())
                 {
+#if DEBUG
+                    var state = Database?.GetDbConnection().State ?? System.Data.ConnectionState.Broken;
+                    var connectionString = Database?.GetDbConnection().ConnectionString;
+                    Logger?.LogInformation($"Close connection state '{state}' => {connectionString}");
+#endif
                     // free managed resources
-                    //Database?.GetDbConnection().CloseConnection(Logger);
+                    Database?.GetDbConnection().CloseConnection(Logger);
                 }
 
                 this.isDisposed = true;

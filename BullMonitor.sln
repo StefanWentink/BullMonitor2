@@ -92,13 +92,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SWE.Issue.Abstractions", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BullMonitor.TickerValue.Process.Tests", "tests\bm\BullMonitor.TickerValue.Process.Tests\BullMonitor.TickerValue.Process.Tests.csproj", "{C3DEED49-7766-4B53-98DB-0636568CA2A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BullMonitor.Ticker.Core.Tests", "tests\bm\BullMonitor.Ticker.Core.Tests\BullMonitor.Ticker.Core.Tests.csproj", "{30B47235-7975-481D-B2E1-CA6B52CFDF51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BullMonitor.Ticker.Core.Tests", "tests\bm\BullMonitor.Ticker.Core.Tests\BullMonitor.Ticker.Core.Tests.csproj", "{30B47235-7975-481D-B2E1-CA6B52CFDF51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BullMonitor.TickerValue.Core", "src\bm\BullMonitor.TickerValue.Core\BullMonitor.TickerValue.Core.csproj", "{13ED141C-85A2-438D-A725-AF1298327CA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BullMonitor.TickerValue.Core", "src\bm\BullMonitor.TickerValue.Core\BullMonitor.TickerValue.Core.csproj", "{13ED141C-85A2-438D-A725-AF1298327CA2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BullMonitor.TickerValue.Handlers", "src\bm\handlers\BullMonitor.TickerValue.Handlers\BullMonitor.TickerValue.Handlers.csproj", "{0AD91955-1DF4-46F1-8966-D157AA14451B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BullMonitor.TickerValue.Core.Tests", "tests\bm\BullMonitor.TickerValue.Core.Tests\BullMonitor.TickerValue.Core.Tests.csproj", "{BF0EC57D-043D-4F1F-9B49-70A77153F484}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BullMonitor.TickerValue.Core.Tests", "tests\bm\BullMonitor.TickerValue.Core.Tests\BullMonitor.TickerValue.Core.Tests.csproj", "{BF0EC57D-043D-4F1F-9B49-70A77153F484}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BullMonitor.Analysis.Handlers", "src\bm\handlers\BullMonitor.Analysis.Handlers\BullMonitor.Analysis.Handlers.csproj", "{F8AE7EE6-1FA2-4515-8656-3307A364AE72}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BullMonitor.Analysis.Process", "src\bm\BullMonitor.Analysis.Process\BullMonitor.Analysis.Process.csproj", "{20225322-4392-48D7-A516-D38A9098FEDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BullMonitor.Analysis.Core", "src\bm\BullMonitor.Analysis.Core\BullMonitor.Analysis.Core.csproj", "{5452FEF2-3BB7-4937-967C-23D99662C9E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -258,6 +264,18 @@ Global
 		{BF0EC57D-043D-4F1F-9B49-70A77153F484}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF0EC57D-043D-4F1F-9B49-70A77153F484}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF0EC57D-043D-4F1F-9B49-70A77153F484}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8AE7EE6-1FA2-4515-8656-3307A364AE72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8AE7EE6-1FA2-4515-8656-3307A364AE72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8AE7EE6-1FA2-4515-8656-3307A364AE72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8AE7EE6-1FA2-4515-8656-3307A364AE72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20225322-4392-48D7-A516-D38A9098FEDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20225322-4392-48D7-A516-D38A9098FEDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20225322-4392-48D7-A516-D38A9098FEDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20225322-4392-48D7-A516-D38A9098FEDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5452FEF2-3BB7-4937-967C-23D99662C9E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5452FEF2-3BB7-4937-967C-23D99662C9E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5452FEF2-3BB7-4937-967C-23D99662C9E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5452FEF2-3BB7-4937-967C-23D99662C9E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -307,6 +325,9 @@ Global
 		{13ED141C-85A2-438D-A725-AF1298327CA2} = {E5DB508F-7205-4B99-948E-F5CBDE6AFDAE}
 		{0AD91955-1DF4-46F1-8966-D157AA14451B} = {F3553087-B338-413F-BEA8-5CCCD6EFE034}
 		{BF0EC57D-043D-4F1F-9B49-70A77153F484} = {89AD49E3-A23B-4A6D-82DF-84AA8618570E}
+		{F8AE7EE6-1FA2-4515-8656-3307A364AE72} = {F3553087-B338-413F-BEA8-5CCCD6EFE034}
+		{20225322-4392-48D7-A516-D38A9098FEDF} = {E5DB508F-7205-4B99-948E-F5CBDE6AFDAE}
+		{5452FEF2-3BB7-4937-967C-23D99662C9E1} = {E5DB508F-7205-4B99-948E-F5CBDE6AFDAE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA9C8144-C4B5-4AF6-A069-964ED2759607}

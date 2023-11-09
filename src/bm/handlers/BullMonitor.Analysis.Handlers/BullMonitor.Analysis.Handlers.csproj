@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>3d65bd5e-51bd-4dcd-a267-91576416eb0d</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..\..</DockerfileContext>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\swe\SWE.Extensions\SWE.Extensions.csproj" />
+		<ProjectReference Include="..\..\..\swe\SWE.Issue.Abstractions\SWE.Issue.Abstractions.csproj" />
+		<ProjectReference Include="..\..\..\swe\SWE.Process\SWE.Process.csproj" />
+		<ProjectReference Include="..\..\..\swe\SWE.Rabbit.Receiver\SWE.Rabbit.Receiver.csproj" />
+		<ProjectReference Include="..\..\api\BullMonitor.Ticker.Api.SDK\BullMonitor.Ticker.Api.SDK.csproj" />
+		<ProjectReference Include="..\..\BullMonitor.Abstractions\BullMonitor.Abstractions.csproj" />
+		<ProjectReference Include="..\..\BullMonitor.Analysis.Process\BullMonitor.Analysis.Process.csproj" />
+	</ItemGroup>
+
+</Project>

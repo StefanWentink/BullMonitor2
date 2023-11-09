@@ -29,6 +29,15 @@ namespace BullMonitor.Ticker.Api.SDK.Providers
                 .ConfigureAwait(false);
         }
 
+        public async Task<IEnumerable<CompanyListResponse>> GetKnownByAll(
+            CancellationToken cancellationToken)
+        {
+            var url = $"/company/getknownbyall";
+
+            return await GetAsync<IEnumerable<CompanyListResponse>>(url, cancellationToken)
+                .ConfigureAwait(false);
+        }
+
         public async Task<IEnumerable<CompanyListResponse>> GetKnownByZacks(
             CancellationToken cancellationToken)
         {

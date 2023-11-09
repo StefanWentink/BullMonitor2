@@ -16,11 +16,6 @@ builder
     .ConfigureHostConfiguration(configurationBuilder => {
         var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
         configurationBuilder.SetFiles(environmentName);
-        //configurationBuilder.AddJsonFiles(environmentOptional: false);
-        //configurationBuilder.AddJsonFiles(environmentName, true);
-        //configurationBuilder.AddJsonFiles("local", true);
-        //configurationBuilder.AddJsonFiles("mine", true);
-        //configurationBuilder.AddEnvironmentVariables();
     });
 
 // Add services to the container.
@@ -44,8 +39,9 @@ var companyGroup = app.MapGroup("/company");
 
 companyGroup.MapGet("/"                     , StaticProgram.Hello);
 companyGroup.MapGet("/get"                  , StaticProgram.Get);
+companyGroup.MapGet("/getknownbyall"        , StaticProgram.GetKnownByAll);
 companyGroup.MapGet("/getknownbyzacks"      , StaticProgram.GetKnownByZacks);
-companyGroup.MapGet("/getknownbytipRanks"   , StaticProgram.GetKnownByTipRanks);
+companyGroup.MapGet("/getknownbytipranks"   , StaticProgram.GetKnownByTipRanks);
 companyGroup.MapGet("/getbyid/{id}"         , StaticProgram.GetById);
 companyGroup.MapGet("/getbycode/{code}"     , StaticProgram.GetByCode);
 companyGroup.MapPut("/setknownbyzacks"      , StaticProgram.SetKnownByZacks);

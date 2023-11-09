@@ -48,6 +48,14 @@ namespace BullMonitor.Ticker.Api
                 .Get(cancellationToken);
         }
 
+        public static Task<IEnumerable<CompanyListResponse>> GetKnownByAll(
+            ICompanyProvider provider,
+            CancellationToken cancellationToken)
+        {
+            return provider
+                .GetKnownByAll(cancellationToken);
+        }
+
         public static Task<IEnumerable<CompanyListResponse>> GetKnownByZacks(
             ICompanyProvider provider,
             CancellationToken cancellationToken)

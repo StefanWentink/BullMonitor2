@@ -1,5 +1,4 @@
 ﻿using BullMonitor.Abstractions.Commands;
-using BullMonitor.Data.Storage.Models;
 using BullMonitor.Ticker.Api.Abstractions.Interfaces.Providers;
 using BullMonitor.Ticker.Api.Abstractions.Responses;
 using Microsoft.Extensions.Logging;

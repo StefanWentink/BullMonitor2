@@ -5,6 +5,8 @@ using BullMonitor.Ticker.Api.Abstractions.Responses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
+using SWE.Infrastructure.Sql.Interfaces;
+using SWE.Infrastructure.Sql.Models;
 using System.Linq.Expressions;
 
 namespace BullMonitor.Ticker.Core.Providers
@@ -12,6 +14,7 @@ namespace BullMonitor.Ticker.Core.Providers
     public record CompanyProvider(
             IFactory<TickerContext> ContextFactory,
             IMapper<TickerEntity, CompanyListResponse> Mapper,
+            ISqlProvider<TickerEntity> SqlProvider,
             ILogger<CompanyProvider> Logger)
         : ICompanyProvider
     {
@@ -41,6 +44,12 @@ namespace BullMonitor.Ticker.Core.Providers
             return Get(null, cancellationToken);
         }
 
+        public Task<IEnumerable<CompanyListResponse>> GetKnownByAll(
+            CancellationToken cancellationToken)
+        {
+            return Get(x => (x.KnownByZacks ?? false) && (x.KnownByTipRanks ?? false), cancellationToken);
+        }
+
         public Task<IEnumerable<CompanyListResponse>> GetKnownByZacks(
             CancellationToken cancellationToken)
         {
@@ -61,27 +70,18 @@ namespace BullMonitor.Ticker.Core.Providers
             {
                 await _collectionLock.WaitAsync(cancellationToken).ConfigureAwait(false);
 
-                using (var context = ContextFactory.Create())
-                {
-                    var query = context
-                        .Tickers
-                        .AsQueryable();
+                var container = expression is null
+                    ? new SqlConditionContainer<TickerEntity>()
+                    : new SqlConditionContainer<TickerEntity>(expression);
 
-                    if (expression is not null)
-                    {
-                        query = query
-                            .Where(expression);
-                    }
+                var tickers = await SqlProvider
+                    .Get(container, cancellationToken)
+                    .ConfigureAwait(false);
 
-                    var tickers = await query
-                        .ToListAsync()
-                        .ConfigureAwait(false);
-
-                    var tasks = tickers
+                var tasks = tickers
                         .Select(x => Mapper.Map(x, cancellationToken));
 
                     _collection = await Task.WhenAll(tasks).ConfigureAwait(false);
-                }
 
                 return _collection;
             }
