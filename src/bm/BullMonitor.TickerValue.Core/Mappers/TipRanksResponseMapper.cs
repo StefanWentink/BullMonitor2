@@ -38,9 +38,13 @@ namespace BullMonitor.Ticker.Core.Mappers
                     var price = value
                         .response
                         .prices
-                        .Where(x => x.ReferenceDate == date)
-                        .Single()
-                        .p;
+                        .Where(x => x.ReferenceDate <= date)
+                        .OrderByDescending(x => x.ReferenceDate)
+                        .FirstOrDefault();
+
+                    var priceValue = value == default
+                        ? 0m
+                        : price?.p ?? 0m;
 
                     var consensus = value
                         .response
@@ -56,7 +60,7 @@ namespace BullMonitor.Ticker.Core.Mappers
                         : null;
 
                     var tipRanksValue = new TipRanksValue(
-                        price,
+                        priceValue,
                         consensus?.buy ?? 0,
                         consensus?.hold ?? 0,
                         consensus?.sell ?? 0,
