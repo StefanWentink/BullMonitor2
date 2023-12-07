@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\swe\SWE.Infrastructure.Abstractions\SWE.Infrastructure.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\swe\SWE.Time\SWE.Time.csproj" />
   </ItemGroup>
 
 </Project>

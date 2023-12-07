@@ -2,7 +2,6 @@
 using BullMonitor.Data.Storage.Models;
 using BullMonitor.Ticker.Api.Abstractions.Interfaces.Providers;
 using BullMonitor.Ticker.Api.Abstractions.Responses;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
 using SWE.Infrastructure.Sql.Interfaces;

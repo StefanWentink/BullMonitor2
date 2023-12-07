@@ -78,7 +78,7 @@ namespace BullMonitor.DataMine.Providers
 
                 if (rankNode == null)
                 {
-                    return new ZacksResponse(value.Ticker);
+                    return new ZacksResponse(value.Ticker, false);
                 }
 
                 if (rankNode != null)
