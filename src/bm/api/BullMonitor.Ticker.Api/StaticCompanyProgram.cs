@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace BullMonitor.Ticker.Api
 {
-    public static class StaticProgram
+    public static class StaticCompanyProgram
     {
         public static string[] Hello(
             HttpContext context,
@@ -22,7 +22,7 @@ namespace BullMonitor.Ticker.Api
 
             var apiName = "BullMonitor.Ticker.Api";
 
-            var assembly = typeof(StaticProgram)
+            var assembly = typeof(StaticCompanyProgram)
                 .Assembly;
 
 

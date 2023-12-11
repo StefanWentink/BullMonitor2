@@ -15,7 +15,6 @@ namespace BullMonitor.Ticker.Core.Providers
 {
     public record ValueProvider(
             IFactory<TickerContext> ContextFactory,
-            IMapper<TickerEntity, ValueResponse> Mapper,
             ICompanyProvider CompanyProvider,
             IZacksConnector ZacksProvider,
             ITipRanksConnector TipRanksProvider,

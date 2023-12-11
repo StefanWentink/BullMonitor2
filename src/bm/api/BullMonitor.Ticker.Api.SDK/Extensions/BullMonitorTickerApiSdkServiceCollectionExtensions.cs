@@ -17,9 +17,13 @@ namespace BullMonitor.Ticker.Api.SDK.Extensions
         {
             return services
                 .AddSingletonConfiguration<IHttpClientConfiguration, HttpClientConfiguration>(configuration, $"{nameof(HttpClientConfiguration)}:Company")
+                
                 .ConfigureHttpClient(configuration, "Company")
                 .AddSingleton<IHttpCompanyProvider, HttpCompanyProvider>()
                 .AddSingleton<IHttpCompanyUpdater, HttpCompanyUpdater>()
+
+                .ConfigureHttpClient(configuration, "Value")
+                .AddSingleton<IHttpValueProvider, HttpValueProvider>()
             ;
         }
     }

@@ -37,14 +37,24 @@ app.UseHttpsRedirection();
 
 var companyGroup = app.MapGroup("/company");
 
-companyGroup.MapGet("/"                     , StaticProgram.Hello);
-companyGroup.MapGet("/get"                  , StaticProgram.Get);
-companyGroup.MapGet("/getknownbyall"        , StaticProgram.GetKnownByAll);
-companyGroup.MapGet("/getknownbyzacks"      , StaticProgram.GetKnownByZacks);
-companyGroup.MapGet("/getknownbytipranks"   , StaticProgram.GetKnownByTipRanks);
-companyGroup.MapGet("/getbyid/{id}"         , StaticProgram.GetById);
-companyGroup.MapGet("/getbycode/{code}"     , StaticProgram.GetByCode);
-companyGroup.MapPut("/setknownbyzacks"      , StaticProgram.SetKnownByZacks);
-companyGroup.MapPut("/setknownbytipRanks"   , StaticProgram.SetKnownByTipRanks);
+companyGroup.MapGet("/", StaticCompanyProgram.Hello);
+companyGroup.MapGet("/get", StaticCompanyProgram.Get);
+companyGroup.MapGet("/getknownbyall", StaticCompanyProgram.GetKnownByAll);
+companyGroup.MapGet("/getknownbyzacks", StaticCompanyProgram.GetKnownByZacks);
+companyGroup.MapGet("/getknownbytipranks", StaticCompanyProgram.GetKnownByTipRanks);
+companyGroup.MapGet("/getbyid/{id}", StaticCompanyProgram.GetById);
+companyGroup.MapGet("/getbycode/{code}", StaticCompanyProgram.GetByCode);
+companyGroup.MapPut("/setknownbyzacks", StaticCompanyProgram.SetKnownByZacks);
+companyGroup.MapPut("/setknownbytipRanks", StaticCompanyProgram.SetKnownByTipRanks);
+
+var valueGroup = app.MapGroup("/value");
+
+valueGroup.MapGet("/", StaticValueProgram.Hello);
+valueGroup.MapGet("/get", StaticValueProgram.Get);
+valueGroup.MapGet("/getknownbyall", StaticValueProgram.GetKnownByAll);
+valueGroup.MapGet("/getknownbyzacks", StaticValueProgram.GetKnownByZacks);
+valueGroup.MapGet("/getknownbytipranks", StaticValueProgram.GetKnownByTipRanks);
+valueGroup.MapGet("/getbyid/{id}", StaticValueProgram.GetById);
+valueGroup.MapGet("/getbycode/{code}", StaticValueProgram.GetByCode);
 
 app.Run();

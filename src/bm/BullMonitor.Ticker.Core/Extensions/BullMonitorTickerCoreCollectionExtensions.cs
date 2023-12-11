@@ -1,4 +1,5 @@
-﻿using BullMonitor.Data.Sql.Extensions;
+﻿using BullMonitor.Data.Mongo.Extensions;
+using BullMonitor.Data.Sql.Extensions;
 using BullMonitor.Data.Storage.Models;
 using BullMonitor.Ticker.Api.Abstractions.Interfaces.Providers;
 using BullMonitor.Ticker.Api.Abstractions.Interfaces.Updaters;
@@ -24,7 +25,10 @@ namespace BullMonitor.Ticker.Core.Extensions
                 .AddSingleton<IDateTimeOffsetNow, DateTimeOffsetNow>()
                 .WithBullMonitorCompanyProviderServices(configuration)
                 .WithBullMonitorCompanyUpdaterServices(configuration)
+                .WithBullMonitorValueProviderServices(configuration)
                 .WithBullMonitorSqlServices(configuration)
+                
+                .WithBullMonitorMongoServices(configuration)
                 ;
         }
 
@@ -45,6 +49,16 @@ namespace BullMonitor.Ticker.Core.Extensions
             return services
                 .AddSingleton<ICompanyProvider, CompanyProvider>()
                 .AddSingleton<IMapper<TickerEntity, CompanyListResponse>, CompanyListResponseMapper>()
+                ;
+        }
+
+        internal static IServiceCollection WithBullMonitorValueProviderServices(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            return services
+                .AddSingleton<IValueProvider, ValueProvider>()
+                //.AddSingleton<IMapper<TickerEntity, ValueListResponse>, ValueListResponseMapper>()
                 ;
         }
     }
