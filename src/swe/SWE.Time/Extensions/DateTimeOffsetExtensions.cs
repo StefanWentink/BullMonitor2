@@ -1,8 +1,9 @@
 ﻿using SWE.Time.Enum;
-using SWE.Extensions.Extensions;
 using System.Collections.Concurrent;
 using Ardalis.GuardClauses;
 using SWE.Time.Utilities;
+using System.Globalization;
+using System;
 
 namespace SWE.Time.Extensions
 {
@@ -290,6 +291,7 @@ namespace SWE.Time.Extensions
             TimeZoneInfo timeZoneInfo)
         {
             return value
+                .ToTimeZone(TimeZoneInfoUtilities.DutchTimeZoneInfo)
                 .SetToTimeOfDay(0, 0, 0, timeZoneInfo);
         }
 
@@ -539,6 +541,102 @@ namespace SWE.Time.Extensions
            int numberOfMonths)
         {
             return from.AddMonths(numberOfMonths) < until;
+        }
+
+        private static readonly CultureInfo _dutchCulture = new CultureInfo("nl-NL", false);
+
+        public static int GetDutchWeekNumber(
+            this DateTimeOffset value)
+        {
+            return _dutchCulture
+                .Calendar
+                .GetWeekOfYear(
+                    value.SetToStartOfDay(TimeZoneInfoUtilities.DutchTimeZoneInfo).DateTime,
+                    CalendarWeekRule.FirstFourDayWeek,
+                    DayOfWeek.Monday);
+        }
+
+        public static DateTimeOffset GetFirstDayOfWeek(
+            this DateTimeOffset value,
+            TimeZoneInfo? timeZoneInfo = null)
+        {
+            var timeZone = timeZoneInfo ?? TimeZoneInfoUtilities.DutchTimeZoneInfo;
+
+            var referenceDate = value.SetToStartOfDay(timeZone);
+
+            var dayOfWeek = referenceDate.DayOfWeek;
+
+            if (dayOfWeek == DayOfWeek.Monday)
+            {
+                return referenceDate.SetToStartOfDay(timeZone);
+            }
+
+            var daysBack = ((int)dayOfWeek + 6) % 7;
+
+            return referenceDate
+                .Add(days: -daysBack, timeZoneInfo: timeZone)
+                .SetToStartOfDay(timeZone);
+        }
+
+        public static (DateTimeOffset from, DateTimeOffset until) GetWeek(
+            this DateTimeOffset value,
+            TimeZoneInfo? timeZoneInfo = null)
+        {
+            var timeZone = timeZoneInfo ?? TimeZoneInfoUtilities.DutchTimeZoneInfo;
+
+            var from = value.GetFirstDayOfWeek(timeZone);
+
+            var until = from
+                .Add(days: 6, timeZoneInfo: timeZone)
+                .SetToStartOfDay(timeZone);
+
+            return (from, until);
+        }
+
+        public static Entities.Range GetWeekRange(
+            this DateTimeOffset value,
+            TimeZoneInfo? timeZoneInfo = null)
+        {
+            var timeZone = timeZoneInfo ?? TimeZoneInfoUtilities.DutchTimeZoneInfo;
+
+            var (from, until) = value.GetWeek(timeZone);
+
+            return new Entities.Range(from, until);
+        }
+
+        private static DateTimeOffset _firstDay = new DateTimeOffset(2019, 12, 30, 0, 0, 0, TimeSpan.FromHours(1));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="sinceDate"></param>
+        /// <param name="isFirstDayOfWeek">Set true if <see cref="value"/> is already the first day of the week for optimization.</param>
+        /// <param name="timeZoneInfo"></param>
+        /// <returns></returns>
+        public static int WeeksSince(
+            this DateTimeOffset value,
+            DateTimeOffset sinceDate,
+            bool isFirstDayOfWeek = false,
+            TimeZoneInfo? timeZoneInfo = null)
+        {
+            var timeZone = timeZoneInfo ?? TimeZoneInfoUtilities.DutchTimeZoneInfo;
+
+            var startOfWeek = isFirstDayOfWeek
+                ? sinceDate
+                : sinceDate.GetFirstDayOfWeek(timeZone);
+
+            var daysDifference = (value.SetToStartOfDay(timeZone) - startOfWeek).Days;
+
+            return daysDifference % 7;
+        }
+
+        public static int WeeksSinceStart(
+            this DateTimeOffset value,
+            TimeZoneInfo? timeZoneInfo = null)
+        {
+            var timeZone = timeZoneInfo ?? TimeZoneInfoUtilities.DutchTimeZoneInfo;
+            return WeeksSince(value, _firstDay, true, timeZone);
         }
     }
 }

@@ -4,7 +4,7 @@ namespace BullMonitor.Abstractions.Utilities
 {
     internal static class StringValueUtilities
     {
-        private static readonly NumberFormatInfo _numberFormatInfo = new CultureInfo( "en-US", false ).NumberFormat;
+        private static readonly NumberFormatInfo _numberFormatInfo = new CultureInfo("en-US", false ).NumberFormat;
         private static NumberStyles currencyStyle = NumberStyles.Number | NumberStyles.AllowDecimalPoint | NumberStyles.AllowCurrencySymbol;
         private static NumberStyles percentageStyle = NumberStyles.Number | NumberStyles.AllowDecimalPoint;
         
