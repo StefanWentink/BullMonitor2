@@ -5,7 +5,7 @@
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
     public class TickerEntityConfiguration
-        : EntityConfiguration<TickerEntity>
+        : EntityCodeConfiguration<TickerEntity>
     {
         public override void Configure(EntityTypeBuilder<TickerEntity> builder)
         {
@@ -13,14 +13,6 @@
 
             builder
                 .ToTable(typeof(TickerEntity).Name.Replace("Entity", string.Empty, StringComparison.OrdinalIgnoreCase));
-
-            builder
-                .HasIndex(x => x.Code)
-                .IsUnique();
-
-            builder
-                .Property(x => x.Code)
-                .IsRequired();
 
             builder
                 .Property(x => x.IndustryId)

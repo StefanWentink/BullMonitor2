@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\swe\SWE.Time\SWE.Time.csproj" />
+    <ProjectReference Include="..\BullMonitor.Abstractions\BullMonitor.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

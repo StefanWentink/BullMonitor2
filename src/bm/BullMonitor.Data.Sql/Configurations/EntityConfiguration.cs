@@ -6,7 +6,7 @@ namespace BullMonitor.Data.Sql.Configurations
 {
     public class EntityConfiguration<T>
         : IEntityTypeConfiguration<T>
-        where T : class, IIdCode
+        where T : class, IId
     {
         public virtual void Configure(EntityTypeBuilder<T> builder)
         {
@@ -16,11 +16,6 @@ namespace BullMonitor.Data.Sql.Configurations
             builder
                 .Property(x => x.Id)
                 .IsRequired();
-
-            //builder
-            //    .Property(x => x.CreatedOn)
-            //    .IsRequired()
-            //    .HasDefaultValueSql("GETDATE()");
 
             builder
                 .HasIndex(x => new { x.Id })

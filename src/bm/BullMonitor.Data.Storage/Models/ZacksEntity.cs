@@ -2,6 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System.Text.Json.Serialization;
 using SWE.Time.Extensions;
+using BullMonitor.Abstractions.Interfaces;
 
 namespace BullMonitor.Data.Storage.Models
 {
@@ -44,6 +45,10 @@ namespace BullMonitor.Data.Storage.Models
     }
 
     public class ZacksValue
+        : IRank
+        , IPriceTargetRange
+        , IAdvancedPurchaseAdvice
+        , IBrokerRecommendation
     {
         public ZacksValue(
             int rank,
@@ -52,7 +57,7 @@ namespace BullMonitor.Data.Storage.Models
             int momentum,
             int vGM,
 
-            decimal averagePriceTarget,
+            decimal priceTarget,
             decimal lowestPriceTarget,
             decimal highestPriceTarget,
             decimal percentagePriceTarget,
@@ -63,7 +68,7 @@ namespace BullMonitor.Data.Storage.Models
             int sell,
             int strongSell,
 
-            decimal averageBrokerRecommendation)
+            decimal recommendation)
         {
             Rank = rank;
             Value = value;
@@ -71,7 +76,7 @@ namespace BullMonitor.Data.Storage.Models
             Momentum = momentum;
             VGM = vGM;
 
-            AveragePriceTarget = averagePriceTarget;
+            PriceTarget = priceTarget;
             LowestPriceTarget = lowestPriceTarget;
             HighestPriceTarget = highestPriceTarget;
             PercentagePriceTarget = percentagePriceTarget;
@@ -82,7 +87,7 @@ namespace BullMonitor.Data.Storage.Models
             Sell = sell;
             StrongSell = strongSell;
 
-            AverageBrokerRecommendation = averageBrokerRecommendation;
+            Recommendation = recommendation;
         }
 
         public int Rank { get; set; }
@@ -91,7 +96,7 @@ namespace BullMonitor.Data.Storage.Models
         public int Momentum { get; set; }
         public int VGM { get; set; }
 
-        public decimal AveragePriceTarget { get; set; }
+        public decimal PriceTarget { get; set; }
         public decimal LowestPriceTarget { get; set; }
         public decimal HighestPriceTarget { get; set; }
         public decimal PercentagePriceTarget { get; set; }
@@ -103,7 +108,7 @@ namespace BullMonitor.Data.Storage.Models
         public int Sell { get; set; }
         public int StrongSell { get; set; }
 
-        public decimal AverageBrokerRecommendation { get; set; }
+        public decimal Recommendation { get; set; }
     }
 
     public class ZacksMeta

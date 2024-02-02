@@ -2,6 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System.Text.Json.Serialization;
 using SWE.Time.Extensions;
+using BullMonitor.Abstractions.Interfaces;
 
 namespace BullMonitor.Data.Storage.Models
 {
@@ -44,6 +45,11 @@ namespace BullMonitor.Data.Storage.Models
     }
 
     public class TipRanksValue
+        : IPrice
+        , IBasicPurchaseAdvice
+        , IConsensus
+        , IPriceTarget
+        , ISentiments
     {
         public TipRanksValue(
             decimal price,

@@ -5,7 +5,7 @@
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
     public class SectorEntityConfiguration
-        : EntityConfiguration<SectorEntity>
+        : EntityCodeConfiguration<SectorEntity>
     {
         public override void Configure(EntityTypeBuilder<SectorEntity> builder)
         {

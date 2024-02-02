@@ -1,39 +1,8 @@
 ﻿namespace BullMonitor.Ticker.Api.Abstractions.Responses
 {
     public record ValueResponse(
-        decimal Price,
-
-        int TipRanksBuy,
-        int TipRanksHold,
-        int TipRanksSell,
-        int Consensus,
-        decimal TipRanksPriceTarget,
-
-        int BullishSentiments,
-        int NeutralSentiments,
-        int BearishSentiments,
-
-        int SentimentsScore,
-        decimal AverageSentiments,
-
-        int Rank,
-        int Value,
-        int Growth,
-        int Momentum,
-        int VGM,
-
-        decimal ZacksAveragePriceTarget,
-        decimal ZacksLowestPriceTarget,
-        decimal ZacksHighestPriceTarget,
-        decimal ZacksPercentagePriceTarget,
-
-        int ZacksStrongBuy,
-        int ZacksBuy,
-        int ZacksHold,
-        int ZacksSell,
-        int ZacksStrongSell,
-
-        decimal ZacksAverageBrokerRecommendation)
+        TipRanksValueResponse TipRanks,
+        ZacksValueResponse Zacks)
         : IEquatable<ValueResponse>
     {
         public ValueResponse(

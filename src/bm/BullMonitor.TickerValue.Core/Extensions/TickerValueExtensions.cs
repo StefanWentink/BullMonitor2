@@ -67,7 +67,7 @@ namespace BullMonitor.TickerValue.Core.Extensions
                     zacks.Value.Momentum,
                     zacks.Value.VGM,
 
-                    zacks.Value.AveragePriceTarget,
+                    zacks.Value.PriceTarget,
                     zacks.Value.LowestPriceTarget,
                     zacks.Value.HighestPriceTarget,
                     zacks.Value.PercentagePriceTarget,
@@ -78,7 +78,7 @@ namespace BullMonitor.TickerValue.Core.Extensions
                     zacks.Value.Sell,
                     zacks.Value.StrongSell,
 
-                    zacks.Value.AverageBrokerRecommendation);
+                    zacks.Value.Recommendation);
             }
 
             return new ValueResponse(
@@ -103,7 +103,7 @@ namespace BullMonitor.TickerValue.Core.Extensions
                 zacks.Value.Momentum,
                 zacks.Value.VGM,
 
-                zacks.Value.AveragePriceTarget,
+                zacks.Value.PriceTarget,
                 zacks.Value.LowestPriceTarget,
                 zacks.Value.HighestPriceTarget,
                 zacks.Value.PercentagePriceTarget,
@@ -114,7 +114,7 @@ namespace BullMonitor.TickerValue.Core.Extensions
                 zacks.Value.Sell,
                 zacks.Value.StrongSell,
 
-                zacks.Value.AverageBrokerRecommendation);
+                zacks.Value.Recommendation);
         }
     }
 }

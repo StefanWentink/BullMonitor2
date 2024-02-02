@@ -3,7 +3,8 @@ using SWE.Time.Extensions;
 
 namespace BullMonitor.Data.Storage.Models
 {
-    public record struct ValueEntity(
+    public record ValueEntity(
+            Guid Id,
             Guid TickerId,
             DateTimeOffset ReferenceDate,
             int TipranksConsensus,
@@ -13,7 +14,8 @@ namespace BullMonitor.Data.Storage.Models
             decimal ZacksPriceTarget,
             decimal ZacksBrokerRecommendation
         )
-        : ITickerValue
+        : IId
+        , ITickerValue
     {
         private int? _year = null;
         private int? _week = null;
@@ -25,5 +27,7 @@ namespace BullMonitor.Data.Storage.Models
         public int YearWeek => Year * 100 + Week;
         public int WeeksSinceStart => _weeksSince ??= ReferenceDate.WeeksSinceStart();
         public SWE.Time.Entities.Range Range => _range ??= ReferenceDate.GetWeekRange();
+
+        public virtual TickerEntity Ticker { get; set; }
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace BullMonitor.Data.Storage.Interfaces
 {
     public interface IIdCode
+        : IId
     {
-        Guid Id { get; }
         string Code { get; }
     }
 }

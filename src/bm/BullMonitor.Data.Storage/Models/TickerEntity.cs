@@ -91,5 +91,6 @@ namespace BullMonitor.Data.Storage.Models
         public virtual IndustryEntity Industry { get; set; }
         public virtual ExchangeEntity Exchange { get; set; }
         public virtual CurrencyEntity Currency { get; set; }
+        public virtual ICollection<ValueEntity> Values { get; set; } = new HashSet<ValueEntity>();
     }
 }
