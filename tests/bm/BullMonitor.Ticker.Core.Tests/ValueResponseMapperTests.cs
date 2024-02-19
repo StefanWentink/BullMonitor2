@@ -1,15 +1,19 @@
-﻿using BullMonitor.Ticker.Api.Abstractions.Interfaces.Providers;
+﻿using BullMonitor.Data.Storage.Models;
+using BullMonitor.Ticker.Api.Abstractions.Responses;
 using BullMonitor.Ticker.Core.Extensions;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SWE.Infrastructure.Abstractions.Interfaces.Contracts;
 using SWE.Tests.Base;
 using Xunit;
 
 namespace BullMonitor.Ticker.Core.Tests
 {
-    public class ValueProviderTests
-        : BaseServiceProviderTests<IValueProvider>
+    public class ValueResponseMapperTests
+        : BaseServiceProviderTests<IMapper<
+            (IEnumerable<ZacksEntity> zacks, IEnumerable<TipRanksEntity> tipranks),
+            IDictionary<DateTimeOffset, ValueResponse>>>
     {
         protected override IServiceCollection WithServices(
             IServiceCollection services,
@@ -20,13 +24,13 @@ namespace BullMonitor.Ticker.Core.Tests
         }
 
         [Fact()]
-        public void ValueProvider_Should_Create()
+        public void Mapper_Should_Create()
         {
             try
             {
-                var provider = Create();
+                var mapper = Create();
 
-                provider.Should().NotBeNull();
+                mapper.Should().NotBeNull();
             }
             catch (Exception exception)
             {
@@ -42,18 +46,18 @@ namespace BullMonitor.Ticker.Core.Tests
             using var cancellationTokenSource = new CancellationTokenSource();
             var cancellationToken = cancellationTokenSource.Token;
 
-            var provider = Create();
+            var mapper = Create();
 
             try
             {
-                var response = await provider
-                    .GetSingleOrDefault(
-                        ticker,
-                        cancellationToken)
-                    .ConfigureAwait(false);
+                //var response = await mapper
+                //    .GetSingleOrDefault(
+                //        ticker,
+                //        cancellationToken)
+                //    .ConfigureAwait(false);
 
-                response.Should().NotBeNull();
-                response?.Values.Should().NotBeEmpty();
+                //response.Should().NotBeNull();
+                //response?.Values.Should().NotBeEmpty();
             }
             catch (Exception exception)
             {

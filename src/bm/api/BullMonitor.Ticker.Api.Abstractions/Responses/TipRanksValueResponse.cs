@@ -23,5 +23,19 @@ namespace BullMonitor.Ticker.Api.Abstractions.Responses
         , IConsensus
         , IPriceTarget
         , ISentiments
-    { }
+    {
+        /// <summary>
+        /// Constructor used to create an empty/default instance
+        /// </summary>
+        public TipRanksValueResponse()
+            : this(
+                0m,
+
+                0, 0, 0, 0, 0m,
+
+                0, 0, 0,
+
+                0, 0m)
+        { }
+    }
 }

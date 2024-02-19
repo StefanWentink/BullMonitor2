@@ -1,120 +1,138 @@
-﻿using BullMonitor.Data.Storage.Models;
-using BullMonitor.Ticker.Api.Abstractions.Responses;
+﻿//using Ardalis.GuardClauses;
+//using BullMonitor.Data.Storage.Models;
+//using BullMonitor.Ticker.Api.Abstractions.Responses;
 
-namespace BullMonitor.TickerValue.Core.Extensions
-{
-    public static class TickerValueExtensions
-    {
-        public static IDictionary<DateTimeOffset, ValueResponse> ToValueDictionary(
-            this IEnumerable<ZacksEntity> zacks,
-            IEnumerable<TipRanksEntity> tipranks)
-        {
-            return zacks
-                .ToValues(tipranks)
-                .ToDictionary(x => x.date, x => x.value);
-        }
+//namespace BullMonitor.TickerValue.Core.Extensions
+//{
+//    public static class TickerValueExtensions
+//    {
+//        public static IDictionary<DateTimeOffset, ValueResponse> ToValueDictionary(
+//            this IEnumerable<ZacksEntity> zacks,
+//            IEnumerable<TipRanksEntity> tipranks)
+//        {
+//            return zacks
+//                .ToValueResponses(tipranks)
+//                .ToDictionary(x => x.date, x => x.value);
+//        }
 
-        public static IEnumerable<(DateTimeOffset date, ValueResponse value)> ToValues(
-            this IEnumerable<ZacksEntity> zacks,
-            IEnumerable<TipRanksEntity> tipranks)
-        {
-            var dates = zacks.Select(x => x.ReferenceDate).ToList();
-            dates.AddRange(tipranks.Select(x => x.ReferenceDate));
+//        public static IEnumerable<(DateTimeOffset date, ValueResponse value)> ToValueResponses(
+//            this IEnumerable<ZacksEntity> zacks,
+//            IEnumerable<TipRanksEntity> tipranks)
+//        {
+//            var dates = zacks.Select(x => x.ReferenceDate).ToList();
+//            dates.AddRange(tipranks.Select(x => x.ReferenceDate));
 
-            foreach (var date in dates.Distinct())
-            {
-                var z = zacks.FirstOrDefault(x => x.ReferenceDate.Equals(date));
-                var t = tipranks.FirstOrDefault(x => x.ReferenceDate.Equals(date));
+//            foreach (var date in dates.Distinct())
+//            {
+//                var z = zacks.FirstOrDefault(x => x.ReferenceDate.Equals(date));
+//                var t = tipranks.FirstOrDefault(x => x.ReferenceDate.Equals(date));
 
-                yield return (date, z.ToValueResponse(t));
-            }
-        }
+//                yield return (date, z.ToValueResponse(t));
+//            }
+//        }
 
-        public static ValueResponse ToValueResponse(
-            this ZacksEntity? zacks,
-            TipRanksEntity? tipranks)
-        {
-            if (zacks is null)
-            {
-                if (tipranks is null)
-                {
-                    return new ValueResponse();
-                }
+//        public static ValueResponse ToValueResponse(
+//            this ZacksEntity? zacks,
+//            TipRanksEntity? tipranks)
+//        {
+//            var paramNames = $"'{nameof(zacks)}' and '{nameof(zacks)}'";
+//            var nullCheckMessage = $"{nameof(TickerValueExtensions)}.{nameof(ToValueResponse)}: Both {paramNames} are null.";
 
-                return new ValueResponse(
-                    tipranks.Value.Price,
+//            Guard
+//                .Against
+//                .AgainstExpression(
+//                    (tuple) => tuple.zacks == null && tuple.tipranks == null,
+//                    (zacks, tipranks),
+//                    nullCheckMessage);
 
-                    tipranks.Value.Buy,
-                    tipranks.Value.Hold,
-                    tipranks.Value.Sell,
-                    tipranks.Value.Consensus,
-                    tipranks.Value.PriceTarget,
+//            var ticker = zacks?.Ticker
+//                ?? tipranks?.Ticker
+//                ?? throw new ArgumentNullException(paramNames, nullCheckMessage);
 
-                    tipranks.Value.BullishSentiments,
-                    tipranks.Value.NeutralSentiments,
-                    tipranks.Value.BearishSentiments,
+//            if (zacks is null)
+//            {
+//                if (tipranks is null)
+//                {
+//                    return new ValueResponse(
+//                        ticker,
+//                        tipranks ?? new TipRanksValueResponse(),
+//                        zacks ?? new ZacksValueResponse());
+//                }
 
-                    tipranks.Value.SentimentsScore,
-                    tipranks.Value.AverageSentiments);
-            }
+//                return new ValueResponse(
+//                    tipranks.Value.Price,
 
-            if (tipranks is null)
-            {
-                return new ValueResponse(
-                    zacks.Value.Rank,
-                    zacks.Value.Value,
-                    zacks.Value.Growth,
-                    zacks.Value.Momentum,
-                    zacks.Value.VGM,
+//                    tipranks.Value.Buy,
+//                    tipranks.Value.Hold,
+//                    tipranks.Value.Sell,
+//                    tipranks.Value.Consensus,
+//                    tipranks.Value.PriceTarget,
 
-                    zacks.Value.PriceTarget,
-                    zacks.Value.LowestPriceTarget,
-                    zacks.Value.HighestPriceTarget,
-                    zacks.Value.PercentagePriceTarget,
+//                    tipranks.Value.BullishSentiments,
+//                    tipranks.Value.NeutralSentiments,
+//                    tipranks.Value.BearishSentiments,
 
-                    zacks.Value.StrongBuy,
-                    zacks.Value.Buy,
-                    zacks.Value.Hold,
-                    zacks.Value.Sell,
-                    zacks.Value.StrongSell,
+//                    tipranks.Value.SentimentsScore,
+//                    tipranks.Value.AverageSentiments);
+//            }
 
-                    zacks.Value.Recommendation);
-            }
+//            if (tipranks is null)
+//            {
+//                return new ValueResponse(
+//                    zacks.Value.Rank,
+//                    zacks.Value.Value,
+//                    zacks.Value.Growth,
+//                    zacks.Value.Momentum,
+//                    zacks.Value.VGM,
 
-            return new ValueResponse(
-                tipranks.Value.Price,
+//                    zacks.Value.PriceTarget,
+//                    zacks.Value.LowestPriceTarget,
+//                    zacks.Value.HighestPriceTarget,
+//                    zacks.Value.PercentagePriceTarget,
 
-                tipranks.Value.Buy,
-                tipranks.Value.Hold,
-                tipranks.Value.Sell,
-                tipranks.Value.Consensus,
-                tipranks.Value.PriceTarget,
+//                    zacks.Value.StrongBuy,
+//                    zacks.Value.Buy,
+//                    zacks.Value.Hold,
+//                    zacks.Value.Sell,
+//                    zacks.Value.StrongSell,
 
-                tipranks.Value.BullishSentiments,
-                tipranks.Value.NeutralSentiments,
-                tipranks.Value.BearishSentiments,
+//                    zacks.Value.Recommendation);
+//            }
 
-                tipranks.Value.SentimentsScore,
-                tipranks.Value.AverageSentiments,
+//            return new ValueResponse(
+//                tipranks.Value.Price,
 
-                zacks.Value.Rank,
-                zacks.Value.Value,
-                zacks.Value.Growth,
-                zacks.Value.Momentum,
-                zacks.Value.VGM,
+//                tipranks.Value.Buy,
+//                tipranks.Value.Hold,
+//                tipranks.Value.Sell,
+//                tipranks.Value.Consensus,
+//                tipranks.Value.PriceTarget,
 
-                zacks.Value.PriceTarget,
-                zacks.Value.LowestPriceTarget,
-                zacks.Value.HighestPriceTarget,
-                zacks.Value.PercentagePriceTarget,
+//                tipranks.Value.BullishSentiments,
+//                tipranks.Value.NeutralSentiments,
+//                tipranks.Value.BearishSentiments,
 
-                zacks.Value.StrongBuy,
-                zacks.Value.Buy,
-                zacks.Value.Hold,
-                zacks.Value.Sell,
-                zacks.Value.StrongSell,
+//                tipranks.Value.SentimentsScore,
+//                tipranks.Value.AverageSentiments,
 
-                zacks.Value.Recommendation);
-        }
-    }
-}
+//                zacks.Value.Rank,
+//                zacks.Value.Value,
+//                zacks.Value.Growth,
+//                zacks.Value.Momentum,
+//                zacks.Value.VGM,
+
+//                zacks.Value.PriceTarget,
+//                zacks.Value.LowestPriceTarget,
+//                zacks.Value.HighestPriceTarget,
+//                zacks.Value.PercentagePriceTarget,
+
+//                zacks.Value.StrongBuy,
+//                zacks.Value.Buy,
+//                zacks.Value.Hold,
+//                zacks.Value.Sell,
+//                zacks.Value.StrongSell,
+
+//                zacks.Value.Recommendation);
+//        }
+//    }
+//}

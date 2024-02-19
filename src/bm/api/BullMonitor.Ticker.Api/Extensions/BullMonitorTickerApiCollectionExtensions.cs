@@ -1,4 +1,5 @@
 ﻿using BullMonitor.Ticker.Core.Extensions;
+using BullMonitor.TickerValue.Core.Extensions;
 using SWE.Extensions.Interfaces;
 using SWE.Extensions.Models;
 
@@ -13,6 +14,7 @@ namespace BullMonitor.Ticker.Api.Extensions
             return services
                 .AddSingleton<IDateTimeOffsetNow, DateTimeOffsetNow>()
                 .WithBullMonitorTickerCoreServices(configuration)
+                .WithBullMonitorTickerValueCoreServices(configuration)
                 ;
         }
     }

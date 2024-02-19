@@ -7,13 +7,17 @@ namespace SWE.Time.Utilities
 {
     public static class TimeZoneInfoUtilities
     {
-        public static ConcurrentDictionary<string, TimeZoneInfo> TimeZoneInfoDictionary { get; } =
+        private static TimeZoneInfo? _dutchTimeZoneInfo;
+
+        private static ConcurrentDictionary<string, TimeZoneInfo>? _timeZoneInfoDictionary;
+
+        public static TimeZoneInfo DutchTimeZoneInfo => _dutchTimeZoneInfo ??= GetDutchTimeZoneInfo();
+
+        public static ConcurrentDictionary<string, TimeZoneInfo> TimeZoneInfoDictionary => _timeZoneInfoDictionary ??=
             new ConcurrentDictionary<string, TimeZoneInfo>(
                 TimeZoneInfo
                     .GetSystemTimeZones()
                     .ToDictionary(x => x.Id, x => x));
-
-        public static TimeZoneInfo DutchTimeZoneInfo { get; } = GetDutchTimeZoneInfo();
 
         /// <summary>
         /// Gets <see cref="TimeZoneInfo"/> from SystemTimeZones

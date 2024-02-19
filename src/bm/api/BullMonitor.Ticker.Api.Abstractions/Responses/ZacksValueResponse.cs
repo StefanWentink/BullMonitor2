@@ -26,5 +26,16 @@ namespace BullMonitor.Ticker.Api.Abstractions.Responses
         , IPriceTargetRange
         , IAdvancedPurchaseAdvice
         , IBrokerRecommendation
-    { }
+    {
+        /// <summary>
+        /// Constructor used to create an empty/default instance
+        /// </summary>
+        public ZacksValueResponse()
+            : this(
+                5, 5, 5, 5, 5,
+                0m, 0m, 0m, 0m,
+                0, 0, 0, 0, 0,
+                0)
+        { }
+    }
 }

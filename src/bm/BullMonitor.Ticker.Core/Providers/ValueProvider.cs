@@ -3,7 +3,6 @@ using BullMonitor.Data.Sql.Contexts;
 using BullMonitor.Data.Storage.Models;
 using BullMonitor.Ticker.Api.Abstractions.Interfaces.Providers;
 using BullMonitor.Ticker.Api.Abstractions.Responses;
-using BullMonitor.TickerValue.Core.Extensions;
 using Microsoft.Extensions.Logging;
 using SWE.Extensions.Extensions;
 using SWE.Extensions.Interfaces;
@@ -18,6 +17,9 @@ namespace BullMonitor.Ticker.Core.Providers
             ICompanyProvider CompanyProvider,
             IZacksConnector ZacksProvider,
             ITipRanksConnector TipRanksProvider,
+            IMapper<
+                (IEnumerable<ZacksEntity> zacks, IEnumerable<TipRanksEntity> tipranks),
+                IDictionary<DateTimeOffset, ValueResponse>> ValueResponseMapper,
             IDateTimeOffsetNow DateTimeOffsetNow,
             ILogger<ValueProvider> Logger)
         : IValueProvider
@@ -25,6 +27,7 @@ namespace BullMonitor.Ticker.Core.Providers
         private SemaphoreSlim _collectionLock = new(1);
 
         private IEnumerable<TickerEntity>? _collection = null;
+
 
         public async Task<CompanyResponse?> GetSingleOrDefault(
             Guid value,
@@ -120,14 +123,16 @@ namespace BullMonitor.Ticker.Core.Providers
 
                     var tipRanks = await tipRanksTask.ConfigureAwait(false);
 
-                    var values = zacks
-                        .ToValues(tipRanks);
+                    var valueDictionary = await ValueResponseMapper
+                        .Map(
+                            (zacks, tipRanks),
+                            cancellationToken)
+                        .ConfigureAwait(false);
 
                     var result = new CompanyResponse(
                         company.Id,
                         company.Code,
-                        values
-                            .ToDictionary(x => x.date, x => x.value));
+                        valueDictionary);
 
                     results.Add(result);
                 }

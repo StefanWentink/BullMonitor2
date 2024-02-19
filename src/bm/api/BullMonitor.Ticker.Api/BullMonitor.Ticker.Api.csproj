@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>29d2fd7f-e9b9-417d-8100-49e8fe5ae60d</UserSecretsId>
@@ -23,6 +23,7 @@
     <ProjectReference Include="..\..\..\swe\SWE.Extensions\SWE.Extensions.csproj" />
     <ProjectReference Include="..\..\BullMonitor.Data.Sql\BullMonitor.Data.Sql.csproj" />
     <ProjectReference Include="..\..\BullMonitor.Ticker.Core\BullMonitor.Ticker.Core.csproj" />
+    <ProjectReference Include="..\..\BullMonitor.TickerValue.Core\BullMonitor.TickerValue.Core.csproj" />
     <ProjectReference Include="..\BullMonitor.Ticker.Api.Abstractions\BullMonitor.Ticker.Api.Abstractions.csproj" />
   </ItemGroup>
 
